@@ -17,9 +17,6 @@ import lusca from 'lusca';
 import config from './environment';
 import passport from 'passport';
 import session from 'express-session';
-import sqldb from '../sqldb';
-import connectBookshelf from 'connect-bookshelf';
-var Store = connectBookshelf(session);
 
 export default function(app) {
   var env = app.get('env');
@@ -41,19 +38,18 @@ export default function(app) {
   app.set('view engine', 'html');
   app.use(compression());
   app.use(bodyParser.urlencoded({ extended: false }));
-  app.use(bodyParser.json());
+  app.use(bodyParser.json()); 
   app.use(methodOverride());
   app.use(cookieParser());
   app.use(passport.initialize());
 
-  // Persist sessions with MongoStore / BookshelfStore
+  // Persist sessions with MongoStore
   // We need to enable sessions for passport-twitter because it's an
   // oauth 1.0 strategy, and Lusca depends on sessions
   app.use(session({
     secret: config.secrets.session,
     saveUninitialized: true,
-    resave: false,
-    store: new Store({ model: sqldb.User })
+    resave: false
   }));
 
   /**
