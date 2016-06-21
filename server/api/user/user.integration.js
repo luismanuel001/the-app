@@ -9,8 +9,12 @@ describe('User API:', function() {
 
   // Clear users before testing
   before(function() {
-    return User.destroy({ where: {} }).then(function() {
-      user = User.build({
+    return User.findAll().then(function (users) {
+      users.models.forEach(function(user) {
+        user.destroy();
+      });
+
+      user = new User({
         name: 'Fake User',
         email: 'test@example.com',
         password: 'password'
@@ -22,7 +26,11 @@ describe('User API:', function() {
 
   // Clear users after testing
   after(function() {
-    return User.destroy({ where: {} });
+    return User.findAll().then(function (users) {
+      users.models.forEach(function(user) {
+        user.destroy();
+      });
+    });
   });
 
   describe('GET /api/users/me', function() {
@@ -50,7 +58,7 @@ describe('User API:', function() {
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {
-          expect(res.body._id.toString()).to.equal(user._id.toString());
+          expect(res.body._id.toString()).to.equal(user.get('_id'));
           done();
         });
     });

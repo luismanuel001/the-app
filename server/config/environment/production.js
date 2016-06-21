@@ -23,5 +23,9 @@ module.exports = {
         timestamps: false
       }
     }
+  },
+
+  bookshelf: {
+    filename: './dist.sqlite'
   }
 };

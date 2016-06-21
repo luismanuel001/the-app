@@ -16,5 +16,9 @@ module.exports = {
         timestamps: false
       }
     }
+  },
+
+  bookshelf: {
+    filename: './test.sqlite'
   }
 };

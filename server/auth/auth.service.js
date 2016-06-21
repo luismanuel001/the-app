@@ -27,11 +27,7 @@ export function isAuthenticated() {
     })
     // Attach user to request
     .use(function(req, res, next) {
-      User.find({
-        where: {
-          _id: req.user._id
-        }
-      })
+      User.findById(req.user._id)
         .then(user => {
           if (!user) {
             return res.status(401).end();
@@ -54,7 +50,7 @@ export function hasRole(roleRequired) {
   return compose()
     .use(isAuthenticated())
     .use(function meetsRequirements(req, res, next) {
-      if (config.userRoles.indexOf(req.user.role) >=
+      if (config.userRoles.indexOf(req.user.get('role')) >=
           config.userRoles.indexOf(roleRequired)) {
         next();
       } else {
@@ -79,7 +75,7 @@ export function setTokenCookie(req, res) {
   if (!req.user) {
     return res.status(404).send('It looks like you aren\'t logged in, please try again.');
   }
-  var token = signToken(req.user._id, req.user.role);
+  var token = signToken(req.user.get('_id'), req.user.get('role'));
   res.cookie('token', token);
   res.redirect('/');
 }

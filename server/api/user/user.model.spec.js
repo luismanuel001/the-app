@@ -4,7 +4,7 @@ import app from '../..';
 import {User} from '../../sqldb';
 var user;
 var genUser = function() {
-  user = User.build({
+  user = new User({
     provider: 'local',
     name: 'Fake User',
     email: 'test@example.com',
@@ -17,7 +17,11 @@ describe('User Model', function() {
   before(function() {
     // Sync and clear users before testing
     return User.sync().then(function() {
-      return User.destroy({ where: {} });
+      return User.findAll().then(function (users) {
+        users.models.forEach(function(user) {
+          user.destroy();
+        });
+      });
     });
   });
 
@@ -26,7 +30,11 @@ describe('User Model', function() {
   });
 
   afterEach(function() {
-    return User.destroy({ where: {} });
+    return User.findAll().then(function (users) {
+      users.models.forEach(function(user) {
+        user.destroy();
+      });
+    });
   });
 
   it('should begin with no users', function() {
@@ -44,7 +52,7 @@ describe('User Model', function() {
 
   describe('#email', function() {
     it('should fail when saving without an email', function() {
-      user.email = '';
+      user.set('email', '');
       return expect(user.save()).to.be.rejected;
     });
   });

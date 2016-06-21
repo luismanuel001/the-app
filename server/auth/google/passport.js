@@ -8,21 +8,20 @@ export function setup(User, config) {
     callbackURL: config.google.callbackURL
   },
   function(accessToken, refreshToken, profile, done) {
-    User.find({where:{'google.id': profile.id}})
+    User.findOne({'google.id': profile.id})
       .then(user => {
         if (user) {
           return done(null, user);
         }
 
-        user = User.build({
+        user = User.create({
           name: profile.displayName,
           email: profile.emails[0].value,
           role: 'user',
           username: profile.emails[0].value.split('@')[0],
           provider: 'google',
           google: profile._json
-        });
-        user.save()
+        })
           .then(user => done(null, user))
           .catch(err => done(err));
       })

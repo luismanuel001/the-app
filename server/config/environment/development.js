@@ -17,6 +17,9 @@ module.exports = {
   },
 
   // Seed database on startup
-  seedDB: true
+  seedDB: true,
 
+  bookshelf: {
+    filename: './dev.sqlite'
+  }
 };

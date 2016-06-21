@@ -43,12 +43,12 @@ export function index(req, res) {
  * Creates a new user
  */
 export function create(req, res, next) {
-  var newUser = User.build(req.body);
-  newUser.setDataValue('provider', 'local');
-  newUser.setDataValue('role', 'user');
+  var newUser = new User(req.body);
+  newUser.set('provider', 'local');
+  newUser.set('role', 'user');
   return newUser.save()
     .then(function(user) {
-      var token = jwt.sign({ _id: user._id }, config.secrets.session, {
+      var token = jwt.sign({ _id: user.get('_id') }, config.secrets.session, {
         expiresIn: 60 * 60 * 5
       });
       res.json({ token });
@@ -61,12 +61,7 @@ export function create(req, res, next) {
  */
 export function show(req, res, next) {
   var userId = req.params.id;
-
-  return User.find({
-    where: {
-      _id: userId
-    }
-  })
+  return User.findById(userId)
     .then(user => {
       if (!user) {
         return res.status(404).end();
@@ -81,7 +76,7 @@ export function show(req, res, next) {
  * restriction: 'admin'
  */
 export function destroy(req, res) {
-  return User.destroy({ _id: req.params.id })
+  return User.destroy({ id: req.params.id })
     .then(function() {
       res.status(204).end();
     })
@@ -92,18 +87,14 @@ export function destroy(req, res) {
  * Change a users password
  */
 export function changePassword(req, res, next) {
-  var userId = req.user._id;
+  var userId = req.user.get('_id');
   var oldPass = String(req.body.oldPassword);
   var newPass = String(req.body.newPassword);
 
-  return User.find({
-    where: {
-      _id: userId
-    }
-  })
+  return User.findById(userId)
     .then(user => {
       if (user.authenticate(oldPass)) {
-        user.password = newPass;
+        user.set('password', newPass);
         return user.save()
           .then(() => {
             res.status(204).end();
@@ -119,21 +110,16 @@ export function changePassword(req, res, next) {
  * Get my info
  */
 export function me(req, res, next) {
-  var userId = req.user._id;
-
-  return User.find({
-    where: {
-      _id: userId
-    },
-    attributes: [
+  var userId = req.user.get('_id');
+  return User.findById(userId, {
+    columns: [
       '_id',
       'name',
       'email',
       'role',
       'provider'
     ]
-  })
-    .then(user => { // don't ever give out the password or salt
+  }).then(user => { // don't ever give out the password or salt
       if (!user) {
         return res.status(401).end();
       }
