@@ -32,28 +32,32 @@ db.User = userModel(db.bookshelf);
 
 // Add additional sync method to initialize the table
 db.User.sync = function() {
-  return new Promise(function(resolve, reject) {
-    knexInstance.schema.hasTable('User').then(function(exists) {
-      if (!exists) {
-        return knexInstance.schema.createTable('User', function(table) {
-          table.increments('_id').primary();
-          table.string('name');
-          table.string('email').unique();
-          table.string('role').defaultTo('user');
-          table.string('password');
-          table.string('provider');
-          table.string('salt');
-          table.json('google');
-          table.json('github');
-          table.timestamps();
+  if (!db.User.promise) {
+    db.User.promise = new Promise(function(resolve) {
+      knexInstance.schema.hasTable('User').then(function(exists) {
+        if (!exists) {
+          return knexInstance.schema.createTable('User', function(table) {
+            table.increments('_id').primary(); 
+            table.string('name');
+            table.string('email').unique();
+            table.string('role').defaultTo('user');
+            table.string('password');
+            table.string('provider');
+            table.string('salt');
+            table.json('google');
+            table.json('github');
+            table.timestamps();
 
+            resolve();
+          });
+        } else {
           resolve();
-        });
-      } else {
-        resolve();
-      }
+        }
+      });
     });
-  });
+  }
+
+  return db.User.promise;
 };
 
 db.bookshelf.sync = function() {
