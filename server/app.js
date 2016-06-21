@@ -30,7 +30,7 @@ function startServer() {
   });
 }
 
-sqldb.sequelize.sync()
+sqldb.bookshelf.sync()
   .then(startServer)
   .catch(function(err) {
     console.log('Server failed to start due to error: %s', err);

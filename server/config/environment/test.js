@@ -7,17 +7,8 @@ module.exports = {
   mongo: {
     uri: 'mongodb://localhost/angularfullstack-test'
   },
-  sequelize: {
-    uri: 'sqlite://',
-    options: {
-      logging: false,
-      storage: 'test.sqlite',
-      define: {
-        timestamps: false
-      }
-    }
-  },
 
+  // Bookshelf connection options
   bookshelf: {
     filename: './test.sqlite'
   }

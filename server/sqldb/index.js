@@ -5,7 +5,6 @@
 'use strict';
 
 import config from '../config/environment';
-import Sequelize from 'sequelize';
 import knex from 'knex';
 import bookshelf from 'bookshelf';
 import bookshelfModelbase from 'bookshelf-modelbase';
@@ -21,8 +20,6 @@ var knexInstance = knex({
 });
 
 var db = {
-  Sequelize,
-  sequelize: new Sequelize(config.sequelize.uri, config.sequelize.options),
   bookshelf: bookshelf(knexInstance) // Initialize bookshelf by passing the knex instance
 };
 
@@ -31,7 +28,6 @@ db.bookshelf.plugin('virtuals');
 db.bookshelf.plugin(bookshelfModelbase.pluggable);
 
 // Insert models below
-db.Thing = db.sequelize.import('../api/thing/thing.model');
 db.User = userModel(db.bookshelf);
 
 // Add additional sync method to initialize the table
@@ -58,6 +54,10 @@ db.User.sync = function() {
       }
     });
   });
+};
+
+db.bookshelf.sync = function() {
+  return db.User.sync();
 };
 
 module.exports = db;

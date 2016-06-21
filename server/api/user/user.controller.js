@@ -25,7 +25,7 @@ function handleError(res, statusCode) {
  */
 export function index(req, res) {
   return User.findAll({
-    attributes: [
+    columns: [
       '_id',
       'name',
       'email',
