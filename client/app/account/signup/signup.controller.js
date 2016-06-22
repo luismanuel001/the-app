@@ -27,7 +27,7 @@ class SignupController {
           err = err.data;
           this.errors = {};
 
-          // Update validity of form fields that match the sequelize errors
+          // Update validity of form fields that match the bookshelf errors
           if (err.name) {
             angular.forEach(err.fields, field => {
               form[field].$setValidity('mongoose', false);

@@ -1,5 +1,5 @@
 /**
- * Sequelize initialization module
+ * Bookshelf initialization module
  */
 
 'use strict';

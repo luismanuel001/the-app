@@ -25,8 +25,6 @@
       "socketio": true,
       "auth": true,
       "models": true,
-      "sequelizeModels": true,
-      "sequelize": true,
       "oauth": true,
       "googleAuth": true,
       "gulp": true,
