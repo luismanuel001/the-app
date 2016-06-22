@@ -35,11 +35,9 @@
 
         $('body').addClass(skinClassName);
 
-        Auth.getCurrentUser().theme = skinClassName;
-        Auth.changeTheme(skinClassName).then(function() {
-          Auth.getCurrentUser().theme = skinClassName;
-          console.log('Successfully updated theme: ', skinClassName);
-        });
+        if (Auth.isLoggedIn()) {
+          Auth.changeTheme(skinClassName);
+        }
         return false;
 			},
       toggleMiniSidebar: function(showMiniSidebar) {

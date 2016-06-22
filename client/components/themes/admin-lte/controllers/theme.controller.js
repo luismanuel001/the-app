@@ -9,7 +9,7 @@
 
   function ThemeController($rootScope, $state, Auth, ThemeStyleService) {
     var vm = this;
-    vm.isLoggedIn = false;
+    vm.Auth = Auth;
 
     activate();
 
@@ -18,10 +18,12 @@
       ThemeStyleService.toggleMiniSidebar(true);
 
       Auth.isLoggedIn(function(isLoggedIn) {
-        vm.isLoggedIn = isLoggedIn;
-
-        var userTheme = Auth.getCurrentUser().theme;
-        ThemeStyleService.changeSkin(userTheme);
+        if (isLoggedIn) {
+          var userTheme = Auth.getCurrentUser().theme;
+          ThemeStyleService.changeSkin(userTheme);
+        } else {
+          $state.go('login'); // redirect to login page if user is not logged in
+        }
       });
     }
   }

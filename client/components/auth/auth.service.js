@@ -194,6 +194,7 @@
         }, {
           theme: theme
         }, function() {
+          currentUser.theme = theme;
           return safeCb(callback)(null);
         }, function(err) {
           return safeCb(callback)(err);
