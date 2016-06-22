@@ -61,7 +61,7 @@ export function create(req, res, next) {
  */
 export function show(req, res, next) {
   var userId = req.params.id;
-  return User.findById(userId)
+  return User.findById(userId, { require: false })
     .then(user => {
       if (!user) {
         return res.status(404).end();
@@ -113,8 +113,11 @@ export function changeTheme(req, res, next) {
   var userId = req.user.get('_id');
   var theme = String(req.body.theme);
 
-  return User.findById(userId)
+  return User.findById(userId, { require: false })
     .then(user => {
+      if (!user) {
+        return res.status(401).end();
+      }
       user.set('theme', theme);
       return user.save()
         .then(() => {
@@ -130,6 +133,7 @@ export function changeTheme(req, res, next) {
 export function me(req, res, next) {
   var userId = req.user.get('_id');
   return User.findById(userId, {
+    require: false,
     columns: [
       '_id',
       'name',
