@@ -30,6 +30,20 @@ angular.module('angularFullstackApp')
         controller: 'SettingsController',
         controllerAs: 'vm',
         authenticate: true
+      })
+      .state('customers', {
+        url: '/customers',
+        templateUrl: 'app/account/customers/customers.html',
+        controller: 'SignupController',
+        controllerAs: 'vm',
+        authenticate: true
+      })
+      .state('transactions', {
+        url: '/transactions',
+        templateUrl: 'app/account/transactions/transactions.html',
+        controller: 'SignupController',
+        controllerAs: 'vm',
+        authenticate: true
       });
   })
   .run(function($rootScope) {

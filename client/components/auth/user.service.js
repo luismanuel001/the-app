@@ -17,6 +17,12 @@
         params: {
           id: 'me'
         }
+      },
+      changeTheme: {
+        method: 'PUT',
+        params: {
+          controller: 'theme'
+        }
       }
     });
   }

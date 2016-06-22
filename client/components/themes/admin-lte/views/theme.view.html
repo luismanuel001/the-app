@@ -1,0 +1,10 @@
+<div ng-switch="themeCtrl.isLoggedIn">
+  <div ng-switch-when="true">
+    <dashboard></dashboard>
+  </div>
+  <div ng-switch-when="false">
+    <login ng-if="$state.includes('login')"></login>
+    <signup ng-if="$state.includes('signup')"></signup>
+    <dashboard ng-if="!$state.includes('login') && !$state.includes('signup')"></dashboard>
+  </div>
+</div>

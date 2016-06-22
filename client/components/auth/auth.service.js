@@ -179,6 +179,26 @@
        */
       getToken() {
         return $cookies.get('token');
+      },
+
+	    /**
+       * Change theme
+       *
+       * @param theme
+       * @param callback
+       * @returns {*|Function}
+	     */
+      changeTheme(theme, callback) {
+        return User.changeTheme({
+          id: currentUser._id
+        }, {
+          theme: theme
+        }, function() {
+          return safeCb(callback)(null);
+        }, function(err) {
+          return safeCb(callback)(err);
+        })
+          .$promise;
       }
     };
 
