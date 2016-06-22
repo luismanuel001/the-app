@@ -25,14 +25,17 @@
 
 		var themeStyleService = {
 			changeSkin: function(skinClassName) {
-        if (skinClassName && skins.indexOf(skinClassName) !== -1) {
-          $.each(skins, function (i) {
-            $('body').removeClass(skins[i]);
-          });
-        } else {
+        // set default theme if skinClassName can't be found
+        if (!skinClassName || skins.indexOf(skinClassName) === -1) {
           skinClassName = skins[0];
         }
 
+        // remove all theme classes from body
+        $.each(skins, function (i) {
+          $('body').removeClass(skins[i]);
+        });
+
+        // add theme class to body
         $('body').addClass(skinClassName);
 
         if (Auth.isLoggedIn()) {
