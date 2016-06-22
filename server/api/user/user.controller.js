@@ -107,6 +107,24 @@ export function changePassword(req, res, next) {
 }
 
 /**
+ * Change theme
+ */
+export function changeTheme(req, res, next) {
+  var userId = req.user.get('_id');
+  var theme = String(req.body.theme);
+
+  return User.findById(userId)
+    .then(user => {
+      user.set('theme', theme);
+      return user.save()
+        .then(() => {
+          res.status(204).end();
+        })
+        .catch(validationError(res));
+    });
+}
+
+/**
  * Get my info
  */
 export function me(req, res, next) {
@@ -117,7 +135,8 @@ export function me(req, res, next) {
       'name',
       'email',
       'role',
-      'provider'
+      'provider',
+      'theme'
     ]
   }).then(user => { // don't ever give out the password or salt
       if (!user) {

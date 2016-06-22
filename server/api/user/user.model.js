@@ -58,6 +58,7 @@ module.exports = function(bookshelf) {
       name: Joi.string(),
       email: Joi.string().email().required(),
       role: Joi.string(),
+      theme: Joi.string(),
       password: Joi.string().required(),
       provider: Joi.string()
     },

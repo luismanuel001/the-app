@@ -37,11 +37,12 @@ db.User.sync = function() {
       knexInstance.schema.hasTable('User').then(function(exists) {
         if (!exists) {
           return knexInstance.schema.createTable('User', function(table) {
-            table.increments('_id').primary(); 
+            table.increments('_id').primary();
             table.string('name');
             table.string('email').unique();
             table.string('role').defaultTo('user');
             table.string('password');
+            table.string('theme');
             table.string('provider');
             table.string('salt');
             table.json('google');
