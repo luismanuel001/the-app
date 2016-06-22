@@ -20,5 +20,19 @@
   },
   "devDependencies": {
     "angular-mocks": "~1.5.0"
+  },
+  "overrides": {
+    "font-awesome": {
+      "main": [
+        "css/font-awesome.css"
+      ]
+    },
+    "AdminLTE": {
+      "main": [
+        "dist/css/AdminLTE.min.css",
+        "dist/js/app.js",
+        "dist/css/skins/_all-skins.min.css"
+      ]
+    }
   }
 }

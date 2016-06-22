@@ -126,6 +126,7 @@ let lintServerTestScripts = lazypipe()
 
 let styles = lazypipe()
     .pipe(plugins.sourcemaps.init)
+    .pipe(plugins.concat, 'app.css')
     .pipe(plugins.cleanCss, {processImportFrom: ['!fonts.googleapis.com']})
     .pipe(plugins.autoprefixer, {browsers: ['last 1 version']})
     .pipe(plugins.sourcemaps.write, '.');
