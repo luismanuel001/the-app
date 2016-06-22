@@ -12,11 +12,11 @@
     </a>
     <div class="navbar-custom-menu">
       <ul class="nav navbar-nav">
-        <li class="dropdown user user-menu">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <li class="dropdown user user-menu" uib-dropdown>
+          <a class="hidden-xs" uib-dropdown-toggle>
             <span class="hidden-xs" ng-bind="mainNav.currentUser.name"></span>
           </a>
-          <ul class="dropdown-menu">
+          <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown">
             <li class="user-header">
               <p ng-bind="mainNav.currentUser.name"></p>
             </li>
