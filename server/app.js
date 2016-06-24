@@ -36,5 +36,8 @@ sqldb.bookshelf.sync()
     console.log('Server failed to start due to error: %s', err);
   });
 
+// Start Redis Server
+require('./redis').default(app);
+
 // Expose app
 exports = module.exports = app;

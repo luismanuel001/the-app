@@ -4,11 +4,12 @@ var config = require('../../config/environment'),
     kue = require('kue'),
     request = require('request'),
     Promise = require('bluebird'),
-    _ = require('lodash');
+    _ = require('lodash'),
+    path = require('path');
 
 var queue = kue.createQueue({
     disableSearch: true,
-    redis: require('../../../config/databases/redis.json').redis
+    redis: require(path.join(config.root, config.redis.configPath)).redis
   });
 
 queue.on('error', function(err) {
@@ -45,7 +46,7 @@ export function start(req, res) {
   } else {
     queue = kue.createQueue({
       disableSearch: true,
-      redis: require('../../../config/databases/redis.json').redis
+      redis: require(path.join(config.root, config.redis.configPath)).redis
     });
 
     queue.on('error', function(err) {

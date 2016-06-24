@@ -7,11 +7,13 @@
 import sqldb from '../sqldb';
 import kue from 'kue';
 import request from 'request';
+import config from './environment';
+import path from 'path';
 
 var User = sqldb.User;
 var queue = kue.createQueue({
   disableSearch: true,
-  redis: require('../../config/databases/redis.json').redis
+  redis: require(path.join(config.root, config.redis.configPath)).redis
 });
 
 User.sync()

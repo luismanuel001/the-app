@@ -11,13 +11,7 @@ import bookshelfModelbase from 'bookshelf-modelbase';
 import userModel from '../api/user/user.model';
 import Promise from 'bluebird';
 
-var knexInstance = knex({
-  client: 'sqlite3', // or what DB you're using
-  connection: {
-    filename: config.bookshelf.filename
-  },
-  useNullAsDefault: true
-});
+var knexInstance = knex(config.bookshelf);
 
 var db = {
   bookshelf: bookshelf(knexInstance) // Initialize bookshelf by passing the knex instance

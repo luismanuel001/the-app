@@ -10,6 +10,16 @@ module.exports = {
 
   // Bookshelf connection options
   bookshelf: {
-    filename: './test.sqlite'
+    client: 'sqlite3',
+    connection: {
+      filename: './test.sqlite'
+    },
+    useNullAsDefault: true
+  },
+
+  // Redis config Options
+  redis: {
+    configPath: './theapp-template/TheApp/config/databases/redis.json',
+    exePath: './theapp-template/TheApp/_internal/tools/redis2.8.2400-xp32bit'
   }
 };
