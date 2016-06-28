@@ -1,0 +1,42 @@
+<div class="panel panel-default" ng-if="viewJobDetailsCtrl.job.id">
+  <div class="panel-heading">
+    <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h3 class="panel-title" ng-bind="viewJobDetailsCtrl.job.type"></h3>
+    <span class="label {{ viewJobDetailsCtrl.job.state_label_class }}" ng-bind="viewJobDetailsCtrl.job.state"></span>
+  </div>
+  <div class="panel-body">
+    <p>ID:
+      <time ng-bind="viewJobDetailsCtrl.job.id"></time>
+    </p>
+    <p>Started:
+      <time ng-bind="viewJobDetailsCtrl.job.started"></time>
+    </p>
+    <p>Finished:
+      <time ng-bind="viewJobDetailsCtrl.job.finished"></time>
+    </p>
+    <p>Duration:
+      <time ng-bind="viewJobDetailsCtrl.job.duration"></time>
+    </p>
+    <p>Priority: <span ng-bind="viewJobDetailsCtrl.job.priority"></span></p>
+    <p>Progress: <span ng-bind="viewJobDetailsCtrl.job.progress"></span></p>
+
+    <strong>Job data</strong>
+    <pre ng-bind="viewJobDetailsCtrl.job.dataAsString"></pre>
+
+    <strong>Attempts</strong>
+    <pre ng-bind="viewJobDetailsCtrl.job.attemptsAsString"></pre>
+  </div>
+  <div class="panel-footer clearfix">
+    <button type="button" class="btn btn-danger btn-sm" ng-if="showRequeueButton"
+            ng-click="viewJobDetailsCtrl.requeueJob()">Requeue
+    </button>
+    <button type="button" class="btn btn-danger btn-sm pull-right" ng-click="viewJobDetailsCtrl.deleteJob()">Delete
+      permanently
+    </button>
+  </div>
+</div>
+<div class="panel panel-default" ng-if="!viewJobDetailsCtrl.job.id">
+  <div class="panel-body">
+    <span ng-bind="viewJobDetailsCtrl.message"></span>
+  </div>
+</div>
