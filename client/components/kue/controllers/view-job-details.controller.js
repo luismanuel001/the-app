@@ -5,11 +5,11 @@
     .module('kueJobs')
     .controller('ViewJobDetailsController', ViewJobDetailsController);
 
-  ViewJobDetailsController.$inject = ['$uibModal', 'JobsManager'];
+  ViewJobDetailsController.$inject = ['$scope', '$uibModal', 'JobsManager'];
 
-  function ViewJobDetailsController($uibModal, JobsManager) {
+  function ViewJobDetailsController($scope, $uibModal, JobsManager) {
     var vm = this;
-    var jobId = 100;
+    var jobId = $scope.jobId;
     vm.deleteJob = deleteJob;
     vm.requeueJob = requeueJob;
     vm.message = 'Loading job..';
