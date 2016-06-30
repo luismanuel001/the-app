@@ -11,6 +11,9 @@
     return {
       templateUrl: 'components/kue/views/kue-jobs.view.html',
       restrict: 'E',
+      scope: {
+        jobType: '@'
+      },
       controller: 'KueJobsController',
       controllerAs: 'kueJobsCtrl'
     };

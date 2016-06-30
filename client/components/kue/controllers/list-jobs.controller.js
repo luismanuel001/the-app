@@ -62,6 +62,18 @@
     activate();
 
     function activate() {
+      if ($scope.jobType) {
+        var jobType = $scope.jobType;
+        vm.selectedJobType = {
+          label: jobType,
+          value: jobType
+        };
+        
+        vm.selectedState = {
+          label: 'inactive',
+          value: 'inactive'
+        };
+      }
       vm.dtOptions = DTOptionsBuilder.newOptions()
         .withOption('ajax', function(data, callback) {
           // if (data.order) {
@@ -97,14 +109,11 @@
               from: from,
               to: to
             };
-            if ($scope.jobType) {
-              params.type = $scope.jobType;
+            if (vm.selectedState && vm.selectedState.value) {
+              params.state = vm.selectedState.value;
             }
             if (vm.selectedJobType && vm.selectedJobType.value) {
               params.type = vm.selectedJobType.value;
-            }
-            if (vm.selectedState && vm.selectedState.value) {
-              params.state = vm.selectedState.value;
             }
             JobsManager.loadJobs(params).then(function(jobs) {
               callback(jobs);
@@ -156,7 +165,7 @@
         }).notSortable()
       ];
 
-      refreshJobStats();
+      refreshJobStats($scope.jobType);
       JobsManager.getTypes().then(function(types) {
         var jobTypes = [{
           label: 'Show all types',

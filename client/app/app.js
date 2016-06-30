@@ -33,7 +33,15 @@ angular.module('angularFullstackApp', ['angularFullstackApp.auth', 'angularFulls
 
       menuService.addMenuItem('nav', {
         title: 'Jobs',
-        state: 'jobs',
+        state: 'jobs.all',
+        type: 'dropdown',
+        roles: ['user'],
+        class: 'fa fa-check-square-o'
+      });
+
+      menuService.addMenuItem('nav', {
+        title: 'Email Jobs',
+        state: 'jobs.type({jobType:"email"})',
         type: 'dropdown',
         roles: ['user'],
         class: 'fa fa-check-square-o'

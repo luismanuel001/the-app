@@ -1,7 +1,8 @@
 'use strict';
 
 class JobsController {
-  constructor() {
+  constructor($scope, $stateParams) {
+    $scope.jobType = $stateParams.jobType;
   }
 }
 
