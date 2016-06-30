@@ -45,8 +45,16 @@
           method: 'GET',
           isArray: true
         },
+        start: {
+          url: 'api/jobs/start',
+          method: 'GET'
+        },
         shutDown: {
           url: 'api/jobs/shutdown',
+          method: 'GET'
+        },
+        getProcessStatus: {
+          url: 'api/jobs/status',
           method: 'GET'
         }
       });
@@ -232,6 +240,18 @@
           });
           return deferred.promise;
         },
+        startAllJobs: function() {
+          var deferred = $q.defer();
+          resources.start({}, function(result) {
+            if (result && !result.error) {
+              deferred.resolve(result.message);
+            } else {
+              var errorMessage = result.error || 'Failed to delete job';
+              deferred.reject(errorMessage); // TODO: Handle error response
+            }
+          });
+          return deferred.promise;
+        },
         stopAllJobs: function() {
           var deferred = $q.defer();
           resources.shutDown({}, function(result) {
@@ -241,6 +261,13 @@
               var errorMessage = result.error || 'Failed to delete job';
               deferred.reject(errorMessage); // TODO: Handle error response
             }
+          });
+          return deferred.promise;
+        },
+        isJobProcessRunning: function() {
+          var deferred = $q.defer();
+          resources.getProcessStatus({}, function(result) {
+            deferred.resolve(result.status === 'running');
           });
           return deferred.promise;
         }

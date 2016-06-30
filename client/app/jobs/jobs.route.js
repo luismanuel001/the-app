@@ -14,6 +14,10 @@ angular.module('angularFullstackApp')
         controller: 'JobsController',
         controllerAs: 'vm',
       })
+      .state('jobs.startStop', {
+        url: '/startstop',
+        template: '<start-stop-jobs></start-stop-jobs>'
+      })
       .state('jobs.type', {
         url: '/:jobType',
         templateUrl: 'app/jobs/jobs.html',

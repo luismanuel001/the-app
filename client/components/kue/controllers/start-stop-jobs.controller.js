@@ -10,15 +10,22 @@
   function StartStopJobsController($uibModal, JobsManager) {
     var vm = this;
     vm.jobProcessingStatus = true;
-    vm.toggleJobProcessingStatus = toggleJobProcessingStatus;
+    vm.shutDownAllJobs = shutDownAllJobs;
+    vm.startAllJobs = startAllJobs;
 
     activate();
 
     function activate() {
+      JobsManager.getTypes().then(function(types) {
+        vm.jobTypes = types;
+      });
 
+      JobsManager.isJobProcessRunning().then(function(isRunning) {
+        vm.jobProcessingStatus = isRunning;
+      });
     }
 
-    function toggleJobProcessingStatus() {
+    function shutDownAllJobs() {
       // vm.jobProcessingStatus = !vm.jobProcessingStatus;
       var dialogInstance = $uibModal.open({
         templateUrl: 'components/kue/views/job-confirmation-dialog.view.html',
@@ -36,9 +43,17 @@
           JobsManager.stopAllJobs().then(function() {
             vm.jobProcessingStatus = false;
           }, function() {
-            vm.jobProcessingStatus = false;
+            vm.jobProcessingStatus = true;
           });
         }
+      });
+    }
+
+    function startAllJobs() {
+      JobsManager.startAllJobs().then(function() {
+        vm.jobProcessingStatus = true;
+      }, function() {
+        vm.jobProcessingStatus = false;
       });
     }
   }

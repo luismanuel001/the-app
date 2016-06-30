@@ -44,7 +44,15 @@ angular.module('angularFullstackApp', ['angularFullstackApp.auth', 'angularFulls
         state: 'jobs.type({jobType:"email"})',
         type: 'dropdown',
         roles: ['user'],
-        class: 'fa fa-check-square-o'
+        class: 'fa fa-envelope-o'
+      });
+
+      menuService.addMenuItem('nav', {
+        title: 'Start/Stop Jobs',
+        state: 'jobs.startStop',
+        type: 'dropdown',
+        roles: ['user'],
+        class: 'fa fa-play'
       });
 
     }]);
