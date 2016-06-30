@@ -8,12 +8,13 @@
   ListJobsController.$inject = ['$scope', '$q', '$compile', 'DTOptionsBuilder', 'DTColumnBuilder', 'JobsManager'];
 
   function ListJobsController($scope, $q, $compile, DTOptionsBuilder, DTColumnBuilder, JobsManager) {
+    var scope = $scope;
     var vm = this;
     vm.dtInstance = {};
     vm.datePicker = {
       date: { startDate: null, endDate: null }
     };
-    vm.selected = {};
+    vm.selectedJobs = {};
     vm.selectAll = false;
     vm.selectedJobType = {
       label: 'Show All Job Types'
@@ -29,7 +30,7 @@
     vm.toggleType = toggleType;
 
     var pageLength = $scope.pageLength || 10;
-    var titleHtml = '<input type="checkbox" ng-model="listJobsCtrl.selectAll" ng-click="listJobsCtrl.toggleAll(listJobsCtrl.selectAll, listJobsCtrl.selected)">';
+    var titleHtml = '<input type="checkbox" ng-model="listJobsCtrl.selectAll" ng-click="listJobsCtrl.toggleAll()">';
 
     /***
      * Sample data
@@ -68,6 +69,9 @@
           //
           //   });
           // }
+
+          vm.selectAll = false; // reset select all
+          vm.selectedJobs = {}; // reset selected items
 
           var search = data.search ? data.search.value : null;
 
@@ -113,6 +117,7 @@
           info: '',
           infoFiltered: ''
         })
+        .withOption('responsive', true)
         .withOption('pageLength', pageLength)
         .withOption('processing', true)
         .withOption('serverSide', true)
@@ -133,8 +138,8 @@
       vm.dtColumns = [
         DTColumnBuilder.newColumn(null).withTitle(titleHtml)
           .renderWith(function(data, type, full) {
-            vm.selected[full.id] = false;
-            return '<input type="checkbox" ng-model="listJobsCtrl.selected[' + data.id + ']" ng-click="listJobsCtrl.toggleOne(listJobsCtrl.selected)">';
+            vm.selectedJobs[full.id] = false;
+            return '<input type="checkbox" ng-model="listJobsCtrl.selectedJobs[' + data.id + ']" ng-click="listJobsCtrl.toggleOne()">';
           }).notSortable(),
         DTColumnBuilder.newColumn('state').withTitle('State')
           .renderWith(function(data, type, full) {
@@ -161,8 +166,8 @@
 
     function deleteSelectedJobs() {
       var promises = {};
-      for (var jobId in vm.selected) {
-        if (vm.selected.hasOwnProperty(jobId) && vm.selected[jobId] === true) {
+      for (var jobId in vm.selectedJobs) {
+        if (vm.selectedJobs.hasOwnProperty(jobId) && vm.selectedJobs[jobId] === true) {
           promises[jobId] = JobsManager.deleteJob(jobId);
         }
       }
@@ -176,24 +181,44 @@
       vm.dtInstance.reloadData();
     }
 
-    function toggleAll(selectAll, selectedItems) {
-      for (var id in selectedItems) {
-        if (selectedItems.hasOwnProperty(id)) {
-          selectedItems[id] = selectAll;
+    function toggleAll() {
+      for (var id in vm.selectedJobs) {
+        if (vm.selectedJobs.hasOwnProperty(id)) {
+          vm.selectedJobs[id] = vm.selectAll;
         }
+      }
+
+      if (angular.isFunction(scope.ontoggle)) {
+        scope.ontoggle({
+          selectedJobs: vm.selectAll ? Object.keys(vm.selectedJobs).reverse() : [] // biggest id comes first
+        });
       }
     }
 
-    function toggleOne(selectedItems) {
-      for (var id in selectedItems) {
-        if (selectedItems.hasOwnProperty(id)) {
-          if (!selectedItems[id]) {
-            vm.selectAll = false;
-            return;
+    function toggleOne() {
+      var selectAll = true;
+      for (var id in vm.selectedJobs) {
+        if (vm.selectedJobs.hasOwnProperty(id)) {
+          if (!vm.selectedJobs[id]) {
+            selectAll = false;
+            break;
           }
         }
       }
-      vm.selectAll = true;
+      vm.selectAll = selectAll;
+
+      if (angular.isFunction(scope.ontoggle)) {
+        var selectedJobIds = [];
+        for (var id in vm.selectedJobs) {
+          if (vm.selectedJobs.hasOwnProperty(id) && vm.selectedJobs[id]) {
+            selectedJobIds.push(id);
+          }
+        }
+
+        scope.ontoggle({
+          selectedJobs: selectedJobIds.reverse() // biggest id comes first
+        });
+      }
     }
 
     function toggleState(state) {

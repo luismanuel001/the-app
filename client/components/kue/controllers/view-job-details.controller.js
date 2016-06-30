@@ -12,7 +12,7 @@
     var vm = this;
     vm.message = 'Loading job...';
     vm.deleteJob = deleteJob;
-    vm.onClose = onClose;
+    vm.onclose = onclose;
     vm.requeueJob = requeueJob;
 
 	  /**
@@ -67,9 +67,9 @@
 	  /**
      * On close click
      */
-    function onClose() {
-      if (angular.isFunction(scope.onClose)) {
-        scope.onClose();
+    function onclose() {
+      if (angular.isFunction(scope.onclose)) {
+        scope.onclose();
       }
     }
 
