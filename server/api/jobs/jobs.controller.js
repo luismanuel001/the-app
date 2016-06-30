@@ -3,7 +3,7 @@
 var kue = require('kue'),
   queue = kue.createQueue({
     disableSearch: false,
-    redis: require('../../../config/databases/redis.json')
+    redis: require('../../../config/databases/redis.json').redis
   });
 var jobStatus = 'running';
 
@@ -27,7 +27,7 @@ export function start(req, res) {
   } else {
     queue = kue.createQueue({
       disableSearch: false,
-      redis: require('../../../config/databases/redis.json')
+      redis: require('../../../config/databases/redis.json').redis
     });
     jobStatus = 'running';
     res.status(200).json({
