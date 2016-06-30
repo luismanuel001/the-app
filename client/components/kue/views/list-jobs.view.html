@@ -3,26 +3,26 @@
   <!--<pre>{{ listJobsCtrl.selected |json }}</pre>-->
 
   <!-- Job types -->
-  <div class="btn-group" uib-dropdown>
+  <div class="btn-group types-dropdown" uib-dropdown ng-if="!jobType.length">
     <button type="button" class="btn btn-default" uib-dropdown-toggle>
       <span ng-bind="listJobsCtrl.selectedJobType.label"></span><span class="caret"></span>
     </button>
     <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
       <li role="menuitem" ng-repeat="jobType in listJobsCtrl.jobTypes">
-        <a href="#" ng-click="listJobsCtrl.toggleType(jobType)"><span ng-bind="jobType"></a>
+        <a href="#" ng-click="listJobsCtrl.toggleType(jobType)"><span ng-bind="jobType.label"></span></a>
       </li>
     </ul>
   </div>
 
   <!-- States -->
-  <div class="btn-group" uib-dropdown>
+  <div class="btn-group states-dropdown" uib-dropdown>
     <button type="button" class="btn btn-default" uib-dropdown-toggle>
       <span ng-bind="listJobsCtrl.selectedState.label"></span><span class="caret"></span>
     </button>
     <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
-      <li role="menuitem" ng-repeat="(label, count) in listJobsCtrl.jobStats">
-        <a href="#" ng-click="listJobsCtrl.toggleState(label)"><span ng-bind="label"></span> <span
-          class="badge pull-right" ng-bind="count"></span></a>
+      <li role="menuitem" ng-repeat="jobStat in listJobsCtrl.jobStats">
+        <a href="#" ng-click="listJobsCtrl.toggleState(jobStat)"><span ng-bind="jobStat.label"></span> <span
+          class="badge pull-right" ng-bind="jobStat.count"></span></a>
       </li>
     </ul>
   </div>

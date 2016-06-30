@@ -36,6 +36,10 @@
           url: 'api/kue/stats',
           method: 'GET'
         },
+        getStatsByJobType: {
+          url: 'api/kue/jobs/:type/:state/stats',
+          method: 'GET'
+        },
         getTypes: {
           url: 'api/kue/job/types',
           method: 'GET',
@@ -184,8 +188,32 @@
           });
           return deferred.promise;
         },
-        getStats: function() {
+        getStats: function(jobType) {
           var deferred = $q.defer();
+          if (jobType) {
+            var promises = {};
+            Job.states.forEach(function(state) {
+              var innerDeferred = $q.defer();
+              resources.getStatsByJobType({
+                type: jobType,
+                state: state
+              }, function(result) {
+                if (result && !result.error) {
+                  innerDeferred.resolve(result.count);
+                } else {
+                  var errorMessage = result.error || 'Failed to delete job';
+                  innerDeferred.reject(errorMessage); // TODO: Handle error response
+                }
+              })
+              promises[state] = innerDeferred.promise;
+            });
+
+            $q.all(promises).then(function(stats) {
+              deferred.resolve(stats);
+            }, function(err) {
+              deferred.reject(err); // TODO: Handle error response
+            });
+          }
           resources.getStats({}, function(result) {
             if (result && !result.error) {
               var stats = {};

@@ -17,10 +17,10 @@
     vm.selectedJobs = {};
     vm.selectAll = false;
     vm.selectedJobType = {
-      label: 'Show All Job Types'
+      label: 'Show all types'
     };
     vm.selectedState = {
-      label: 'Show All States'
+      label: 'Show all states'
     };
     vm.deleteSelectedJobs = deleteSelectedJobs;
     vm.refreshJobs = refreshJobs;
@@ -156,11 +156,20 @@
         }).notSortable()
       ];
 
-      JobsManager.getStats().then(function(stats) {
-        vm.jobStats = stats;
-      });
+      refreshJobStats();
       JobsManager.getTypes().then(function(types) {
-        vm.jobTypes = types;
+        var jobTypes = [{
+          label: 'Show all types',
+          value: ''
+        }];
+
+        types.forEach(function(type) {
+          jobTypes.push({
+            label: type,
+            value: type
+          })
+        });
+        vm.jobTypes = jobTypes;
       });
     }
 
@@ -180,6 +189,33 @@
     function refreshJobs() {
       var resetPaging = false;
       vm.dtInstance.reloadData(null, resetPaging);
+    }
+
+    function refreshJobStats(jobType) {
+      JobsManager.getStats(jobType).then(function(stats) {
+        var jobStats = [];
+        var totalCount = 0;
+        for (var stat in stats) {
+          var count = stats[stat];
+          totalCount += count;
+
+          jobStats.push({
+            label: stat,
+            value: stat,
+            count: count
+          });
+        }
+
+        if (!jobType) {
+          jobStats.unshift({
+            label: 'Show all states',
+            value: '',
+            count: totalCount
+          });
+        }
+
+        vm.jobStats = jobStats;
+      });
     }
 
     function toggleAll() {
@@ -223,22 +259,25 @@
     }
 
     function toggleState(state) {
-      vm.selectedState = {
-        label: state,
-        value: state
-      };
+      vm.selectedState = state;
       vm.refreshJobs();
     }
 
     function toggleType(jobType) {
       vm.selectedJobType = {
-        label: jobType,
-        value: jobType
+        label: jobType.label,
+        value: jobType.value
       };
 
-      JobsManager.getStats().then(function(stats) {
-        vm.jobStats = stats;
-      });
+      // default to inactive state when type is selected, since currently api doesn't support show all states when type is selected
+      if (vm.selectedState && !vm.selectedState.value) {
+        vm.selectedState = {
+          label: 'inactive',
+          value: 'inactive'
+        };
+      }
+
+      refreshJobStats(jobType.value);
 
       vm.refreshJobs();
     }

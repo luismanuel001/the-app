@@ -72,14 +72,20 @@
       });
     }
 
+    Job.states = [
+      'active',
+      'complete',
+      'delayed',
+      'failed',
+      'inactive'
+    ];
 
     Job.stateLabelMapping = {
       active: 'label-primary',
-      inactive: 'label-inactive',
-      queued: 'label-info',
-      running: 'label-warning',
       completed: 'label-success',
-      failed: 'label-danger'
+      delayed: 'label-warning',
+      failed: 'label-danger',
+      inactive: 'label-inactive'
     };
 
     Job.prototype = {
