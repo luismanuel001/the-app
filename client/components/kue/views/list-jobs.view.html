@@ -22,7 +22,7 @@
     <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
       <li role="menuitem" ng-repeat="jobStat in listJobsCtrl.jobStats">
         <a href="#" ng-click="listJobsCtrl.toggleState(jobStat)"><span ng-bind="jobStat.label"></span> <span
-          class="badge pull-right" ng-bind="jobStat.count"></span></a>
+          class="badge pull-right {{ jobStat.className }}" ng-bind="jobStat.count"></span></a>
       </li>
     </ul>
   </div>

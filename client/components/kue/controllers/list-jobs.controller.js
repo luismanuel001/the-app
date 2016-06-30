@@ -5,9 +5,9 @@
     .module('kueJobs')
     .controller('ListJobsController', ListJobsController);
 
-  ListJobsController.$inject = ['$scope', '$q', '$interval', '$compile', 'DTOptionsBuilder', 'DTColumnBuilder', 'JobsManager'];
+  ListJobsController.$inject = ['$scope', '$q', '$interval', '$compile', 'DTOptionsBuilder', 'DTColumnBuilder', 'JobsManager', Job];
 
-  function ListJobsController($scope, $q, $interval, $compile, DTOptionsBuilder, DTColumnBuilder, JobsManager) {
+  function ListJobsController($scope, $q, $interval, $compile, DTOptionsBuilder, DTColumnBuilder, JobsManager, Job) {
     var scope = $scope;
     var refreshDataInterval = null;
     var vm = this;
@@ -269,7 +269,8 @@
           jobStats.push({
             label: state,
             value: state,
-            count: count
+            count: count,
+            className: Job.stateLabelMapping[state] || 'label-default'
           });
         }
 
@@ -277,7 +278,8 @@
           jobStats.unshift({
             label: 'Show all states',
             value: '',
-            count: totalCount
+            count: totalCount,
+            className: 'label-default'
           });
         }
 

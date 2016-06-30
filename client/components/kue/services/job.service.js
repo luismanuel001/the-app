@@ -82,7 +82,7 @@
 
     Job.stateLabelMapping = {
       active: 'label-primary',
-      completed: 'label-success',
+      complete: 'label-success',
       delayed: 'label-warning',
       failed: 'label-danger',
       inactive: 'label-inactive'
