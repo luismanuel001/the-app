@@ -5,30 +5,49 @@
     .module('kueJobs')
     .controller('ViewJobDetailsController', ViewJobDetailsController);
 
-  ViewJobDetailsController.$inject = ['$scope', '$uibModal', 'JobsManager'];
+  ViewJobDetailsController.$inject = ['$scope', '$interval', '$uibModal', 'JobsManager'];
 
-  function ViewJobDetailsController($scope, $uibModal, JobsManager) {
+  function ViewJobDetailsController($scope, $interval, $uibModal, JobsManager) {
     var scope = $scope;
+    var jobIdWatcher = null;
+    var refreshDataInterval = null;
     var vm = this;
     vm.message = 'Loading job...';
     vm.deleteJob = deleteJob;
     vm.onclose = onclose;
     vm.requeueJob = requeueJob;
 
-	  /**
-     * Job id watcher
-     */
-    var jobIdWatcher = scope.$watch('jobId', function(newValue) {
-      if (newValue) {
-        JobsManager.getJob(newValue).then(function(job) {
-          vm.job = job;
-        }, function(err) {
-          vm.message = err;
-        });
-      } else {
-        vm.message = 'Job ID is required';
+    activate();
+
+    function activate() {
+      if (!scope.autoRefreshInterval) {
+        scope.autoRefreshInterval = 60000;
       }
-    });
+
+      /**
+       * Job id watcher
+       */
+      jobIdWatcher = scope.$watch('jobId', function(newValue) {
+        if (refreshDataInterval) {
+          $interval.cancel(refreshDataInterval);
+        }
+
+        if (newValue) {
+          JobsManager.getJob(newValue).then(function(job) {
+            vm.job = job;
+          }, function(err) {
+            vm.message = err;
+          });
+
+          refreshDataInterval = $interval(function() {
+            refreshJob();
+          }, scope.autoRefreshInterval);
+
+        } else {
+          vm.message = 'Job ID is required';
+        }
+      });
+    }
 
     /**
      * On destroy handling
@@ -36,6 +55,10 @@
     scope.$on('$destroy', function() {
       if (jobIdWatcher) {
         jobIdWatcher();
+      }
+
+      if (refreshDataInterval) {
+        $interval.cancel(refreshDataInterval);
       }
     });
 
@@ -78,11 +101,11 @@
     /**
      * Refresh current job
      */
-    // function refreshJob() {
-    //   JobsManager.refreshJob(scope.jobId).then(function(job) {
-    //     vm.job = job;
-    //   });
-    // }
+    function refreshJob() {
+      JobsManager.refreshJob(scope.jobId).then(function(job) {
+        vm.job = job;
+      });
+    }
 
 	  /**
      * Requeue job i.e. create new job instance based on current job
