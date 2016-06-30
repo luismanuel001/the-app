@@ -178,7 +178,8 @@
     }
 
     function refreshJobs() {
-      vm.dtInstance.reloadData();
+      var resetPaging = false;
+      vm.dtInstance.reloadData(null, resetPaging);
     }
 
     function toggleAll() {
@@ -209,9 +210,9 @@
 
       if (angular.isFunction(scope.ontoggle)) {
         var selectedJobIds = [];
-        for (var id in vm.selectedJobs) {
-          if (vm.selectedJobs.hasOwnProperty(id) && vm.selectedJobs[id]) {
-            selectedJobIds.push(id);
+        for (var jobId in vm.selectedJobs) {
+          if (vm.selectedJobs.hasOwnProperty(jobId) && vm.selectedJobs[jobId]) {
+            selectedJobIds.push(jobId);
           }
         }
 
