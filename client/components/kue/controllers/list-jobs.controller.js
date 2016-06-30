@@ -73,14 +73,6 @@
 
           if (search) {
             JobsManager.searchJobs(search).then(function(jobs) {
-              var final = {
-                "draw": 1,
-                "recordsTotal": 2,
-                "recordsFiltered": 2,
-                "data": {
-                  "data": jobs
-                }
-              };
               callback(jobs);
             });
           } else {
@@ -96,7 +88,6 @@
              0..49, 50..99
              */
             var from = data.start;
-            var page = data.page || 1;
             var to = (from + data.length) - 1;
             var params = {
               from: from,
@@ -112,16 +103,9 @@
               params.state = vm.selectedState.value;
             }
             JobsManager.loadJobs(params).then(function(jobs) {
-              var final = {
-                "draw": 1,
-                "recordsTotal": 100,
-                "recordsFiltered": 100,
-                "data": jobs
-              };
               callback(jobs);
             });
           }
-          // return defer.promise;
         })
         // .withDataProp('data')
         .withOption('language', {
@@ -132,7 +116,7 @@
         .withOption('pageLength', pageLength)
         .withOption('processing', true)
         .withOption('serverSide', true)
-        .withOption('createdRow', function(row, data, dataIndex) {
+        .withOption('createdRow', function(row) {
           // Recompiling so we can bind Angular directive to the DT
           $compile(angular.element(row).contents())($scope);
         })
@@ -148,12 +132,13 @@
 
       vm.dtColumns = [
         DTColumnBuilder.newColumn(null).withTitle(titleHtml)
-          .renderWith(function(data, type, full, meta) {
+          .renderWith(function(data, type, full) {
             vm.selected[full.id] = false;
             return '<input type="checkbox" ng-model="listJobsCtrl.selected[' + data.id + ']" ng-click="listJobsCtrl.toggleOne(listJobsCtrl.selected)">';
           }).notSortable(),
         DTColumnBuilder.newColumn('state').withTitle('State')
-          .renderWith(function(data, type, full, meta) {
+          .renderWith(function(data, type, full) {
+            /* jshint camelcase: false */
             var stateLabelClass = full.state_label_class;
             return '<label class="label ' + stateLabelClass + '">' + data + '</label>';
           }).notSortable(),
@@ -161,8 +146,8 @@
         DTColumnBuilder.newColumn('started').withTitle('Started').notSortable(),
         DTColumnBuilder.newColumn('finished').withTitle('Finished').notSortable(),
         DTColumnBuilder.newColumn('duration').withTitle('Duration').notSortable(),
-        DTColumnBuilder.newColumn('attempts').withTitle('Attempts').renderWith(function(data, type, full, meta) {
-          return data.made + ' (' + data.remaining + ')'
+        DTColumnBuilder.newColumn('attempts').withTitle('Attempts').renderWith(function(data) {
+          return data.made + ' (' + data.remaining + ')';
         }).notSortable()
       ];
 

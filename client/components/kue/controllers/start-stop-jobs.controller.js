@@ -20,18 +20,18 @@
 
     function toggleJobProcessingStatus() {
       // vm.jobProcessingStatus = !vm.jobProcessingStatus;
-      var modalInstance = $uibModal.open({
-        templateUrl: 'components/kue/views/confirmation-modal.view.html',
-        controller: 'ConfirmationModalController',
-        controllerAs: 'confirmationModalCtrl',
+      var dialogInstance = $uibModal.open({
+        templateUrl: 'components/kue/views/job-confirmation-dialog.view.html',
+        controller: 'JobConfirmationDialogController',
+        controllerAs: 'jobConfirmationDialogCtrl',
         resolve: {
           confirmationText: function () {
-            return 'This will stop all the jobs. Are you sure?'
+            return 'This will stop all the jobs. Are you sure?';
           }
         }
       });
 
-      modalInstance.result.then(function (accept) {
+      dialogInstance.result.then(function (accept) {
         if (accept) {
           JobsManager.stopAllJobs().then(function() {
             vm.jobProcessingStatus = false;

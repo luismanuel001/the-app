@@ -1,7 +1,7 @@
 'use strict';
 
 class JobsController {
-  constructor(Auth, $state) {
+  constructor() {
   }
 }
 

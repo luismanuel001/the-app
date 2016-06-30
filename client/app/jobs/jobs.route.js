@@ -8,5 +8,5 @@ angular.module('angularFullstackApp')
         templateUrl: 'app/jobs/jobs.html',
         controller: 'JobsController',
         controllerAs: 'vm'
-      })
+      });
   });

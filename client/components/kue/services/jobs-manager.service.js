@@ -64,7 +64,7 @@
           var instance = this._pool[jobId];
 
           if (instance) {
-            delete this._pool[jobId]
+            delete this._pool[jobId];
           }
 
           return instance;
@@ -75,7 +75,7 @@
         _load: function(jobId, deferred) {
           var self = this;
           resources.get({ jobId: jobId }, function(result) {
-            if (result && !result.error) {
+            if (result && result.id) {
               var job = self._retrieveInstance(jobId, result);
               deferred.resolve(job);
             } else {
@@ -121,7 +121,7 @@
           var self = this;
           resources.delete({ jobId: jobId }, function(result) {
             if (result && result.message) {
-              var job = self._removeInstance(jobId);
+              self._removeInstance(jobId);
               deferred.resolve(result.message);
             } else {
               var errorMessage = result.error || 'Failed to delete job';
@@ -158,14 +158,10 @@
           };
           resources.searchJobs(params, function(result) {
             if (result && !result.error) {
-              var jobs = [];
               var promises = [];
               result.forEach(function(jobId) {
                 promises.push(self.getJob(jobId));
-                // var job = self._retrieveInstance(jobId, jobData);
-                // jobs.push(job);
               });
-              // deferred.resolve(jobs);
               $q.all(promises).then(function(res) {
                 deferred.resolve(res);
               });
@@ -178,7 +174,6 @@
         },
         getTypes: function() {
           var deferred = $q.defer();
-          var self = this;
           resources.getTypes({}, function(result) {
             if (result && !result.error) {
               deferred.resolve(result);
@@ -191,7 +186,6 @@
         },
         getStats: function() {
           var deferred = $q.defer();
-          var self = this;
           resources.getStats({}, function(result) {
             if (result && !result.error) {
               var stats = {};
@@ -212,7 +206,6 @@
         },
         stopAllJobs: function() {
           var deferred = $q.defer();
-          var self = this;
           resources.shutDown({}, function(result) {
             if (result && !result.error) {
               deferred.resolve(result.message);

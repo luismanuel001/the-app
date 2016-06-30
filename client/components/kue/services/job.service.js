@@ -1,3 +1,4 @@
+/* jshint camelcase: false */
 (function() {
   'use strict';
 
@@ -13,15 +14,6 @@
       if (data) {
         this.setData(data);
       }
-
-      Object.defineProperty(this, 'submitted_date', {
-        enumerable: true,
-        configurable: false,
-        get: function() {
-          var submitted_date = moment(this.timestamp);
-          return submitted_date.fromNow();
-        }
-      });
 
       Object.defineProperty(this, 'started', {
         enumerable: true,
@@ -83,7 +75,7 @@
 
     Job.stateLabelMapping = {
       active: 'label-primary',
-      inactive: 'label-default',
+      inactive: 'label-inactive',
       queued: 'label-info',
       running: 'label-warning',
       completed: 'label-success',

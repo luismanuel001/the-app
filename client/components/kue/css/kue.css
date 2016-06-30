@@ -1,0 +1,8 @@
+.view-job-details p > strong {
+  min-width: 70px; display: inline-block;
+}
+
+.label.label-inactive {
+  color: #fff;
+  background-color: #999;
+}

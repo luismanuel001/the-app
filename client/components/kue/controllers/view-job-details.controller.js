@@ -8,36 +8,55 @@
   ViewJobDetailsController.$inject = ['$scope', '$uibModal', 'JobsManager'];
 
   function ViewJobDetailsController($scope, $uibModal, JobsManager) {
+    var scope = $scope;
     var vm = this;
-    var jobId = $scope.jobId;
+    vm.message = 'Loading job...';
     vm.deleteJob = deleteJob;
+    vm.onClose = onClose;
     vm.requeueJob = requeueJob;
-    vm.message = 'Loading job..';
-    activate();
 
-    function activate() {
-      JobsManager.getJob(jobId).then(function(job) {
-        vm.job = job;
-      }, function(err) {
-        vm.message = err;
-      });
-    }
+	  /**
+     * Job id watcher
+     */
+    var jobIdWatcher = scope.$watch('jobId', function(newValue) {
+      if (newValue) {
+        JobsManager.getJob(newValue).then(function(job) {
+          vm.job = job;
+        }, function(err) {
+          vm.message = err;
+        });
+      } else {
+        vm.message = 'Job ID is required';
+      }
+    });
 
+    /**
+     * On destroy handling
+     */
+    scope.$on('$destroy', function() {
+      if (jobIdWatcher) {
+        jobIdWatcher();
+      }
+    });
+
+    /**
+     * Delete current job
+     */
     function deleteJob() {
-      var modalInstance = $uibModal.open({
-        templateUrl: 'components/kue/views/confirmation-modal.view.html',
-        controller: 'ConfirmationModalController',
-        controllerAs: 'confirmationModalCtrl',
+      var dialogInstance = $uibModal.open({
+        templateUrl: 'components/kue/views/job-confirmation-dialog.view.html',
+        controller: 'JobConfirmationDialogController',
+        controllerAs: 'jobConfirmationDialogCtrl',
         resolve: {
-          confirmationText: function () {
-            return 'This will permanently delete the job. Are you sure?'
+          confirmationText: function() {
+            return 'This will permanently delete the job. Are you sure?';
           }
         }
       });
 
-      modalInstance.result.then(function (accept) {
+      dialogInstance.result.then(function(accept) {
         if (accept) {
-          JobsManager.deleteJob(jobId).then(function(message) {
+          JobsManager.deleteJob(scope.jobId).then(function(message) {
             vm.job = null;
             vm.message = message;
           });
@@ -45,28 +64,44 @@
       });
     }
 
-    function refreshJob() {
-      JobsManager.refreshJob(jobId).then(function(job) {
-        vm.job = job;
-      })
+	  /**
+     * On close click
+     */
+    function onClose() {
+      if (angular.isFunction(scope.onClose)) {
+        scope.onClose();
+      }
     }
 
+    /**
+     * Refresh current job
+     */
+    function refreshJob() {
+      JobsManager.refreshJob(scope.jobId).then(function(job) {
+        vm.job = job;
+      });
+    }
+
+	  /**
+     * Requeue job i.e. create new job instance based on current job
+     */
     function requeueJob() {
-      var modalInstance = $uibModal.open({
-        templateUrl: 'components/kue/views/confirmation-modal.view.html',
-        controller: 'ConfirmationModalController',
-        controllerAs: 'confirmationModalCtrl',
+      var dialogInstance = $uibModal.open({
+        templateUrl: 'components/kue/views/job-confirmation-dialog.view.html',
+        controller: 'JobConfirmationDialogController',
+        controllerAs: 'jobConfirmationDialogCtrl',
         resolve: {
-          confirmationText: function () {
-            return 'This will re-submit the job for execution. Are you sure?'
+          confirmationText: function() {
+            return 'This will re-submit the job for execution. Are you sure?';
           }
         }
       });
 
-      modalInstance.result.then(function (accept) {
+      dialogInstance.result.then(function(accept) {
         if (accept) {
           var jobData = vm.job;
           JobsManager.createJob(jobData).then(function(job) {
+            scope.jobId = job.id;
             vm.job = job;
           });
         }
