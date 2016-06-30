@@ -29,7 +29,7 @@
     vm.toggleState = toggleState;
     vm.toggleType = toggleType;
 
-    var pageLength = $scope.pageLength || 10;
+    var perPage = $scope.perPage || 10;
     var titleHtml = '<input type="checkbox" ng-model="listJobsCtrl.selectAll" ng-click="listJobsCtrl.toggleAll()">';
 
     /***
@@ -118,7 +118,7 @@
           infoFiltered: ''
         })
         .withOption('responsive', true)
-        .withOption('pageLength', pageLength)
+        .withOption('pageLength', perPage)
         .withOption('processing', true)
         .withOption('serverSide', true)
         .withOption('createdRow', function(row) {

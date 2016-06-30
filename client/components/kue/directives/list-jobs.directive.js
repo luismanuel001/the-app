@@ -13,7 +13,7 @@
       restrict: 'E',
       scope: {
         jobType: '@', // if provided the rendered table will list only the jobs of type jobType; otherwise render all jobs no matter of their type
-        pageLength: '@', // number of rows to display on a single page when using pagination. - default value is 10
+        perPage: '@', // number of rows to display on a single page when using pagination. - default value is 10
         ontoggle: '&'
       },
       controller: 'ListJobsController',
