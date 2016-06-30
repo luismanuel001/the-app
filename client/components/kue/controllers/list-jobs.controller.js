@@ -5,7 +5,7 @@
     .module('kueJobs')
     .controller('ListJobsController', ListJobsController);
 
-  ListJobsController.$inject = ['$scope', '$q', '$interval', '$compile', 'DTOptionsBuilder', 'DTColumnBuilder', 'JobsManager', Job];
+  ListJobsController.$inject = ['$scope', '$q', '$interval', '$compile', 'DTOptionsBuilder', 'DTColumnBuilder', 'JobsManager', 'Job'];
 
   function ListJobsController($scope, $q, $interval, $compile, DTOptionsBuilder, DTColumnBuilder, JobsManager, Job) {
     var scope = $scope;
