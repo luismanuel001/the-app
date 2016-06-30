@@ -69,7 +69,9 @@
      */
     function onclose() {
       if (angular.isFunction(scope.onclose)) {
-        scope.onclose();
+        scope.onclose({
+          jobId: scope.jobId
+        });
       }
     }
 
