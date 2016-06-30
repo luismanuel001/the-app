@@ -31,4 +31,12 @@ angular.module('angularFullstackApp', ['angularFullstackApp.auth', 'angularFulls
         class: 'fa fa-files-o'
       });
 
+      menuService.addMenuItem('nav', {
+        title: 'Jobs',
+        state: 'jobs',
+        type: 'dropdown',
+        roles: ['user'],
+        class: 'fa fa-check-square-o'
+      });
+
     }]);
