@@ -204,7 +204,7 @@
                   var errorMessage = result.error || 'Failed to delete job';
                   innerDeferred.reject(errorMessage); // TODO: Handle error response
                 }
-              })
+              });
               promises[state] = innerDeferred.promise;
             });
 

@@ -78,11 +78,11 @@
     /**
      * Refresh current job
      */
-    function refreshJob() {
-      JobsManager.refreshJob(scope.jobId).then(function(job) {
-        vm.job = job;
-      });
-    }
+    // function refreshJob() {
+    //   JobsManager.refreshJob(scope.jobId).then(function(job) {
+    //     vm.job = job;
+    //   });
+    // }
 
 	  /**
      * Requeue job i.e. create new job instance based on current job

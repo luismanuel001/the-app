@@ -152,7 +152,7 @@
               return {
                 recordsTotal: recordsTotal,
                 recordsFiltered: recordsFiltered
-              }
+              };
             });
 
             $q.all(promises).then(function(results) {
@@ -218,7 +218,7 @@
           jobTypes.push({
             label: type,
             value: type
-          })
+          });
         });
         vm.jobTypes = jobTypes;
       });
