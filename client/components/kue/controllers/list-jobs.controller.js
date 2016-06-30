@@ -5,15 +5,13 @@
     .module('kueJobs')
     .controller('ListJobsController', ListJobsController);
 
-  ListJobsController.$inject = ['$scope', '$q', '$compile', 'DTOptionsBuilder', 'DTColumnBuilder', 'JobsManager'];
+  ListJobsController.$inject = ['$scope', '$q', '$interval', '$compile', 'DTOptionsBuilder', 'DTColumnBuilder', 'JobsManager'];
 
-  function ListJobsController($scope, $q, $compile, DTOptionsBuilder, DTColumnBuilder, JobsManager) {
+  function ListJobsController($scope, $q, $interval, $compile, DTOptionsBuilder, DTColumnBuilder, JobsManager) {
     var scope = $scope;
+    var refreshDataInterval = null;
     var vm = this;
     vm.dtInstance = {};
-    vm.datePicker = {
-      date: { startDate: null, endDate: null }
-    };
     vm.selectedJobs = {};
     vm.selectAll = false;
     vm.selectedJobType = {
@@ -29,7 +27,7 @@
     vm.toggleState = toggleState;
     vm.toggleType = toggleType;
 
-    var perPage = $scope.perPage || 10;
+    var perPage = scope.perPage || 10;
     var titleHtml = '<input type="checkbox" ng-model="listJobsCtrl.selectAll" ng-click="listJobsCtrl.toggleAll()">';
 
     /***
@@ -62,8 +60,12 @@
     activate();
 
     function activate() {
-      if ($scope.jobType) {
-        var jobType = $scope.jobType;
+      if (!scope.autoRefreshInterval) {
+        scope.autoRefreshInterval = 60000;
+      }
+
+      if (scope.jobType) {
+        var jobType = scope.jobType;
         vm.selectedJobType = {
           label: jobType,
           value: jobType
@@ -81,6 +83,10 @@
           //
           //   });
           // }
+
+          if (refreshDataInterval) {
+            $interval.cancel(refreshDataInterval);
+          }
 
           vm.selectAll = false; // reset select all
           vm.selectedJobs = {}; // reset selected items
@@ -164,6 +170,10 @@
               callback(jobsData);
             });
           }
+
+          refreshDataInterval = $interval(function() {
+            vm.refreshJobs();
+          }, scope.autoRefreshInterval);
         })
         .withDataProp('data')
         .withOption('language', {
@@ -175,13 +185,13 @@
         .withOption('serverSide', true)
         .withOption('createdRow', function(row) {
           // Recompiling so we can bind Angular directive to the DT
-          $compile(angular.element(row).contents())($scope);
+          $compile(angular.element(row).contents())(scope);
         })
         .withOption('headerCallback', function(header) {
           if (!vm.headerCompiled) {
             // Use this headerCompiled field to only compile header once
             vm.headerCompiled = true;
-            $compile(angular.element(header).contents())($scope);
+            $compile(angular.element(header).contents())(scope);
           }
         })
         .withPaginationType('full_numbers');
@@ -207,7 +217,7 @@
         }).notSortable()
       ];
 
-      refreshJobStats($scope.jobType);
+      refreshJobStats(scope.jobType);
       JobsManager.getTypes().then(function(types) {
         var jobTypes = [{
           label: 'Show all types',
@@ -223,6 +233,12 @@
         vm.jobTypes = jobTypes;
       });
     }
+
+    scope.$on('$destroy', function() {
+      if (refreshDataInterval) {
+        $interval.cancel(refreshDataInterval);
+      }
+    });
 
     function deleteSelectedJobs() {
       var promises = {};
