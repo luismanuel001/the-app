@@ -68,7 +68,7 @@
           label: jobType,
           value: jobType
         };
-        
+
         vm.selectedState = {
           label: 'inactive',
           value: 'inactive'
@@ -87,10 +87,28 @@
 
           var search = data.search ? data.search.value : null;
 
+          var promises = {};
           if (search) {
-            JobsManager.searchJobs(search).then(function(jobs) {
-              callback(jobs);
+            promises.data = JobsManager.searchJobs(search);
+            promises.recordsTotal = JobsManager.getStats().then(function(stats) {
+              var recordsTotal = 0;
+              for (var state in stats) {
+                var count = stats[state];
+                recordsTotal += count;
+              }
+              return recordsTotal;
             });
+
+            $q.all(promises).then(function(results) {
+              var filterJobs = results.data.slice(data.start, data.length + data.start);
+              var jobsData = {
+                recordsTotal: results.recordsTotal,
+                recordsFiltered: results.data.length,
+                data: filterJobs
+              };
+              callback(jobsData);
+            });
+
           } else {
             /**
              *  columns
@@ -115,16 +133,41 @@
             if (vm.selectedJobType && vm.selectedJobType.value) {
               params.type = vm.selectedJobType.value;
             }
-            JobsManager.loadJobs(params).then(function(jobs) {
-              callback(jobs);
+            promises.data = JobsManager.loadJobs(params);
+            promises.stats = JobsManager.getStats(params.type).then(function(stats) {
+              var recordsTotal = 0;
+              var recordsFiltered = 0;
+
+              for (var state in stats) {
+                var count = stats[state];
+                recordsTotal += count;
+
+                if (state === params.state) {
+                  recordsFiltered = count;
+                }
+              }
+
+              recordsFiltered = params.state ? recordsFiltered : recordsTotal;
+
+              return {
+                recordsTotal: recordsTotal,
+                recordsFiltered: recordsFiltered
+              }
+            });
+
+            $q.all(promises).then(function(results) {
+              var jobsData = {
+                recordsTotal: results.stats.recordsTotal,
+                recordsFiltered: results.stats.recordsFiltered,
+                data: results.data
+              };
+              callback(jobsData);
             });
           }
         })
-        // .withDataProp('data')
+        .withDataProp('data')
         .withOption('language', {
-          // info: 'Showing _START_ to _END_ entries',
-          info: '',
-          infoFiltered: ''
+
         })
         .withOption('responsive', true)
         .withOption('pageLength', perPage)
@@ -141,21 +184,20 @@
             $compile(angular.element(header).contents())($scope);
           }
         })
-        .withPaginationType('full_numbers')
-        .withDOM('tprl');
+        .withPaginationType('full_numbers');
 
       vm.dtColumns = [
-        DTColumnBuilder.newColumn(null).withTitle(titleHtml)
+        DTColumnBuilder.newColumn(null).withTitle(titleHtml).notSortable()
           .renderWith(function(data, type, full) {
             vm.selectedJobs[full.id] = false;
             return '<input type="checkbox" ng-model="listJobsCtrl.selectedJobs[' + data.id + ']" ng-click="listJobsCtrl.toggleOne()">';
-          }).notSortable(),
-        DTColumnBuilder.newColumn('state').withTitle('State')
+          }),
+        DTColumnBuilder.newColumn('state').withTitle('State').notSortable()
           .renderWith(function(data, type, full) {
             /* jshint camelcase: false */
             var stateLabelClass = full.state_label_class;
             return '<label class="label ' + stateLabelClass + '">' + data + '</label>';
-          }).notSortable(),
+          }),
         DTColumnBuilder.newColumn('type').withTitle('Type').notSortable(),
         DTColumnBuilder.newColumn('started').withTitle('Started').notSortable(),
         DTColumnBuilder.newColumn('finished').withTitle('Finished').notSortable(),
@@ -204,13 +246,13 @@
       JobsManager.getStats(jobType).then(function(stats) {
         var jobStats = [];
         var totalCount = 0;
-        for (var stat in stats) {
-          var count = stats[stat];
+        for (var state in stats) {
+          var count = stats[state];
           totalCount += count;
 
           jobStats.push({
-            label: stat,
-            value: stat,
+            label: state,
+            value: state,
             count: count
           });
         }

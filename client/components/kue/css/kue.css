@@ -1,3 +1,11 @@
+.kue-list-jobs .dataTables_wrapper {
+  padding-top: 10px;
+}
+
+.kue-list-jobs .dataTables_wrapper .dataTables_length {
+  float: left;
+}
+
 .kue-list-jobs .types-dropdown span,
 .kue-list-jobs .states-dropdown span {
   text-transform: capitalize;
