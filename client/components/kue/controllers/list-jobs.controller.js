@@ -5,9 +5,9 @@
     .module('kueJobs')
     .controller('ListJobsController', ListJobsController);
 
-  ListJobsController.$inject = ['$scope', '$q', '$interval', '$compile', 'DTOptionsBuilder', 'DTColumnBuilder', 'JobsManager', 'Job'];
+  ListJobsController.$inject = ['$scope', '$q', '$interval', '$compile', '$uibModal', 'DTOptionsBuilder', 'DTColumnBuilder', 'JobsManager', 'Job'];
 
-  function ListJobsController($scope, $q, $interval, $compile, DTOptionsBuilder, DTColumnBuilder, JobsManager, Job) {
+  function ListJobsController($scope, $q, $interval, $compile, $uibModal, DTOptionsBuilder, DTColumnBuilder, JobsManager, Job) {
     var scope = $scope;
     var refreshDataInterval = null;
     var vm = this;
@@ -241,15 +241,30 @@
     });
 
     function deleteSelectedJobs() {
-      var promises = {};
-      for (var jobId in vm.selectedJobs) {
-        if (vm.selectedJobs.hasOwnProperty(jobId) && vm.selectedJobs[jobId] === true) {
-          promises[jobId] = JobsManager.deleteJob(jobId);
+      var dialogInstance = $uibModal.open({
+        templateUrl: 'components/kue/views/job-confirmation-dialog.view.html',
+        controller: 'JobConfirmationDialogController',
+        controllerAs: 'jobConfirmationDialogCtrl',
+        resolve: {
+          confirmationText: function() {
+            return 'This will permanently delete the selected job(s). Are you sure?';
+          }
         }
-      }
+      });
 
-      $q.all(promises).then(function() {
-        vm.refreshJobs();
+      dialogInstance.result.then(function(accept) {
+        if (accept) {
+          var promises = {};
+          for (var jobId in vm.selectedJobs) {
+            if (vm.selectedJobs.hasOwnProperty(jobId) && vm.selectedJobs[jobId] === true) {
+              promises[jobId] = JobsManager.deleteJob(jobId);
+            }
+          }
+
+          $q.all(promises).then(function() {
+            vm.refreshJobs();
+          });
+        }
       });
     }
 
