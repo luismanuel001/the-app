@@ -314,9 +314,9 @@
           }
           var isRowHighlighted = $(nRow).hasClass('info');
           if (isRowHighlighted){
-            $(nRow).removeClass('info')
+            $(nRow).removeClass('info');
           } else {
-            $(nRow).addClass('info')
+            $(nRow).addClass('info');
           }
 
           vm.lastRowClicked = nRow;
@@ -393,7 +393,7 @@
       };
 
       // default to inactive state when type is selected, since currently api doesn't support show all states when type is selected
-      if (vm.selectedState && !vm.selectedState.value) {
+      if (vm.selectedState && !vm.selectedState.value && vm.selectedJobType.value) {
         vm.selectedState = {
           label: 'inactive',
           value: 'inactive'
