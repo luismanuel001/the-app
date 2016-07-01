@@ -12,6 +12,7 @@
     var refreshDataInterval = null;
     var vm = this;
     vm.dtInstance = {};
+    vm.lastRowClicked = null;
     vm.selectedJobs = {};
     vm.selectAll = false;
     vm.selectedJobType = {
@@ -194,6 +195,7 @@
             $compile(angular.element(header).contents())(scope);
           }
         })
+        .withOption('rowCallback', rowCallback)
         .withPaginationType('full_numbers');
 
       vm.dtColumns = [
@@ -302,11 +304,44 @@
       });
     }
 
+    function rowCallback(nRow, jobData) {
+      // Unbind first in order to avoid any duplicate handler (see https://github.com/l-lin/angular-datatables/issues/87)
+      $('td:gt(0)', nRow).unbind('click');
+      $('td:gt(0)', nRow).bind('click', function() {
+        scope.$apply(function() {
+          if (vm.lastRowClicked && vm.lastRowClicked !== nRow) {
+            $(vm.lastRowClicked).removeClass('info');
+          }
+          var isRowHighlighted = $(nRow).hasClass('info');
+          if (isRowHighlighted){
+            $(nRow).removeClass('info')
+          } else {
+            $(nRow).addClass('info')
+          }
+
+          vm.lastRowClicked = nRow;
+
+          if (angular.isFunction(scope.ontoggle)) {
+            var selectedJobIds = isRowHighlighted ? [] : [jobData.id];
+            scope.ontoggle({
+              selectedJobs: selectedJobIds
+            });
+          }
+        });
+      });
+
+      return nRow;
+    }
+
     function toggleAll() {
       for (var id in vm.selectedJobs) {
         if (vm.selectedJobs.hasOwnProperty(id)) {
           vm.selectedJobs[id] = vm.selectAll;
         }
+      }
+
+      if (vm.lastRowClicked) {
+        $(vm.lastRowClicked).removeClass('info');
       }
 
       if (angular.isFunction(scope.ontoggle)) {
@@ -327,6 +362,10 @@
         }
       }
       vm.selectAll = selectAll;
+
+      if (vm.lastRowClicked) {
+        $(vm.lastRowClicked).removeClass('info');
+      }
 
       if (angular.isFunction(scope.ontoggle)) {
         var selectedJobIds = [];
