@@ -28,9 +28,9 @@
     function shutDownAllJobs() {
       // vm.jobProcessingStatus = !vm.jobProcessingStatus;
       var dialogInstance = $uibModal.open({
-        templateUrl: 'components/jobs/kue/views/job-confirmation-dialog.view.html',
-        controller: 'JobConfirmationDialogController',
-        controllerAs: 'jobConfirmationDialogCtrl',
+        templateUrl: 'components/confirmation-dialog/confirmation-dialog.view.html',
+        controller: 'ConfirmationDialogController',
+        controllerAs: 'confirmationDialogCtrl',
         resolve: {
           confirmationText: function () {
             return 'This will stop all the jobs. Are you sure?';

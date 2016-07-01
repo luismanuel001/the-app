@@ -3,11 +3,11 @@
 
   angular
     .module('kueJobs')
-    .controller('JobConfirmationDialogController', JobConfirmationDialogController);
+    .controller('ConfirmationDialogController', ConfirmationDialogController);
 
-  JobConfirmationDialogController.$inject = ['$uibModalInstance', 'confirmationText'];
+  ConfirmationDialogController.$inject = ['$uibModalInstance', 'confirmationText'];
 
-  function JobConfirmationDialogController($uibModalInstance, confirmationText) {
+  function ConfirmationDialogController($uibModalInstance, confirmationText) {
     var vm = this;
     vm.confirmationText = confirmationText;
     vm.ok = ok;
