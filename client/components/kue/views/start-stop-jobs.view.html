@@ -8,7 +8,11 @@
         </button>
         <ul class="dropdown-menu" style="right: 0;" uib-dropdown-menu role="menu" aria-labelledby="single-button">
           <li role="menuitem" ng-repeat="jobType in startStopJobsCtrl.jobTypes">
-            <a href="#"><span ng-bind="jobType"></span></a>
+            <a href="#">Pause '<span ng-bind="jobType"></span>' Jobs</a>
+          </li>
+          <li class="divider"></li>
+          <li role="menuitem">
+            <a href="#"><span>Pause All Jobs</span></a>
           </li>
         </ul>
       </div>
