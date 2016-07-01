@@ -213,7 +213,7 @@
         DTColumnBuilder.newColumn('type').withTitle('Type').notSortable(),
         DTColumnBuilder.newColumn('started').withTitle('Started').notSortable(),
         DTColumnBuilder.newColumn('finished').withTitle('Finished').notSortable(),
-        DTColumnBuilder.newColumn('duration').withTitle('Duration').notSortable(),
+        DTColumnBuilder.newColumn('humanizeDuration').withTitle('Duration').notSortable(),
         DTColumnBuilder.newColumn('attempts').withTitle('Attempts').renderWith(function(data) {
           return data.made + ' (' + data.remaining + ')';
         }).notSortable()

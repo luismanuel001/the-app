@@ -19,14 +19,18 @@
         enumerable: true,
         configurable: false,
         get: function() {
-          var today = moment();
-          var startedAt = this.created_at / 1000;
-          var started = moment.unix(startedAt);
+          if (this.started_at) {
+            var today = moment();
+            var startedAt = this.started_at / 1000;
+            var started = moment.unix(startedAt);
 
-          if (today.diff(started, 'days') > 0) {
-            return started.format('MMMM Do YYYY, h:mm:ss a');
+            if (today.diff(started, 'days') > 0) {
+              return started.format('MMMM Do YYYY, h:mm:ss a');
+            } else {
+              return started.fromNow();
+            }
           } else {
-            return started.fromNow();
+            return null;
           }
         }
       });
@@ -35,15 +39,27 @@
         enumerable: true,
         configurable: false,
         get: function() {
-          var today = moment();
-          var finishedAt = this.created_at / 1000;
-          var finished = moment.unix(finishedAt);
+          if (this.state === 'complete' || this.state === 'failed') {
+            var today = moment();
+            var finishedAt = this.updated_at / 1000;
+            var finished = moment.unix(finishedAt);
 
-          if (today.diff(finished, 'days') > 0) {
-            return finished.format('MMMM Do YYYY, h:mm:ss a');
+            if (today.diff(finished, 'days') > 0) {
+              return finished.format('MMMM Do YYYY, h:mm:ss a');
+            } else {
+              return finished.fromNow();
+            }
           } else {
-            return finished.fromNow();
+            return null;
           }
+        }
+      });
+
+      Object.defineProperty(this, 'humanizeDuration', {
+        enumerable: true,
+        configurable: false,
+        get: function() {
+          return this.duration ? moment.duration(parseInt(this.duration)).humanize() : null;
         }
       });
 
