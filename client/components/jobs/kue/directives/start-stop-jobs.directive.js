@@ -9,7 +9,7 @@
 
   function startStopJobs() {
     return {
-      templateUrl: 'components/kue/views/start-stop-jobs.view.html',
+      templateUrl: 'components/jobs/kue/views/start-stop-jobs.view.html',
       restrict: 'E',
       controller: 'StartStopJobsController',
       controllerAs: 'startStopJobsCtrl'

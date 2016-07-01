@@ -9,7 +9,7 @@
 
   function listJobs() {
     return {
-      templateUrl: 'components/kue/views/list-jobs.view.html',
+      templateUrl: 'components/jobs/kue/views/list-jobs.view.html',
       restrict: 'E',
       scope: {
         jobType: '@', // if provided the rendered table will list only the jobs of type jobType; otherwise render all jobs no matter of their type

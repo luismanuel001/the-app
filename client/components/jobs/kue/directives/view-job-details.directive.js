@@ -9,7 +9,7 @@
 
   function viewJobDetails() {
     return {
-      templateUrl: 'components/kue/views/view-job-details.view.html',
+      templateUrl: 'components/jobs/kue/views/view-job-details.view.html',
       restrict: 'E',
       scope: {
         jobId: '=', // the ID of the job to view details of

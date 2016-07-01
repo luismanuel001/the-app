@@ -9,7 +9,7 @@
 
   function kueJobs() {
     return {
-      templateUrl: 'components/kue/views/kue-jobs.view.html',
+      templateUrl: 'components/jobs/kue/views/jobs.view.html',
       restrict: 'E',
       scope: {
         jobType: '@'

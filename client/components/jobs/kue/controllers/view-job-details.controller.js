@@ -67,7 +67,7 @@
      */
     function deleteJob() {
       var dialogInstance = $uibModal.open({
-        templateUrl: 'components/kue/views/job-confirmation-dialog.view.html',
+        templateUrl: 'components/jobs/kue/views/job-confirmation-dialog.view.html',
         controller: 'JobConfirmationDialogController',
         controllerAs: 'jobConfirmationDialogCtrl',
         resolve: {
@@ -112,7 +112,7 @@
      */
     function requeueJob() {
       var dialogInstance = $uibModal.open({
-        templateUrl: 'components/kue/views/job-confirmation-dialog.view.html',
+        templateUrl: 'components/jobs/kue/views/job-confirmation-dialog.view.html',
         controller: 'JobConfirmationDialogController',
         controllerAs: 'jobConfirmationDialogCtrl',
         resolve: {
