@@ -16,11 +16,12 @@
     vm.selectedJobs = {};
     vm.selectAll = false;
     vm.selectedJobType = {
-      label: 'Show all types'
+      label: 'Show all'
     };
     vm.selectedState = {
-      label: 'Show all states'
+      label: 'Show all'
     };
+    vm.showAllStatesCount = 0;
     vm.deleteSelectedJobs = deleteSelectedJobs;
     vm.refreshJobs = refreshJobs;
     vm.toggleAll = toggleAll;
@@ -199,7 +200,7 @@
         .withPaginationType('full_numbers');
 
       vm.dtColumns = [
-        DTColumnBuilder.newColumn(null).withTitle(titleHtml).notSortable()
+        DTColumnBuilder.newColumn(null).withTitle(titleHtml).notSortable().withOption('width', '15px')
           .renderWith(function(data, type, full) {
             vm.selectedJobs[full.id] = false;
             return '<input type="checkbox" ng-model="listJobsCtrl.selectedJobs[' + data.id + ']" ng-click="listJobsCtrl.toggleOne()">';
@@ -221,11 +222,7 @@
 
       refreshJobStats(scope.jobType);
       JobsManager.getTypes().then(function(types) {
-        var jobTypes = [{
-          label: 'Show all types',
-          value: ''
-        }];
-
+        var jobTypes = [];
         types.forEach(function(type) {
           jobTypes.push({
             label: type,
@@ -292,12 +289,7 @@
         }
 
         if (!jobType) {
-          jobStats.unshift({
-            label: 'Show all states',
-            value: '',
-            count: totalCount,
-            className: 'label-default'
-          });
+          vm.showAllStatesCount = totalCount;
         }
 
         vm.jobStats = jobStats;

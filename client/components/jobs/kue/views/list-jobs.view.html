@@ -5,12 +5,18 @@
   <!-- Job types -->
   <div class="btn-group types-dropdown" uib-dropdown ng-if="!jobType.length">
     <button type="button" class="btn btn-default" uib-dropdown-toggle>
-      <span class="text-capitalize" ng-bind="listJobsCtrl.selectedJobType.label"></span><span class="caret"></span>
+      <span class="text-capitalize" ng-bind="listJobsCtrl.selectedJobType.label"></span> <span class="caret"></span>
     </button>
     <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+      <li role="menuitem">
+        <a href="#" ng-click="listJobsCtrl.toggleType({ label: 'Show all', value: '' })">
+          <span class="text-capitalize">Show all jobs</span>
+        </a>
+      </li>
+      <li class="divider"></li>
       <li role="menuitem" ng-repeat="jobType in listJobsCtrl.jobTypes">
         <a href="#" ng-click="listJobsCtrl.toggleType(jobType)">
-          <span class="text-capitalize" ng-bind="jobType.label"></span>
+          Show '<span class="text-capitalize" ng-bind="jobType.label"></span>' Jobs
         </a>
       </li>
     </ul>
@@ -19,12 +25,21 @@
   <!-- States -->
   <div class="btn-group states-dropdown" uib-dropdown>
     <button type="button" class="btn btn-default" uib-dropdown-toggle>
-      <span class="text-capitalize" ng-bind="listJobsCtrl.selectedState.label"></span><span class="caret"></span>
+      <span class="text-capitalize" ng-bind="listJobsCtrl.selectedState.label"></span> <span class="caret"></span>
     </button>
     <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+      <li role="menuitem" ng-if="!listJobsCtrl.selectedJobType.value">
+        <a href="#" ng-click="listJobsCtrl.toggleState({ label: 'Show all', value: '' })">
+          <span class="text-capitalize">Show all states</span>
+          <span class="badge pull-right label-default" ng-bind="listJobsCtrl.showAllStatesCount"></span>
+        </a>
+      </li>
+      <li class="divider" ng-if="!listJobsCtrl.selectedJobType.value"></li>
       <li role="menuitem" ng-repeat="jobStat in listJobsCtrl.jobStats">
-        <a href="#" ng-click="listJobsCtrl.toggleState(jobStat)"><span ng-bind="jobStat.label"></span> <span
-          class="badge text-capitalize pull-right {{ jobStat.className }}" ng-bind="jobStat.count"></span></a>
+        <a href="#" ng-click="listJobsCtrl.toggleState(jobStat)">
+          <span text-capitalize  ng-bind="jobStat.label"></span>
+          <span class="badge pull-right {{ jobStat.className }}" ng-bind="jobStat.count"></span>
+        </a>
       </li>
     </ul>
   </div>

@@ -6,9 +6,18 @@
   float: left;
 }
 
+.kue-list-jobs .dataTables_wrapper table.dataTable thead .sorting_asc:after {
+  display: none;
+}
+
 .kue-list-jobs .types-dropdown span,
 .kue-list-jobs .states-dropdown span {
   text-transform: capitalize;
+}
+
+.kue-list-jobs .types-dropdown ul,
+.kue-list-jobs .states-dropdown ul {
+  min-width: 200px;
 }
 
 .view-job-details p > strong {
