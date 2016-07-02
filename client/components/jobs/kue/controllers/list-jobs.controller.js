@@ -270,22 +270,52 @@
 
     function refreshJobStats(jobType) {
       JobsManager.getStats(jobType).then(function(stats) {
-        var jobStats = [];
         var totalCount = 0;
+        var jobStatsGroups = {
+          groupOne: [],
+          groupTwo: []
+        };
         for (var state in stats) {
           var count = stats[state];
           totalCount += count;
 
-          jobStats.push({
-            label: state,
-            value: state,
-            count: count,
-            className: Job.stateLabelMapping[state] || 'label-default'
-          });
+          if (state === 'inactive') {
+            jobStatsGroups.groupTwo.push({
+              label: 'queued',
+              value: state,
+              count: count,
+              order: '1',
+              className: Job.stateLabelMapping[state] || 'label-default'
+            });
+          } else if (state === 'delayed') {
+            jobStatsGroups.groupTwo.push({
+              label: state,
+              value: state,
+              count: count,
+              order: '2',
+              className: Job.stateLabelMapping[state] || 'label-default'
+            });
+          } else if (state === 'active') {
+            jobStatsGroups.groupOne.push({
+              label: 'running',
+              value: state,
+              count: count,
+              order: '1',
+              className: Job.stateLabelMapping[state] || 'label-default'
+            });
+          } else {
+            jobStatsGroups.groupOne.push({
+              label: state,
+              value: state,
+              count: count,
+              order: '10',
+              className: Job.stateLabelMapping[state] || 'label-default'
+            });
+          }
         }
 
         vm.showAllStatesCount = totalCount;
-        vm.jobStats = jobStats;
+        vm.jobStats = jobStatsGroups;
       });
     }
 

@@ -34,8 +34,15 @@
           <span class="badge pull-right label-default" ng-bind="listJobsCtrl.showAllStatesCount"></span>
         </a>
       </li>
-      <li class="divider" ng-if="!listJobsCtrl.selectedJobType.value"></li>
-      <li role="menuitem" ng-repeat="jobStat in listJobsCtrl.jobStats">
+      <li class="divider"></li>
+      <li role="menuitem" ng-repeat="jobStat in listJobsCtrl.jobStats.groupOne | orderBy:'order'">
+        <a href="#" ng-click="listJobsCtrl.toggleState(jobStat)">
+          <span text-capitalize  ng-bind="jobStat.label"></span>
+          <span class="badge pull-right {{ jobStat.className }}" ng-bind="jobStat.count"></span>
+        </a>
+      </li>
+      <li class="divider"></li>
+      <li role="menuitem" ng-repeat="jobStat in listJobsCtrl.jobStats.groupTwo | orderBy:'order'">
         <a href="#" ng-click="listJobsCtrl.toggleState(jobStat)">
           <span text-capitalize  ng-bind="jobStat.label"></span>
           <span class="badge pull-right {{ jobStat.className }}" ng-bind="jobStat.count"></span>
