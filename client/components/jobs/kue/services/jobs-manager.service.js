@@ -32,12 +32,21 @@
             order: 'desc'
           }
         },
+        getAllJobsByJobType: {
+          url: 'api/jobs/kue/:type/:from..:to',
+          method: 'GET',
+          isArray: true,
+          params: {
+            from: 0,
+            to: 9
+          }
+        },
         getStats: {
           url: 'api/kue/stats',
           method: 'GET'
         },
         getStatsByJobType: {
-          url: 'api/kue/jobs/:type/:state/stats',
+          url: 'api/jobs/kue/:type/stats',
           method: 'GET'
         },
         getTypes: {
@@ -146,20 +155,37 @@
         loadJobs: function(params) {
           var deferred = $q.defer();
           var self = this;
-          resources.getJobs(params, function(result) {
-            if (result && !result.error) {
-              var jobs = [];
-              result.forEach(function(jobData) {
-                var jobId = jobData.id;
-                var job = self._retrieveInstance(jobId, jobData);
-                jobs.push(job);
-              });
-              deferred.resolve(jobs);
-            } else {
-              var errorMessage = result.error || 'Failed to fetch jobs';
-              deferred.reject(errorMessage); // TODO: Handle error response
-            }
-          });
+          if (params.type && !params.state) {
+            resources.getAllJobsByJobType(params, function(result) {
+              if (result && !result.error) {
+                var jobs = [];
+                result.forEach(function(jobData) {
+                  var jobId = jobData.id;
+                  var job = self._retrieveInstance(jobId, jobData);
+                  jobs.push(job);
+                });
+                deferred.resolve(jobs);
+              } else {
+                var errorMessage = result.error || 'Failed to fetch jobs';
+                deferred.reject(errorMessage); // TODO: Handle error response
+              }
+            });
+          } else {
+            resources.getJobs(params, function(result) {
+              if (result && !result.error) {
+                var jobs = [];
+                result.forEach(function(jobData) {
+                  var jobId = jobData.id;
+                  var job = self._retrieveInstance(jobId, jobData);
+                  jobs.push(job);
+                });
+                deferred.resolve(jobs);
+              } else {
+                var errorMessage = result.error || 'Failed to fetch jobs';
+                deferred.reject(errorMessage); // TODO: Handle error response
+              }
+            });
+          }
           return deferred.promise;
         },
         searchJobs: function(searchText) {
@@ -199,45 +225,40 @@
         getStats: function(jobType) {
           var deferred = $q.defer();
           if (jobType) {
-            var promises = {};
-            Job.states.forEach(function(state) {
-              var innerDeferred = $q.defer();
-              resources.getStatsByJobType({
-                type: jobType,
-                state: state
-              }, function(result) {
-                if (result && !result.error) {
-                  innerDeferred.resolve(result.count);
-                } else {
-                  var errorMessage = result.error || 'Failed to delete job';
-                  innerDeferred.reject(errorMessage); // TODO: Handle error response
+            resources.getStatsByJobType({
+              type: jobType
+            }, function(result) {
+              if (result && !result.error) {
+                var stats = {};
+                for (var stat in result) {
+                  if (Job.states.indexOf(stat) > -1) {
+                    stats[stat] = result[stat];
+                  }
                 }
-              });
-              promises[state] = innerDeferred.promise;
+                deferred.resolve(stats);
+              } else {
+                var errorMessage = result.error || 'Failed to delete job';
+                deferred.reject(errorMessage); // TODO: Handle error response
+              }
             });
-
-            $q.all(promises).then(function(stats) {
-              deferred.resolve(stats);
-            }, function(err) {
-              deferred.reject(err); // TODO: Handle error response
+          } else {
+            resources.getStats({}, function(result) {
+              if (result && !result.error) {
+                var stats = {};
+                for (var key in result) {
+                  if (result.hasOwnProperty(key) && key.indexOf('Count') > -1) {
+                    var label = key.substring(0, key.indexOf('Count'));
+                    var count = result[key];
+                    stats[label] = count;
+                  }
+                }
+                deferred.resolve(stats);
+              } else {
+                var errorMessage = result.error || 'Failed to delete job';
+                deferred.reject(errorMessage); // TODO: Handle error response
+              }
             });
           }
-          resources.getStats({}, function(result) {
-            if (result && !result.error) {
-              var stats = {};
-              for (var key in result) {
-                if (result.hasOwnProperty(key) && key.indexOf('Count') > -1) {
-                  var label = key.substring(0, key.indexOf('Count'));
-                  var count = result[key];
-                  stats[label] = count;
-                }
-              }
-              deferred.resolve(stats);
-            } else {
-              var errorMessage = result.error || 'Failed to delete job';
-              deferred.reject(errorMessage); // TODO: Handle error response
-            }
-          });
           return deferred.promise;
         },
         startAllJobs: function() {

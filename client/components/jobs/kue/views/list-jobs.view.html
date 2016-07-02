@@ -28,7 +28,7 @@
       <span class="text-capitalize" ng-bind="listJobsCtrl.selectedState.label"></span> <span class="caret"></span>
     </button>
     <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
-      <li role="menuitem" ng-if="!listJobsCtrl.selectedJobType.value">
+      <li role="menuitem">
         <a href="#" ng-click="listJobsCtrl.toggleState({ label: 'Show all', value: '' })">
           <span class="text-capitalize">Show all states</span>
           <span class="badge pull-right label-default" ng-bind="listJobsCtrl.showAllStatesCount"></span>

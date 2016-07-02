@@ -1,7 +1,12 @@
 'use strict';
 
-var kue = require('kue'),
-  queue = kue.createQueue({
+var config = require('../../config/environment'),
+    kue = require('kue'),
+    request = require('request'),
+    q = require('q'),
+    _ = require('lodash');
+
+var queue = kue.createQueue({
     disableSearch: true,
     redis: require('../../../config/databases/redis.json').redis
   });
@@ -10,7 +15,15 @@ queue.on('error', function(err) {
   console.log('Oops, there is some problem with redis. ', err);
 });
 
+var baseApiUrl = 'http://localhost:' + config.port + '/api';
 var jobStatus = 'running';
+var jobStates = [
+  'active',
+  'complete',
+  'delayed',
+  'failed',
+  'inactive'
+];
 
 /**
  * Get job queue status
@@ -59,6 +72,82 @@ export function shutdown(req, res) {
     jobStatus = 'shutdown';
     res.status(200).json({
       message: 'Successfully shut down kue'
+    });
+  });
+}
+
+/**
+ * Custom get jobs by job type
+ */
+export function getJobsByJobType(req, res) {
+  var type = req.params.jobType;
+  var from = req.params.from;
+  var to = parseInt(req.params.to) + 1;
+
+  var promises = [];
+  jobStates.forEach(function(state) {
+    var deferred = q.defer();
+    var requestUrl = baseApiUrl + '/kue/jobs/' + type + '/' + state + '/0..10000';
+    request.get(requestUrl, function(err, res, body) {
+      try {
+        var jobs = JSON.parse(body);
+        deferred.resolve(jobs);
+      } catch(err) {
+        deferred.reject(err);
+      }
+    });
+    promises.push(deferred.promise);
+  });
+
+  q.all(promises).then(function(results) {
+    var jobs = [];
+    results.forEach(function(result) {
+      jobs = jobs.concat(result);
+    });
+    jobs = _.orderBy(jobs, ['created_at'], ['desc']);
+    jobs = _.slice(jobs, from, to);
+    res.status(200).json(jobs);
+
+  }, function(err) {
+    var errorMessage = err.message || 'Something went wrong';
+    return res.status(400).send({
+      error: errorMessage
+    });
+  })
+}
+
+/**
+ * Custom get job stats by job type
+ */
+export function getJobStatsByJobType(req, res) {
+  var type = req.params.jobType;
+
+  var promises = [];
+  jobStates.forEach(function(state) {
+    var deferred = q.defer();
+    var requestUrl = baseApiUrl + '/kue/jobs/' + type + '/' + state + '/stats';
+    request.get(requestUrl, function(err, res, body) {
+      try {
+        var jobs = JSON.parse(body);
+        jobs.state = state;
+        deferred.resolve(jobs);
+      } catch(err) {
+        deferred.reject(err);
+      }
+    });
+    promises.push(deferred.promise);
+  });
+
+  q.all(promises).then(function(results) {
+    var stats = {};
+    results.forEach(function(result) {
+      stats[result.state] = result.count;
+    });
+    res.status(200).json(stats);
+  }, function(err) {
+    var errorMessage = err.message || 'Something went wrong';
+    return res.status(400).send({
+      error: errorMessage
     });
   });
 }

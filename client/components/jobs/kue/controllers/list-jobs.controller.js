@@ -72,11 +72,6 @@
           label: jobType,
           value: jobType
         };
-
-        vm.selectedState = {
-          label: 'inactive',
-          value: 'inactive'
-        };
       }
       vm.dtOptions = DTOptionsBuilder.newOptions()
         .withOption('ajax', function(data, callback) {
@@ -289,10 +284,7 @@
           });
         }
 
-        if (!jobType) {
-          vm.showAllStatesCount = totalCount;
-        }
-
+        vm.showAllStatesCount = totalCount;
         vm.jobStats = jobStats;
       });
     }
@@ -384,14 +376,6 @@
         label: jobType.label,
         value: jobType.value
       };
-
-      // default to inactive state when type is selected, since currently api doesn't support show all states when type is selected
-      if (vm.selectedState && !vm.selectedState.value && vm.selectedJobType.value) {
-        vm.selectedState = {
-          label: 'inactive',
-          value: 'inactive'
-        };
-      }
 
       refreshJobStats(jobType.value);
 
