@@ -5,6 +5,11 @@ var kue = require('kue'),
     disableSearch: true,
     redis: require('../../../config/databases/redis.json').redis
   });
+
+queue.on('error', function(err) {
+  console.log('Oops, there is some problem with redis. ', err);
+});
+
 var jobStatus = 'running';
 
 /**
@@ -29,6 +34,11 @@ export function start(req, res) {
       disableSearch: true,
       redis: require('../../../config/databases/redis.json').redis
     });
+
+    queue.on('error', function(err) {
+      console.log('Oops, there is some problem with redis. ', err);
+    });
+
     jobStatus = 'running';
     res.status(200).json({
       message: 'Re-create queue'
