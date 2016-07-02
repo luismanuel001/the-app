@@ -65,6 +65,12 @@ queue.create('email2', {
   template: 'dummy-email'
 }).priority('high').save();
 
+queue.create('email2', {
+  title: 'Just a dummy email delayed job',
+  to: 'dummy@user.com',
+  template: 'dummy-email'
+}).delay(500000).priority('high').save();
+
 queue.create('backup', {
   title: 'Just a dummy backup job',
   interval: 'daily'
@@ -94,6 +100,11 @@ queue.create('run report', {
   title: 'Just a dummy run report job',
   reportType: 'quarter'
 }).priority('high').save();
+
+queue.create('run report', {
+  title: 'Just a dummy run report delayed job',
+  reportType: 'daily'
+}).delay(100000).priority('low').save();
 
 queue.create('run report2', {
   title: 'Just a dummy run report job',
