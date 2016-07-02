@@ -10,7 +10,6 @@
   display: none;
 }
 
-.kue-list-jobs .types-dropdown span,
 .kue-list-jobs .states-dropdown span {
   text-transform: capitalize;
 }

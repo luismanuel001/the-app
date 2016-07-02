@@ -16,10 +16,10 @@
     vm.selectedJobs = {};
     vm.selectAll = false;
     vm.selectedJobType = {
-      label: 'Show all'
+      label: 'Show All'
     };
     vm.selectedState = {
-      label: 'Show all'
+      label: 'Show All'
     };
     vm.showAllStatesCount = 0;
     vm.deleteSelectedJobs = deleteSelectedJobs;
