@@ -197,7 +197,8 @@
           }
         })
         .withOption('rowCallback', rowCallback)
-        .withPaginationType('full_numbers');
+        .withPaginationType('full_numbers')
+        .withDOM('lrtip'); // remove searching
 
       vm.dtColumns = [
         DTColumnBuilder.newColumn(null).withTitle(titleHtml).notSortable().withOption('width', '15px')

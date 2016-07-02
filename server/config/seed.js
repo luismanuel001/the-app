@@ -10,7 +10,7 @@ import request from 'request';
 
 var User = sqldb.User;
 var queue = kue.createQueue({
-  disableSearch: false,
+  disableSearch: true,
   redis: require('../../config/databases/redis.json').redis
 });
 
