@@ -201,7 +201,7 @@
             vm.selectedJobs[full.id] = false;
             return '<input type="checkbox" ng-model="listJobsCtrl.selectedJobs[' + data.id + ']" ng-click="listJobsCtrl.toggleOne()">';
           }),
-        DTColumnBuilder.newColumn('state').withTitle('State').notSortable()
+        DTColumnBuilder.newColumn('customState').withTitle('State').notSortable()
           .renderWith(function(data, type, full) {
             /* jshint camelcase: false */
             var stateLabelClass = full.state_label_class;

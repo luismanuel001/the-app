@@ -71,6 +71,20 @@
         }
       });
 
+      Object.defineProperty(this, 'customState', {
+        enumerable: true,
+        configurable: false,
+        get: function() {
+          if (this.state === 'active') {
+            return 'running';
+          } else if (this.state === 'inactive') {
+            return 'queued';
+          } else {
+            return this.state;
+          }
+        }
+      });
+
       Object.defineProperty(this, 'attemptsAsString', {
         enumerable: true,
         configurable: false,
