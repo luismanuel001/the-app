@@ -3,7 +3,7 @@
 var config = require('../../config/environment'),
     kue = require('kue'),
     request = require('request'),
-    q = require('q'),
+    Promise = require('bluebird'),
     _ = require('lodash');
 
 var queue = kue.createQueue({
@@ -86,20 +86,21 @@ export function getJobsByJobType(req, res) {
 
   var promises = [];
   jobStates.forEach(function(state) {
-    var deferred = q.defer();
     var requestUrl = baseApiUrl + '/kue/jobs/' + type + '/' + state + '/0..10000';
-    request.get(requestUrl, function(err, res, body) {
-      try {
-        var jobs = JSON.parse(body);
-        deferred.resolve(jobs);
-      } catch(err) {
-        deferred.reject(err);
-      }
+    var promise = new Promise(function(resolve, reject) {
+      request.get(requestUrl, function(err, res, body) {
+        try {
+          var jobs = JSON.parse(body);
+          resolve(jobs);
+        } catch(err) {
+          reject(err);
+        }
+      });
     });
-    promises.push(deferred.promise);
+    promises.push(promise);
   });
 
-  q.all(promises).then(function(results) {
+  Promise.all(promises).then(function(results) {
     var jobs = [];
     results.forEach(function(result) {
       jobs = jobs.concat(result);
@@ -124,21 +125,22 @@ export function getJobStatsByJobType(req, res) {
 
   var promises = [];
   jobStates.forEach(function(state) {
-    var deferred = q.defer();
-    var requestUrl = baseApiUrl + '/kue/jobs/' + type + '/' + state + '/stats';
-    request.get(requestUrl, function(err, res, body) {
-      try {
-        var jobs = JSON.parse(body);
-        jobs.state = state;
-        deferred.resolve(jobs);
-      } catch(err) {
-        deferred.reject(err);
-      }
+    var promise = new Promise(function(resolve, reject) {
+      var requestUrl = baseApiUrl + '/kue/jobs/' + type + '/' + state + '/stats';
+      request.get(requestUrl, function(err, res, body) {
+        try {
+          var jobs = JSON.parse(body);
+          jobs.state = state;
+          resolve(jobs);
+        } catch(err) {
+          reject(err);
+        }
+      });
     });
-    promises.push(deferred.promise);
+    promises.push(promise);
   });
 
-  q.all(promises).then(function(results) {
+  Promise.all(promises).then(function(results) {
     var stats = {};
     results.forEach(function(result) {
       stats[result.state] = result.count;
