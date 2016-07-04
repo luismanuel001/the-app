@@ -1,0 +1,7 @@
+{
+  "redis": {
+    "port": 16632,
+    "host": "pub-redis-16632.us-east-1-3.4.ec2.garantiadata.com",
+    "auth": "PBF(&dJ/h/E464aU[w88"
+  }
+}

@@ -6,11 +6,14 @@
 
 import errors from './components/errors';
 import path from 'path';
+import kue from 'kue';
 
 export default function(app) {
   // Insert routes below
   app.use('/api/users', require('./api/user'));
   app.use('/api/app', require('./api/app'));
+  app.use('/api/jobs', require('./api/jobs'));
+  app.use('/api/kue', kue.app);
 
   app.use('/auth', require('./auth').default);
 
