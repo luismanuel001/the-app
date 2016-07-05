@@ -55,9 +55,13 @@ const paths = {
     karma: 'karma.conf.js',
     dist: 'dist',
     package: {
+      appName: 'TheApp',
       temp: '.temp',
-      template: 'theapp-template/TheApp',
-      app: '/_internal/app'
+      template: 'theapp-template',
+      app: '/_internal/app',
+      config: {
+        prod: 'server/config/environment/production.js'
+      }
     }
 };
 
@@ -669,28 +673,28 @@ gulp.task('buildcontrol:openshift', function(done) {
 gulp.task('package:clean', () => del([paths.package.temp], {dot: true}));
 
 gulp.task('package:copy:template', () => {
-    return gulp.src(`${paths.package.template}/**/*`)
-        .pipe(gulp.dest(`${paths.package.temp}/TheApp`));
+    return gulp.src(`${paths.package.template}/${paths.package.appName}/**/*`)
+        .pipe(gulp.dest(`${paths.package.temp}/${paths.package.appName}`));
 });
 
 gulp.task('package:copy:dist', () => {
     return gulp.src(`${paths.dist}/**/*`)
-        .pipe(gulp.dest(`${paths.package.temp}/TheApp/${paths.package.app}`));
+        .pipe(gulp.dest(`${paths.package.temp}/${paths.package.appName}/${paths.package.app}`));
 });
 
 gulp.task('package:update:env', () => {
-    return gulp.src([`${paths.package.temp}/TheApp/${paths.package.app}/server/config/environment/production.js`], {base: './'})
-        .pipe(replace(`${paths.package.template}/`, '../'))
+    return gulp.src([`${paths.package.temp}/${paths.package.appName}/${paths.package.app}/${paths.package.config.prod}`], {base: './'})
+        .pipe(replace(`${paths.package.template}/${paths.package.appName}/`, '../'))
         .pipe(gulp.dest('./'));
 });
 
 gulp.task('package:install', () => {
-    return gulp.src([`${paths.package.temp}/TheApp/${paths.package.app}/package.json`])
+    return gulp.src([`${paths.package.temp}/${paths.package.appName}/${paths.package.app}/package.json`])
         .pipe(install({production: true}));
 });
 
 gulp.task('package:createzip', () => {
-    return gulp.src(`${paths.package.temp}/TheApp/**/*`)
+    return gulp.src(`${paths.package.temp}/${paths.package.appName}/**/*`)
         .pipe(zip('theapp.zip'))
         .pipe(gulp.dest(paths.dist));
 });
