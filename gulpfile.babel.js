@@ -675,7 +675,7 @@ gulp.task('package:copy:template', () => {
 });
 
 gulp.task('package:copy:dist', () => {
-    return gulp.src([`${paths.dist}/**/*`, '!server/config/environment/production.js'])
+    return gulp.src([`${paths.dist}/**/*`, `${paths.dist}/!server/config/environment/production.js`])
         .pipe(gulp.dest(`${paths.package.temp}/${paths.package.appName}/${paths.package.app}`));
 });
 
