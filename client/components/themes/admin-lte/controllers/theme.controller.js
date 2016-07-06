@@ -5,13 +5,16 @@
     .module('admin-lte')
     .controller('ThemeController', ThemeController);
 
-  ThemeController.$inject = ['$http', '$state', 'Auth', 'ThemeStyleService'];
+  ThemeController.$inject = ['$http', '$state', '$timeout', 'Auth', 'ThemeStyleService'];
 
-  function ThemeController($http, $state, Auth, ThemeStyleService) {
+  function ThemeController($http, $state, $timeout, Auth, ThemeStyleService) {
     var vm = this;
     vm.Auth = Auth;
 
-    activate();
+    // TODO: Fix this. Added the wrapping $timeout as a quick temporary fix while a real solution is found
+    $timeout(function () {
+      activate();
+    });
 
     function activate() {
       $.AdminLTE.layout.activate();
