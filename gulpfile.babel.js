@@ -691,7 +691,10 @@ gulp.task('package:update:env', () => {
 
 gulp.task('package:install', () => {
     return gulp.src([`${paths.package.temp}/${paths.package.appName}/${paths.package.app}/package.json`, `${paths.package.temp}/${paths.package.appName}/${paths.package.nodeWindowsPath}/package.json`])
-        .pipe(install({production: true}));
+        .pipe(install({
+          production: true,
+          args: ['--target_platform=win32', '--target_arch=ia32']
+        }));
 });
 
 gulp.task('package:createzip', () => {
