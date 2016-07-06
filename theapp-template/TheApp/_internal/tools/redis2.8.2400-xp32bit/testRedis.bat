@@ -9,7 +9,7 @@ SETLOCAL ENABLEEXTENSIONS ENABLEDELAYEDEXPANSION
 :: variables
 SET rootdir=%~dps0
 :: Redis executable directory
-SET redispath=%rootdir%_internal\tools\redis2.8.2400-xp32bit\
+SET redispath=%rootdir%
 
 SET redishost=127.0.0.1
 SET redisport=6379
