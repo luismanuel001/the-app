@@ -59,6 +59,7 @@ const paths = {
       temp: '.temp',
       template: 'theapp-template',
       app: '/_internal/app',
+      nodeWindowsPath: '_internal/tools/node-windows',
       config: {
         prod: 'server/config/environment/production.js'
       }
@@ -689,7 +690,7 @@ gulp.task('package:update:env', () => {
 });
 
 gulp.task('package:install', () => {
-    return gulp.src([`${paths.package.temp}/${paths.package.appName}/${paths.package.app}/package.json`])
+    return gulp.src([`${paths.package.temp}/${paths.package.appName}/${paths.package.app}/package.json`, `${paths.package.temp}/${paths.package.appName}/${paths.package.nodeWindowsPath}/package.json`])
         .pipe(install({production: true}));
 });
 
