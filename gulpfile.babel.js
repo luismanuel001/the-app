@@ -18,7 +18,6 @@ import {protractor, webdriver_update} from 'gulp-protractor';
 import {Instrumenter} from 'isparta';
 import install from 'gulp-install';
 import zip from 'gulp-zip';
-import replace from 'gulp-replace';
 
 var plugins = gulpLoadPlugins();
 var config;
@@ -59,10 +58,7 @@ const paths = {
       temp: '.temp',
       template: 'theapp-template',
       app: '/_internal/app',
-      nodeWindowsPath: '_internal/tools/node-windows',
-      config: {
-        prod: 'server/config/environment/production.js'
-      }
+      nodeWindowsPath: '_internal/tools/node-windows'
     }
 };
 
@@ -679,7 +675,7 @@ gulp.task('package:copy:template', () => {
 });
 
 gulp.task('package:copy:dist', () => {
-    return gulp.src([`${paths.dist}/**/*`, `!${paths.dist}/${paths.package.config.prod}`])
+    return gulp.src([`${paths.dist}/**/*`, '!server/config/environment/production.js'])
         .pipe(gulp.dest(`${paths.package.temp}/${paths.package.appName}/${paths.package.app}`));
 });
 

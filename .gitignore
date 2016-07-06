@@ -7,6 +7,5 @@ dist
 /server/config/local.env.js
 npm-debug.log
 coverage
-theapp-template/TheApp/_internal/app
 .temp
 **/*.sqlite
