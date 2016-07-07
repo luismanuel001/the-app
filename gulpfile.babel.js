@@ -688,7 +688,7 @@ gulp.task('package:install', () => {
 });
 
 gulp.task('package:createzip', () => {
-    return gulp.src(`${paths.package.temp}/${paths.package.appName}/**/*`)
+    return gulp.src(`${paths.package.temp}/**/*`)
         .pipe(zip(`${paths.package.appName}.zip`))
         .pipe(gulp.dest(paths.dist));
 });
