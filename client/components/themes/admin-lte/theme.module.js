@@ -7,14 +7,15 @@
     $rootScope.$state = $state;
   }]);
   angular.module('admin-lte')
-    .run(function($rootScope, $state, Auth, ThemeStyleService) {
+    .run(function($rootScope, $state, $log, Auth, ThemeStyleService) {
       $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState) {
 	      /**
          * Update user's theme skin once login/signup
          */
-        if (fromState.name === 'login' || fromState.name === 'signup') {
+        if (fromState.name === 'admin.login' || fromState.name === 'admin.signup') {
           Auth.getCurrentUser(null)
             .then(function(user) {
+              $log.debug(user.theme);
               ThemeStyleService.changeSkin(user.theme);
             });
         }
@@ -22,9 +23,9 @@
 	      /**
          * Redirect user to login page after logout
          */
-        if (fromState.name === 'logout' && toState.name !== 'login') {
+        if (fromState.name === 'admin.logout' && toState.name !== 'admin.login') {
           event.preventDefault();
-          $state.go('login');
+          $state.go('admin.login');
         }
       });
     });

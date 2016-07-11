@@ -33,7 +33,7 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <admin-lte></admin-lte>
+    <div ui-view></div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <script>
@@ -85,20 +85,21 @@
     <!-- build:js(.tmp) app/app.js -->
       <script src="app/app.js"></script>
       <!-- injector:js -->
-      <script src="app/admin/admin.module.js"></script>
+      <script src="app/admin/account/users/users.module.js"></script>
       <script src="components/auth/auth.module.js"></script>
       <script src="components/jobs/kue/kue.module.js"></script>
       <script src="components/themes/admin-lte/theme.module.js"></script>
       <script src="components/util/util.module.js"></script>
-      <script src="app/account/account.js"></script>
-      <script src="app/account/login/login.controller.js"></script>
-      <script src="app/account/settings/settings.controller.js"></script>
-      <script src="app/account/signup/signup.controller.js"></script>
-      <script src="app/admin/admin.controller.js"></script>
+      <script src="app/admin/account/account.js"></script>
+      <script src="app/admin/account/login/login.controller.js"></script>
+      <script src="app/admin/account/settings/settings.controller.js"></script>
+      <script src="app/admin/account/signup/signup.controller.js"></script>
+      <script src="app/admin/account/users/users.controller.js"></script>
+      <script src="app/admin/account/users/users.router.js"></script>
       <script src="app/admin/admin.router.js"></script>
+      <script src="app/admin/jobs/jobs.controller.js"></script>
+      <script src="app/admin/jobs/jobs.route.js"></script>
       <script src="app/app.constant.js"></script>
-      <script src="app/jobs/jobs.controller.js"></script>
-      <script src="app/jobs/jobs.route.js"></script>
       <script src="app/main/main.controller.js"></script>
       <script src="app/main/main.js"></script>
       <script src="app/services/menu.client.service.js"></script>

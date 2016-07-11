@@ -3,24 +3,24 @@
 angular.module('angularFullstackApp')
   .config(function($stateProvider) {
     $stateProvider
-      .state('jobs', {
+      .state('admin.jobs', {
         url: '/jobs',
         template: '<div ui-view></div>',
         abstract: true
       })
-      .state('jobs.all', {
+      .state('admin.jobs.all', {
         url: '/',
-        templateUrl: 'app/jobs/jobs.html',
+        templateUrl: 'app/admin/jobs/jobs.html',
         controller: 'JobsController',
         controllerAs: 'vm',
       })
-      .state('jobs.startStop', {
+      .state('admin.jobs.startStop', {
         url: '/startstop',
         template: '<start-stop-jobs></start-stop-jobs>'
       })
-      .state('jobs.type', {
+      .state('admin.jobs.type', {
         url: '/:jobType',
-        templateUrl: 'app/jobs/jobs.html',
+        templateUrl: 'app/admin/jobs/jobs.html',
         controller: 'JobsController',
         controllerAs: 'vm'
       });

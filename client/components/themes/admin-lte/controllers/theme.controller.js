@@ -28,7 +28,7 @@
           var userTheme = Auth.getCurrentUser().theme;
           ThemeStyleService.changeSkin(userTheme);
         } else {
-          $state.go('login'); // redirect to login page if user is not logged in
+          $state.go('admin.login'); // redirect to login page if user is not logged in
         }
       });
     }

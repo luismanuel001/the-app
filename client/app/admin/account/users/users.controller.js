@@ -2,7 +2,7 @@
 
 (function() {
 
-  class AdminController {
+  class UsersController {
     constructor(User) {
       // Use the User $resource to fetch all users
       this.users = User.query();
@@ -14,6 +14,6 @@
     }
   }
 
-  angular.module('angularFullstackApp.admin')
-    .controller('AdminController', AdminController);
+  angular.module('angularFullstackApp.users')
+    .controller('UsersController', UsersController);
 })();

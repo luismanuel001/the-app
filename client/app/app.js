@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularFullstackApp', ['angularFullstackApp.auth', 'angularFullstackApp.admin',
+angular.module('angularFullstackApp', ['angularFullstackApp.auth', 'angularFullstackApp.users',
     'angularFullstackApp.constants', 'ngCookies', 'ngResource', 'ngSanitize', 'btford.socket-io',
     'ui.router', 'ui.bootstrap', 'validation.match', 'Menus'
   ])
@@ -17,7 +17,7 @@ angular.module('angularFullstackApp', ['angularFullstackApp.auth', 'angularFulls
 
       menuService.addMenuItem('nav', {
         title: 'Customers',
-        state: 'customers',
+        state: 'admin.customers',
         type: 'dropdown',
         roles: ['user'],
         class: 'fa fa-dashboard'
@@ -25,7 +25,7 @@ angular.module('angularFullstackApp', ['angularFullstackApp.auth', 'angularFulls
 
       menuService.addMenuItem('nav', {
         title: 'Transactions',
-        state: 'transactions',
+        state: 'admin.transactions',
         type: 'dropdown',
         roles: ['user'],
         class: 'fa fa-files-o'
@@ -33,7 +33,7 @@ angular.module('angularFullstackApp', ['angularFullstackApp.auth', 'angularFulls
 
       menuService.addMenuItem('nav', {
         title: 'Jobs',
-        state: 'jobs.all',
+        state: 'admin.jobs.all',
         type: 'dropdown',
         roles: ['user'],
         class: 'fa fa-check-square-o'
@@ -41,7 +41,7 @@ angular.module('angularFullstackApp', ['angularFullstackApp.auth', 'angularFulls
 
       menuService.addMenuItem('nav', {
         title: 'Email Jobs',
-        state: 'jobs.type({jobType:"email"})',
+        state: 'admin.jobs.type({jobType:"email"})',
         type: 'dropdown',
         roles: ['user'],
         class: 'fa fa-envelope-o'
@@ -49,7 +49,7 @@ angular.module('angularFullstackApp', ['angularFullstackApp.auth', 'angularFulls
 
       menuService.addMenuItem('nav', {
         title: 'Start/Stop Jobs',
-        state: 'jobs.startStop',
+        state: 'admin.jobs.startStop',
         type: 'dropdown',
         roles: ['user'],
         class: 'fa fa-play'
