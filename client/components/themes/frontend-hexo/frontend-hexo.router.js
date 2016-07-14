@@ -1,22 +1,27 @@
 'use strict';
 
 angular.module('angularFullstackApp.frontend-hexo')
-  .config(function ($stateProvider) {
+  .config(function ($stateProvider, $locationProvider, $urlRouterProvider) {
+    $urlRouterProvider.otherwise('/');
+
+    $locationProvider.html5Mode(true);
+
     $stateProvider
       .state('frontend-hexo', {
         url: '/',
+        abstract: true,
         template: '<frontend-hexo></frontend-hexo>'
       })
       .state('frontend-hexo.home', {
-        url: 'home/',
+        url: '',
         templateUrl: 'components/themes/frontend-hexo/generated/home.html'
       })
       .state('frontend-hexo.about', {
-        url: 'about/',
+        url: 'about',
         templateUrl: 'components/themes/frontend-hexo/generated/about.html'
       })
       .state('frontend-hexo.contact', {
-        url: 'contact/',
+        url: 'contact',
         templateUrl: 'components/themes/frontend-hexo/generated/contact.html'
       });
   });
