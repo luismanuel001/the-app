@@ -3,7 +3,7 @@ menu:
   Home: /
   #Projects: /projects/
   #Blog: /archives/ # can set archive-dir in root config to custom value
-  Invoices: /invoices
+  #Invoices: /invoices
   Contact: /contact
   About: /about
 

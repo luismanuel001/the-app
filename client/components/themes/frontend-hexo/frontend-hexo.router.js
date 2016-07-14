@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('angularFullstackApp.frontend-hexo')
-  .config(function ($stateProvider, $locationProvider, $urlRouterProvider) {
+  .config(function ($stateProvider) {
     $stateProvider
       .state('frontend-hexo', {
         url: '/',
