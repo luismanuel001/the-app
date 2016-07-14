@@ -9,3 +9,4 @@ npm-debug.log
 coverage
 .temp
 **/*.sqlite
+client/components/themes/frontend-hexo/generated

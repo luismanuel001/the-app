@@ -1,0 +1,22 @@
+'use strict';
+
+angular.module('angularFullstackApp.frontend-hexo')
+  .config(function ($stateProvider) {
+    $stateProvider
+      .state('frontend-hexo', {
+        url: '/',
+        template: '<frontend-hexo></frontend-hexo>'
+      })
+      .state('frontend-hexo.home', {
+        url: 'home/',
+        templateUrl: 'components/themes/frontend-hexo/generated/home.html'
+      })
+      .state('frontend-hexo.about', {
+        url: 'about/',
+        templateUrl: 'components/themes/frontend-hexo/generated/about.html'
+      })
+      .state('frontend-hexo.contact', {
+        url: 'contact/',
+        templateUrl: 'components/themes/frontend-hexo/generated/contact.html'
+      });
+  });

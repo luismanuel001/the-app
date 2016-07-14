@@ -18,6 +18,7 @@ import {protractor, webdriver_update} from 'gulp-protractor';
 import {Instrumenter} from 'isparta';
 import install from 'gulp-install';
 import zip from 'gulp-zip';
+import Hexo from 'hexo';
 
 var plugins = gulpLoadPlugins();
 var config;
@@ -30,9 +31,14 @@ const paths = {
         images: `${clientPath}/assets/images/**/*`,
         scripts: [
             `${clientPath}/**/!(*.spec|*.mock).js`,
-            `!${clientPath}/bower_components/**/*`
+            `!${clientPath}/bower_components/**/*`,
+            `!${clientPath}/components/themes/frontend-hexo/generated/**/*`
         ],
-        styles: [`${clientPath}/{app,components}/**/*.css`],
+        styles: [
+          `${clientPath}/{app,components}/**/*.css`,
+          `!${clientPath}/bower_components/**/*`,
+          `!${clientPath}/components/themes/frontend-hexo/generated/**/*`
+        ],
         mainStyle: `${clientPath}/app/app.css`,
         views: `${clientPath}/{app,components}/**/*.html`,
         mainView: `${clientPath}/index.html`,
@@ -141,7 +147,7 @@ let styles = lazypipe()
     .pipe(plugins.sourcemaps.write, '.');
 
 let transpileClient = lazypipe()
-    .pipe(plugins.sourcemaps.init)
+    .pipe(plugins.sourcemaps.init, {loadMaps: true})
     .pipe(plugins.babel)
     .pipe(plugins.sourcemaps.write, '.');
 
@@ -357,6 +363,8 @@ gulp.task('watch', () => {
 
 gulp.task('serve', cb => {
     runSequence(['clean:tmp', 'constant', 'env:all'],
+        'hexo:clean',
+        'hexo:generate',
         ['lint:scripts', 'inject'],
         ['wiredep:client'],
         ['transpile:client', 'styles'],
@@ -703,4 +711,38 @@ gulp.task('package:zip', cb => {
         'package:createzip',
         'package:clean',
         cb);
+});
+
+var hexo = new Hexo(path.join(process.cwd(), `${paths.package.template}/${paths.package.appName}/${paths.package.app}/frontend-hexo/frontend`), {
+  config: '_config.dev.yml'
+});
+
+gulp.task('hexo:clean', function(cb) {
+    hexo.init().then(function() {
+        return hexo.call('clean');
+    }).then(function() {
+        return hexo.exit();
+    }).then(function() {
+        return cb()
+    }).catch(function(err) {
+        console.log(err);
+        hexo.exit(err);
+        return cb(err);
+    })
+});
+
+gulp.task('hexo:generate', function(cb) {
+    hexo.init().then(function() {
+        return hexo.call('generate', {
+            watch: false
+        });
+    }).then(function() {
+        return hexo.exit();
+    }).then(function() {
+        return cb()
+    }).catch(function(err) {
+        console.log(err);
+        hexo.exit(err);
+        return cb(err);
+    })
 });
