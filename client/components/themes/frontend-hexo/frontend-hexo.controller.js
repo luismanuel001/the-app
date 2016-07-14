@@ -6,12 +6,11 @@
         .module('angularFullstackApp.frontend-hexo')
         .controller('FrontendHexoController', FrontendHexoController);
 
-    FrontendHexoController.$inject = ['$state'];
+    FrontendHexoController.$inject = [];
 
     /* @ngInject */
-    function FrontendHexoController($state) {
+    function FrontendHexoController() {
         var vm = this;
         vm.message = 'Hello';
-        $state.go('frontend-hexo.home');
     }
 })();

@@ -2,10 +2,6 @@
 
 angular.module('angularFullstackApp.frontend-hexo')
   .config(function ($stateProvider, $locationProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise('/');
-
-    $locationProvider.html5Mode(true);
-
     $stateProvider
       .state('frontend-hexo', {
         url: '/',
