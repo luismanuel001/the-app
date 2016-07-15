@@ -364,6 +364,7 @@ gulp.task('watch', () => {
 gulp.task('serve', cb => {
     runSequence(['clean:tmp', 'constant', 'env:all'],
         'hexo:clean',
+        'hexo:install',
         'hexo:generate',
         ['lint:scripts', 'inject'],
         ['wiredep:client'],
@@ -729,6 +730,11 @@ gulp.task('hexo:clean', function(cb) {
         hexo.exit(err);
         return cb(err);
     })
+});
+
+gulp.task('hexo:install', () => {
+    return gulp.src([`${paths.package.template}/${paths.package.appName}/${paths.package.app}/frontend-hexo/frontend/package.json`])
+        .pipe(install());
 });
 
 gulp.task('hexo:generate', function(cb) {
