@@ -13,15 +13,29 @@ angular.module('angularFullstackApp')
         templateUrl: 'app/jobs/jobs.html',
         controller: 'JobsController',
         controllerAs: 'vm',
+        breadcrumb: {
+          label: 'Jobs'
+        }
       })
       .state('jobs.startStop', {
         url: '/startstop',
-        template: '<start-stop-jobs></start-stop-jobs>'
+        template: '<start-stop-jobs></start-stop-jobs>',
+        breadcrumb: {
+          label: 'Start/Stop Jobs'
+        }
       })
       .state('jobs.type', {
         url: '/:jobType',
         templateUrl: 'app/jobs/jobs.html',
         controller: 'JobsController',
-        controllerAs: 'vm'
+        controllerAs: 'vm',
+        resolve: {
+          jobType: ['$stateParams', function($stateParams) {
+            return $stateParams.jobType;
+          }]
+        },
+        breadcrumb: {
+          label: '{{ jobType }} Jobs'
+        }
       });
   });
