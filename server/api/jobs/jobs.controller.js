@@ -2,10 +2,10 @@
 
 var config = require('../../config/environment'),
     kue = require('kue'),
-    request = require('request'),
     Promise = require('bluebird'),
     _ = require('lodash'),
-    path = require('path');
+    path = require('path'),
+    Job = kue.Job;
 
 var queue = kue.createQueue({
     disableSearch: true,
@@ -87,17 +87,15 @@ export function getJobsByJobType(req, res) {
 
   var promises = [];
   jobStates.forEach(function(state) {
-    var requestUrl = baseApiUrl + '/kue/jobs/' + type + '/' + state + '/0..10000';
     var promise = new Promise(function(resolve, reject) {
-      request.get(requestUrl, function(err, res, body) {
-        try {
-          var jobs = JSON.parse(body);
-          resolve(jobs);
-        } catch(err) {
-          reject(err);
+      Job.rangeByType(type, state, 0, 10000, null, function(err, jobs) {
+        if (err) {
+          return reject(err);
         }
+        resolve(jobs);
       });
     });
+
     promises.push(promise);
   });
 
@@ -127,15 +125,15 @@ export function getJobStatsByJobType(req, res) {
   var promises = [];
   jobStates.forEach(function(state) {
     var promise = new Promise(function(resolve, reject) {
-      var requestUrl = baseApiUrl + '/kue/jobs/' + type + '/' + state + '/stats';
-      request.get(requestUrl, function(err, res, body) {
-        try {
-          var jobs = JSON.parse(body);
-          jobs.state = state;
-          resolve(jobs);
-        } catch(err) {
-          reject(err);
+      queue.cardByType(type, state, function( err, count ) {
+        if (err) {
+          return reject(err);
         }
+
+        resolve({
+          count: count,
+          state: state
+        });
       });
     });
     promises.push(promise);
