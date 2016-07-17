@@ -5,16 +5,13 @@
     .module('admin-lte')
     .controller('ThemeController', ThemeController);
 
-  ThemeController.$inject = ['$http', '$state', '$timeout', 'Auth', 'ThemeStyleService'];
+  ThemeController.$inject = ['$http', '$state', 'Auth', 'ThemeStyleService'];
 
-  function ThemeController($http, $state, $timeout, Auth, ThemeStyleService) {
+  function ThemeController($http, $state, Auth, ThemeStyleService) {
     var vm = this;
     vm.Auth = Auth;
 
-    // TODO: Fix this. Added the wrapping $timeout as a quick temporary fix while a real solution is found
-    $timeout(function () {
-      activate();
-    });
+    activate();
 
     function activate() {
       $.AdminLTE.layout.activate();
@@ -27,8 +24,6 @@
         if (isLoggedIn) {
           var userTheme = Auth.getCurrentUser().theme;
           ThemeStyleService.changeSkin(userTheme);
-        } else {
-          $state.go('login'); // redirect to login page if user is not logged in
         }
       });
     }
