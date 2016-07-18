@@ -5,16 +5,19 @@
     .module('admin-lte')
     .controller('ThemeController', ThemeController);
 
-  ThemeController.$inject = ['$http', '$state', 'Auth', 'ThemeStyleService'];
+  ThemeController.$inject = ['$http', 'Auth', 'ThemeStyleService'];
 
-  function ThemeController($http, $state, Auth, ThemeStyleService) {
+  function ThemeController($http, Auth, ThemeStyleService) {
     var vm = this;
     vm.Auth = Auth;
 
     activate();
 
     function activate() {
-      $.AdminLTE.layout.activate();
+      // i.e. fixes the layout height in case min-height fails.
+      $(function () {
+        $.AdminLTE.layout.activate();
+      });
       ThemeStyleService.toggleMiniSidebar(true);
 
       // initialize app
