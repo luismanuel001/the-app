@@ -15,7 +15,7 @@
 
     function activate() {
       // i.e. fixes the layout height in case min-height fails.
-      $(function () {
+      $(function() {
         $.AdminLTE.layout.activate();
       });
       ThemeStyleService.toggleMiniSidebar(true);
