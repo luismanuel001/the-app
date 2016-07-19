@@ -1,0 +1,22 @@
+{
+  "name": "hexo-site",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Luis Manuel <luisman40@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/distributev/the-app",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "client/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.7"
+  }
+}
