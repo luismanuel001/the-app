@@ -29,6 +29,8 @@ export default function(app) {
     app.use(favicon(path.join(config.root, 'client', 'favicon.ico')));
   }
 
+  app.set('frontendPath', path.join(config.root, 'frontend'));
+  app.use(express.static(app.get('frontendPath')));
   app.set('appPath', path.join(config.root, 'client'));
   app.use(express.static(app.get('appPath')));
   app.use(morgan('dev'));
@@ -38,7 +40,7 @@ export default function(app) {
   app.set('view engine', 'html');
   app.use(compression());
   app.use(bodyParser.urlencoded({ extended: false }));
-  app.use(bodyParser.json()); 
+  app.use(bodyParser.json());
   app.use(methodOverride());
   app.use(cookieParser());
   app.use(passport.initialize());
