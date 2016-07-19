@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('angularFullstackApp', ['angularFullstackApp.auth', 'angularFullstackApp.admin',
-    'angularFullstackApp.constants', 'ngCookies', 'ngResource', 'ngSanitize', 'btford.socket-io',
+    'angularFullstackApp.constants', 'angularFullstackApp.contactDetails', 'ngCookies', 'ngResource', 'ngSanitize', 'btford.socket-io',
     'ui.router', 'ui.bootstrap', 'validation.match', 'Menus'
   ])
   .config(function($urlRouterProvider, $locationProvider) {
