@@ -3,13 +3,13 @@
 angular.module('angularFullstackApp')
   .config(function($stateProvider) {
     $stateProvider.state('login', {
-        url: '/login',
+        url: '/theapp/login',
         templateUrl: 'app/account/login/login.html',
         controller: 'LoginController',
         controllerAs: 'vm'
       })
       .state('logout', {
-        url: '/logout?referrer',
+        url: '/theapp/logout?referrer',
         referrer: 'main',
         template: '',
         controller: function($state, Auth) {
@@ -19,27 +19,27 @@ angular.module('angularFullstackApp')
         }
       })
       .state('signup', {
-        url: '/signup',
+        url: '/theapp/signup',
         templateUrl: 'app/account/signup/signup.html',
         controller: 'SignupController',
         controllerAs: 'vm'
       })
       .state('settings', {
-        url: '/settings',
+        url: '/theapp/settings',
         templateUrl: 'app/account/settings/settings.html',
         controller: 'SettingsController',
         controllerAs: 'vm',
         authenticate: true
       })
       .state('customers', {
-        url: '/customers',
+        url: '/theapp/customers',
         templateUrl: 'app/account/customers/customers.html',
         controller: 'SignupController',
         controllerAs: 'vm',
         authenticate: true
       })
       .state('transactions', {
-        url: '/transactions',
+        url: '/theapp/transactions',
         templateUrl: 'app/account/transactions/transactions.html',
         controller: 'SignupController',
         controllerAs: 'vm',

@@ -5,7 +5,7 @@ angular.module('angularFullstackApp', ['angularFullstackApp.auth', 'angularFulls
     'ui.router', 'ui.bootstrap', 'validation.match', 'Menus'
   ])
   .config(function($urlRouterProvider, $locationProvider) {
-    $urlRouterProvider.otherwise('/');
+    $urlRouterProvider.otherwise('/theapp');
 
     $locationProvider.html5Mode(true);
   })

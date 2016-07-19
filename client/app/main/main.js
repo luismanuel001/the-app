@@ -3,7 +3,7 @@
 angular.module('angularFullstackApp')
   .config(function($stateProvider) {
     $stateProvider.state('main', {
-      url: '/',
+      url: '/theapp',
       template: '<main></main>'
     });
   });
