@@ -19,7 +19,7 @@ permalink_defaults:
 
 # Directory
 source_dir: content
-public_dir: ../../../../../../frontend
+public_dir: ../../../../../../dist/frontend
 tag_dir: tags
 archive_dir: archives
 category_dir: categories

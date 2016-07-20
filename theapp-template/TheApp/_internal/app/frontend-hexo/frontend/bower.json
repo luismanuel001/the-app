@@ -17,6 +17,7 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "^1.5.7"
+    "angular": "^1.5.7",
+    "contact-details": "../../../../../../client/components/contact-details"
   }
 }

@@ -367,11 +367,11 @@ gulp.task('watch', () => {
 gulp.task('serve', cb => {
     runSequence(['clean:tmp', 'constant', 'env:all'],
         'hexo:clean',
-        'hexo:install',
-        'hexo:generate',
         ['lint:scripts', 'inject'],
-        ['wiredep:client'],
+        ['wiredep:client', 'wiredep:frontend'],
         ['transpile:client', 'styles'],
+        'hexo:install',
+        'hexo:generate:dev',
         ['start:server', 'start:client'],
         'watch',
         cb);
@@ -464,10 +464,14 @@ gulp.task('build', cb => {
     runSequence(
         [
             'clean:dist',
-            'clean:tmp'
+            'clean:tmp',
+            'hexo:clean',
         ],
         'inject',
-        'wiredep:client',
+        [
+          'wiredep:client',
+          'wiredep:frontend'
+        ],
         [
             'transpile:client',
             'transpile:server'
@@ -478,6 +482,8 @@ gulp.task('build', cb => {
             'copy:fonts',
             'copy:assets',
             'copy:server',
+            'hexo:install',
+            'hexo:generate:dist',
             'build:client'
         ],
         cb);
@@ -717,19 +723,21 @@ gulp.task('package:zip', cb => {
         cb);
 });
 
-var hexo = new Hexo(path.join(process.cwd(), `${paths.package.template}/${paths.package.appName}/${paths.package.app}/frontend-hexo/frontend`), {
-  config: '_config.dev.yml'
-});
+function configHexo(env) {
+  return new Hexo(path.join(process.cwd(), `${paths.package.template}/${paths.package.appName}/${paths.package.app}/frontend-hexo/frontend`), {
+    config: '_config.' + (env || 'dev') + '.yml'
+  });
+}
 
 gulp.task('hexo:clean', function(cb) {
+    var hexo = configHexo();
     hexo.init().then(function() {
-        return hexo.call('clean');
+      return hexo.call('clean');
     }).then(function() {
         return hexo.exit();
     }).then(function() {
         return cb()
     }).catch(function(err) {
-        console.log(err);
         hexo.exit(err);
         return cb(err);
     })
@@ -740,11 +748,10 @@ gulp.task('hexo:install', () => {
         .pipe(install());
 });
 
-gulp.task('hexo:generate', function(cb) {
+gulp.task('hexo:generate:dev', function(cb) {
+    var hexo = configHexo('dev');
     hexo.init().then(function() {
-        return hexo.call('generate', {
-            watch: true
-        });
+      return hexo.call('generate', { watch: true })
     }).then(function() {
         return hexo.exit();
     }).then(function() {
@@ -754,4 +761,44 @@ gulp.task('hexo:generate', function(cb) {
         hexo.exit(err);
         return cb(err);
     })
+});
+
+gulp.task('hexo:generate:dist', function(cb) {
+    var hexo = configHexo('prod');
+    hexo.init().then(function() {
+      return hexo.call('generate', { watch: true })
+    }).then(function() {
+        return hexo.exit();
+    }).then(function() {
+        return cb()
+    }).catch(function(err) {
+        console.log(err);
+        hexo.exit(err);
+        return cb(err);
+    })
+});
+
+gulp.task('hexo:generate:package', function(cb) {
+    var hexo = configHexo('package');
+    hexo.init().then(function() {
+      return hexo.call('generate', { watch: true })
+    }).then(function() {
+        return hexo.exit();
+    }).then(function() {
+        return cb()
+    }).catch(function(err) {
+        console.log(err);
+        hexo.exit(err);
+        return cb(err);
+    })
+});
+
+// inject bower components
+gulp.task('wiredep:frontend', () => {
+    return gulp.src(`${paths.package.template}/${paths.package.appName}/${paths.package.app}/${paths.hexo.root}/themes/corporate/layout/_partial/{scripts,head}.ejs`)
+        .pipe(wiredep({
+            cwd: `${paths.package.template}/${paths.package.appName}/${paths.package.app}/${paths.hexo.root}/`,
+            ignorePath: `../../source`
+        }))
+        .pipe(gulp.dest(`${paths.package.template}/${paths.package.appName}/${paths.package.app}/${paths.hexo.root}/themes/corporate/layout/_partial/`));
 });

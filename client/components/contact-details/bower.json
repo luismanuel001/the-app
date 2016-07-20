@@ -1,0 +1,14 @@
+{
+  "name": "contact-details",
+  "homepage": "https://github.com/distributev/the-app",
+  "authors": [
+    "Luis Manuel <luisman40@gmail.com>"
+  ],
+  "description": "",
+  "main": [
+    "contact-details.directive.js",
+    "contact-details.css"
+  ],
+  "license": "MIT",
+  "private": true
+}

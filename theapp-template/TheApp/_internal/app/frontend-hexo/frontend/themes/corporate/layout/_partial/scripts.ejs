@@ -4,7 +4,6 @@
 <![endif]-->
 <%- js('metronic/assets/plugins/jquery.min.js') %>
 <%- js('metronic/assets/plugins/jquery-migrate.min.js') %>
-<%- js('bower_components/angular/angular.min.js') %>
 <%- js('metronic/assets/plugins/bootstrap/js/bootstrap.min.js') %>
 <%- js('metronic/assets/corporate/scripts/back-to-top.js') %>
 <%- js('metronic/assets/plugins/owl.carousel/owl.carousel.min.js') %>
@@ -83,8 +82,15 @@
 <%- partial('google-analytics') %>
 <!-- END INTEGRATIONS -->
 
-<!-- BEGIN ANGULAR DIRECTIVES -->
-<%- js('js/app.js') %>
-<%- js('components/contact-details/contact-details.directive.js') %>
+<!-- BEGIN CUSTOM SCRIPTS -->
 
-<!-- END ANGULAR DIRECTIVES -->
+<!-- build:js({frontend}) app/vendor.js -->
+  <!-- bower:js -->
+  <script src="/bower_components/angular/angular.js"></script>
+  <script src="/bower_components/contact-details/contact-details.directive.js"></script>
+  <!-- endbower -->
+<!-- endbuild -->
+
+<%- js('js/app.js') %>
+
+<!-- END CUSTOM SCRIPTS -->
