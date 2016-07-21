@@ -38,7 +38,7 @@ export default function(app) {
       // Check if there is a document with that url
       getDocument(req.path, function(err, doc) {
         if (err) {
-          res.render('404.html');
+          res.render(path.join(app.get('frontendPath'), '404'));
         }
         else {
           res.render(path.join(app.get('frontendPath'), 'document'), {}, function(err, html) {
