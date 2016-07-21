@@ -31,13 +31,11 @@ const paths = {
         images: `${clientPath}/assets/images/**/*`,
         scripts: [
             `${clientPath}/**/!(*.spec|*.mock).js`,
-            `!${clientPath}/bower_components/**/*`,
-            // `!${clientPath}/components/themes/frontend-hexo/generated/**/*`
+            `!${clientPath}/bower_components/**/*`
         ],
         styles: [
           `${clientPath}/{app,components}/**/*.css`,
-          `!${clientPath}/bower_components/**/*`,
-          // `!${clientPath}/components/themes/frontend-hexo/generated/**/*`
+          `!${clientPath}/bower_components/**/*`
         ],
         mainStyle: `${clientPath}/app/app.css`,
         views: `${clientPath}/{app,components}/**/*.html`,
