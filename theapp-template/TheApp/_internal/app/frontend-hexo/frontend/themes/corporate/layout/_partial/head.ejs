@@ -28,7 +28,7 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <%- open_graph({twitter_id: theme.twitter, google_plus: theme.google_plus, fb_admins: theme.fb_admins, fb_app_id: theme.fb_app_id}) %>
+  <%- open_graph({ description: " ", twitter_id: theme.twitter, google_plus: theme.google_plus, fb_admins: theme.fb_admins, fb_app_id: theme.fb_app_id}) %>
   <% if (theme.rss){ %>
     <link rel="alternative" href="<%- theme.rss %>" title="<%= config.title %>" type="application/atom+xml">
   <% } %>
@@ -63,7 +63,7 @@
   <!-- Theme styles END -->
 
   <!-- BEGIN CUSTOM CSS -->
-  
+
   <!-- bower:css -->
   <link rel="stylesheet" href="/bower_components/contact-details/contact-details.css" />
   <!-- endbower -->
