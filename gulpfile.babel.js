@@ -367,10 +367,10 @@ gulp.task('watch', () => {
 gulp.task('serve', cb => {
     runSequence(['clean:tmp', 'constant', 'env:all'],
         'hexo:clean',
+        'hexo:install',
         ['lint:scripts', 'inject'],
         ['wiredep:client', 'wiredep:frontend'],
         ['transpile:client', 'styles'],
-        'hexo:install',
         'hexo:generate:dev',
         ['start:server', 'start:client'],
         'watch',
@@ -466,6 +466,7 @@ gulp.task('build', cb => {
             'clean:dist',
             'clean:tmp',
             'hexo:clean',
+            'hexo:install',
         ],
         'inject',
         [
@@ -482,7 +483,6 @@ gulp.task('build', cb => {
             'copy:fonts',
             'copy:assets',
             'copy:server',
-            'hexo:install',
             'hexo:generate:dist',
             'build:client'
         ],
