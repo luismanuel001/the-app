@@ -764,7 +764,7 @@ gulp.task('hexo:generate:dev', function(cb) {
 gulp.task('hexo:generate:dist', function(cb) {
     var hexo = configHexo('prod');
     hexo.init().then(function() {
-      return hexo.call('generate', { watch: true })
+      return hexo.call('generate')
     }).then(function() {
         return hexo.exit();
     }).then(function() {
@@ -779,7 +779,7 @@ gulp.task('hexo:generate:dist', function(cb) {
 gulp.task('hexo:generate:package', function(cb) {
     var hexo = configHexo('package');
     hexo.init().then(function() {
-      return hexo.call('generate', { watch: true })
+      return hexo.call('generate')
     }).then(function() {
         return hexo.exit();
     }).then(function() {

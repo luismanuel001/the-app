@@ -13,12 +13,12 @@ timezone:
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
 url: http://yoursite.com
-root: / # components/themes/frontend-hexo/generated
+root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 
 # Directory
-source_dir: content
+source_dir: source
 public_dir: ../../frontend
 tag_dir: tags
 archive_dir: archives
