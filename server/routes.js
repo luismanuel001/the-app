@@ -24,12 +24,12 @@ export default function(app) {
 
   app.route('/theapp')
     .get((req, res) => {
-      res.sendFile(path.resolve(app.get('appPath') + '/app-index.html'));
+      res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
     });
 
   app.route('/theapp/*')
     .get((req, res) => {
-      res.sendFile(path.resolve(app.get('appPath') + '/app-index.html'));
+      res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
     });
 
   // All other routes

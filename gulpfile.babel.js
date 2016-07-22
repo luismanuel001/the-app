@@ -39,7 +39,7 @@ const paths = {
         ],
         mainStyle: `${clientPath}/app/app.css`,
         views: `${clientPath}/{app,components}/**/*.html`,
-        mainView: `${clientPath}/app-index.html`,
+        mainView: `${clientPath}/index.html`,
         test: [`${clientPath}/{app,components}/**/*.{spec,mock}.js`],
         e2e: ['e2e/**/*.spec.js'],
         bower: `${clientPath}/bower_components/`
