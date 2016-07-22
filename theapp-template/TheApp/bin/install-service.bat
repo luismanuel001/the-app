@@ -13,7 +13,7 @@ SET node=%rootdir%..\_internal\runtime\nodejs\nodejs
 
 ECHO Installing Service...
 
-%node% %rootdir%install-service.js
+%node% %rootdir%..\_internal\bin\install-service.js
 
 :: PAUSE
 ECHO ON

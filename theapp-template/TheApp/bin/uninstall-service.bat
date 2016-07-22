@@ -13,7 +13,7 @@ SET node=%rootdir%..\_internal\runtime\nodejs\nodejs
 
 ECHO Uninstalling Service...
 
-%node% %rootdir%uninstall-service.js
+%node% %rootdir%..\_internal\bin\uninstall-service.js
 
 :: PAUSE
 ECHO ON

@@ -1,10 +1,10 @@
-var wincmd = require('../_internal/tools/node-windows');
+var wincmd = require('../tools/node-windows');
 var Service = wincmd.Service;
 
 // Create a new service object
 var svc = new Service({
   name:'TheAppService',
-  script: require('path').join(__dirname,'../_internal/app/server'),
+  script: require('path').join(__dirname,'../app/server'),
   env:{
     name: "NODE_ENV",
     value: "production"
