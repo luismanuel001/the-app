@@ -1,3 +1,7 @@
+---
+title: 404
+---
+
 # Not found **:(**
 
 Sorry, but the page you were trying to view does not exist.

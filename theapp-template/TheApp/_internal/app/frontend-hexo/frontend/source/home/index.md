@@ -1,3 +1,8 @@
+---
+title: Home
+date: 2016-07-26 09:55:27
+---
+
 # TheAPP FrontEnd Home
 
 Dillinger is a cloud-enabled, mobile-ready, offline-storage, AngularJS powered HTML5 Markdown editor.
