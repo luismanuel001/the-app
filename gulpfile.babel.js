@@ -18,7 +18,7 @@ import {protractor, webdriver_update} from 'gulp-protractor';
 import {Instrumenter} from 'isparta';
 import install from 'gulp-install';
 import zip from 'gulp-zip';
-import hexo from 'hexo';
+import Hexo from 'hexo';
 
 var plugins = gulpLoadPlugins();
 var config;
