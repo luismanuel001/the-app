@@ -8,6 +8,7 @@ import errors from './components/errors';
 import path from 'path';
 import kue from 'kue';
 import _ from 'lodash';
+import he from 'he';
 
 export default function(app) {
   // Insert routes below
@@ -42,7 +43,7 @@ export default function(app) {
         }
         else {
           res.render(path.join(app.get('frontendPath'), 'document'), {}, function(err, html) {
-            res.send(html.replace('[[doc_html]]', doc.html));
+            res.send(html.replace('[[doc_html]]', '<iframe src="" srcdoc="' +  he.escape(doc.html) + '" frameborder="0" scrollbar="false" onload="' + he.escape("this.style.height=this.contentDocument.body.scrollHeight + 'px';") + '" class="col-xs-12"></iframe>'));
           });
         }
       });

@@ -18,6 +18,7 @@
   ],
   "dependencies": {
     "angular": "^1.5.7",
-    "contact-details": "../../../../../../client/components/contact-details"
+    "contact-details": "../../../../../../client/components/contact-details",
+    "srcdoc-polyfill": "^0.2.0"
   }
 }
