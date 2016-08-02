@@ -1,0 +1,119 @@
+[
+    {
+      "key": "email.to",
+      "type": "horizontalInput",
+      "templateOptions": {
+        "label": "To",
+        "type":"email"
+
+      }
+      
+    },
+    {
+      "key": "email.cc",
+      "type": "horizontalInput",
+      "templateOptions": {
+        "label": "CC",
+        "type":"text"
+      }
+      
+    },
+     {
+      "key": "email.bcc",
+      "type": "horizontalInput",
+      "templateOptions": {
+        "label": "BCC",
+        "type":"text"
+      }
+      
+    },
+    {
+      "key": "email.subject",
+      "type": "horizontalInput",
+      "templateOptions": {
+        "label": "Subject",
+        "type":"text"
+
+      }
+    },
+     {
+      "key": "code",
+      "type": "horizontalInput",
+      "templateOptions": {
+        "label": "Client Code",
+        "type":"text"
+
+      }    
+    },
+    
+    {
+      "key": "name",
+      "type": "horizontalInput",
+      "templateOptions": {
+        "label": "Client name",
+        "type":"text"
+
+      }    
+    },
+    {
+    "key": "date",
+    "type": "datepicker",
+    "templateOptions": {
+      "label": "Date",
+      "type": "text",
+      "datepickerPopup": "dd-MMMM-yyyy"
+    }
+  },
+    {
+      "key": "number",
+      "type": "horizontalInput",
+      "templateOptions": {
+        "label": "Number",
+        "type":"text"
+
+      }   
+    },
+    {
+      "key": "product",
+      "type": "horizontalInput",
+       "templateOptions": {
+        "label": "Product",
+        "type":"text"
+
+      }
+      
+    },
+    {
+      "key": "fees",
+      "type": "horizontalInput",
+       "templateOptions": {
+        "label": "Fees",
+        "type":"text"
+
+      }
+      
+    },
+
+    {
+      "key": "fees",
+      "type": "horizontalInput",
+       "templateOptions": {
+        "label": "Fees",
+        "type":"text"
+
+      }
+      
+    },
+    
+    {
+      "key": "fees",
+      "type": "horizontalInput",
+       "templateOptions": {
+        "label": "Fees",
+        "type":"text"
+
+      }
+      
+    }
+
+  ]
