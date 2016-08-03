@@ -29,12 +29,6 @@ export default function(app) {
     app.use(favicon(path.join(config.root, 'client', 'favicon.ico')));
   }
 
-  // TODO: remove
-  if(env === 'production')
-     app.use('/',express.static(__dirname+'/../../../config/mail-merge'));
-  else
-     app.use('/',express.static(__dirname+'/../../config/mail-merge'));
-
   app.set('frontendPath', path.join(config.root, 'frontend'));
   app.use(express.static(app.get('frontendPath')));
   app.set('appPath', path.join(config.root, 'client'));

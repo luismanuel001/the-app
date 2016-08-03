@@ -51,5 +51,9 @@ module.exports = {
   redis: {
     configPath: '../../config/databases/redis.json',
     exePath: '../../_internal/tools/redis2.8.2400-xp32bit'
+  },
+
+  flows: {
+    mailMergeFolder: '../../flows/005-mail-merge'
   }
 };

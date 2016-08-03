@@ -21,5 +21,9 @@ module.exports = {
   redis: {
     configPath: './theapp-template/TheApp/config/databases/redis.json',
     exePath: './theapp-template/TheApp/_internal/tools/redis2.8.2400-xp32bit'
+  },
+
+  flows: {
+    mailMergeFolder: './theapp-template/TheApp/flows/005-mail-merge'
   }
 };

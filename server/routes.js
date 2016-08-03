@@ -16,6 +16,7 @@ export default function(app) {
   app.use('/api/app', require('./api/app'));
   app.use('/api/jobs', require('./api/jobs'));
   app.use('/api/kue', kue.app);
+  app.use('/api/flows', require('./api/flow'));
 
   app.use('/auth', require('./auth').default);
 

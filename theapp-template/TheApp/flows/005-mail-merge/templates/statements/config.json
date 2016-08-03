@@ -1,0 +1,40 @@
+{
+    "template": "Statements",
+    "document": {
+        "initialstatus": "unpaid",
+        "generatepdf": true,
+        "filename": "valid{{ng}file-name-template.pdf",
+        "output_folder": "output/valid{{ng}}folder-name-template",
+        "html": "document.html",
+        "html_permalink": "/documents/statements/{{merge.date| date:'yyyy-MM' }}/{{merge.recipientcode}}",
+        "pdf_permalink": "/documents/statements/{{merge.date| date:'yyyy-MM' }}/{{merge.recipientcode}}.pdf",
+        "zip_permalink": "/documents/statements/{{merge.date| date:'yyyy-MM' }}/{{merge.recipientcode}}.pdf",
+        "authrequired": false
+	},
+    "email": {
+        "sendemail":true,
+        "sendhtmlemail": true, 
+        "to": "valid{{ng}template",
+        "cc": "",
+        "bcc": "",
+        "subject": "test",
+        "text": "Hello,how are you {{merge.name}}, did you receive my invoice on {{merge.date| date:'yyyy-MM-dd' }}",
+        "html": "email.html",
+        "attachments": [
+            "{{pdf_file_path}}",
+            "C:/test/hardcoded-file.txt"
+        ]
+	},
+    "smtp": {
+        "host": "Email Server Host",
+        "port": "25",
+        "userid": "From Email User ID",
+        "userpassword": "From Email Password",
+        "usessl": false,
+        "usetls": false,
+        "debug": false,
+        "fromaddress": "from@emailaddress.com",
+        "name": "From Name"
+    },
+    "form": "form.json"
+}

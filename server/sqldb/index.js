@@ -9,6 +9,7 @@ import knex from 'knex';
 import bookshelf from 'bookshelf';
 import bookshelfModelbase from 'bookshelf-modelbase';
 import userModel from '../api/user/user.model';
+import flowModel from '../api/flow/flow.model';
 import Promise from 'bluebird';
 
 var knexInstance = knex(config.bookshelf);
@@ -23,6 +24,7 @@ db.bookshelf.plugin(bookshelfModelbase.pluggable);
 
 // Insert models below
 db.User = userModel(db.bookshelf);
+db.Flow = flowModel(db.bookshelf);
 
 // Add additional sync method to initialize the table
 db.User.sync = function() {
@@ -55,8 +57,66 @@ db.User.sync = function() {
   return db.User.promise;
 };
 
+db.Flow.sync = function() {
+  if (!db.Flow.promise) {
+    db.Flow.promise = new Promise(function(resolve) {
+      knexInstance.schema.hasTable('flows_data').then(function(exists) {
+        if (!exists) {
+          return knexInstance.schema.createTable('flows_data', function(table) {
+            table.increments('_id').primary().notNullable();
+            table.string('type1');
+            table.string('type2');
+            table.string('type3');
+            table.string('code1');
+            table.string('code2');
+            table.string('code3');
+            table.string('status1');
+            table.string('status2');
+            table.string('status3');
+            table.string('text1');
+            table.string('text2');
+            table.string('text3');
+            table.text('clob1', 'longtext');
+            table.text('clob2', 'longtext');
+            table.text('clob3', 'longtext');
+            table.text('blob1', 'longtext');
+            table.text('blob2', 'longtext');
+            table.text('blob3', 'longtext');
+            table.date('date1');
+            table.date('date2');
+            table.date('date3');
+            table.decimal('amount1');
+            table.decimal('amount2');
+            table.decimal('amount3');
+            table.boolean('bool1');
+            table.boolean('bool2');
+            table.boolean('bool3');
+            table.string('log1');
+            table.string('log2');
+            table.string('log3');
+            table.string('notes');
+            table.string('additional_data1');
+            table.string('additional_data2');
+            table.string('additional_data3');
+
+            resolve();
+          });
+        } else {
+          resolve();
+        }
+      });
+    });
+  }
+
+  return db.Flow.promise;
+};
+
 db.bookshelf.sync = function() {
-  return db.User.sync();
+  var promises = [
+    db.User.sync(),
+    db.Flow.sync()
+  ];
+  return Promise.all(promises);
 };
 
 module.exports = db;
