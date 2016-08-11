@@ -41,7 +41,7 @@ queue.process('send-email', function(job, done){
       compiledEmailInfo.html = ngEnvironment.$compile(emailHtml)(merge);
       sendEmail(compiledEmailInfo, template.smtp)
         .then(res => {
-          done(null, { compiledEmailInfo: compiledEmailInfo });
+          done(null, { compiledData: compiledEmailInfo });
         })
         .catch(err => {
           done(err);
@@ -51,7 +51,6 @@ queue.process('send-email', function(job, done){
 });
 
 function sendEmail(compiledEmailInfo, smtpInfo) {
-  console.log('sendEmail');
   var smtpConfig = {
     host: smtpInfo.host,
     port: smtpInfo.port,

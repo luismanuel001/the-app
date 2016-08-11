@@ -102,7 +102,7 @@ function updateMergeStatus(status, rowId, error) {
       return flow.save({
         status2: status,
         log1: status === 'failed' ? error : null
-      });
+      }, {patch: true});
     });
 }
 
@@ -116,19 +116,19 @@ function updateDocumentDataIntoDB(documentData, rowId) {
         blob1: documentData.pdfData ? documentData.pdfData : null,
         additional_data2: JSON.stringify(compiledMailMergeData)
       };
-      return flow.save(flowData);
+      return flow.save(flowData, {patch: true});
     });
 }
 
 function updateEmailDataIntoDB(emailData, rowId) {
   return Flow.findById(rowId)
     .then(flow => {
-      var compiledMailMergeData = JSON.parse(flow.attributes.additional_data1);
+      var compiledMailMergeData = JSON.parse(flow.attributes.additional_data2);
       compiledMailMergeData.email = emailData.compiledData;
       var flowData = {
         status2: 'complete',
         additional_data2: JSON.stringify(compiledMailMergeData)
       };
-      return flow.save(flowData);
+      return flow.save(flowData, {patch: true});
     });
 }

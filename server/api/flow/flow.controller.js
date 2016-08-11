@@ -67,6 +67,19 @@ function mailMergeConfig(template) {
   return require(path.join(templatePath, 'config.json'));
 }
 
+function respondWithMailMergeResults(res) {
+  return function(entity) {
+    if (entity) {
+      entity = _.map(entity.models, (item) => {
+        item.set({'additional_data1': JSON.parse(item.get('additional_data1'))});
+        item.set({'additional_data2': JSON.parse(item.get('additional_data2'))});
+        return item;
+      });
+      res.status(200).json(entity);
+    }
+  };
+}
+
 // Gets a list of Flows
 export function index(req, res) {
   return Flow.findAll()
@@ -180,4 +193,38 @@ export function getMailMergeDocument(req, res) {
     }
     return res.status(200).json(data);
   });
+}
+
+// Gets a list of Mail-Merge Flows
+export function listMailMerge(req, res) {
+  return Flow.findAll({ type1: 'mail-merge' })
+    .then(respondWithMailMergeResults(res))
+    .catch(handleError(res));
+}
+
+export function getMailMergeDocumentHtmlFromPermalink(permalink) {
+  return new Promise((resolve, reject) => {
+    Flow.findAll({ type1: 'mail-merge' })
+      .then(entity => {
+        if (entity && entity.models) {
+          entity = _.find(entity.models, (item) => {
+            item.set({'additional_data1': JSON.parse(item.get('additional_data1'))});
+            item.set({'additional_data2': JSON.parse(item.get('additional_data2'))});
+            if (item.get('additional_data2') && item.get('additional_data2').document &&item.get('additional_data2').document.html_permalink) {
+              return item.get('additional_data2').document.html_permalink === permalink;
+            }
+            else {
+              return false;
+            }
+          });
+          if (entity) resolve(entity.get('additional_data2').document.html);
+          else reject();
+        }
+        else reject();
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+
 }
