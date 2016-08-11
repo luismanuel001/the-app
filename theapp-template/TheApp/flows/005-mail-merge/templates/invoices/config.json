@@ -3,38 +3,38 @@
     "document": {
         "initialstatus": "unpaid",
         "generatepdf": true,
-        "filename": "valid{{ng}file-name-template.pdf",
-        "output_folder": "output/valid{{ng}}folder-name-template",
+        "filename": "{{merge.code}}.pdf",
+        "output_folder": "output/invoices/{{merge.date| date:'yyyy-MM' }}",
         "html": "document.html",
-        "html_permalink": "/documents/invoices/{{merge.date| date:'yyyy-MM' }}/{{merge.recipientcode}}",
-        "pdf_permalink": "/documents/invoices/{{merge.date| date:'yyyy-MM' }}/{{merge.recipientcode}}.pdf",
-        "zip_permalink": "/documents/invoices/{{merge.date| date:'yyyy-MM' }}/{{merge.recipientcode}}.pdf",
+        "html_permalink": "/documents/invoices/{{merge.date| date:'yyyy-MM' }}/{{merge.code}}",
+        "pdf_permalink": "/documents/invoices/{{merge.date| date:'yyyy-MM' }}/{{merge.code}}.pdf",
+        "zip_permalink": "/documents/invoices/{{merge.date| date:'yyyy-MM' }}/{{merge.code}}.pdf",
         "authrequired": false
 	},
     "email": {
         "sendemail":true,
         "sendhtmlemail": true,
-        "to": "valid{{ng}template",
+        "to": "",
         "cc": "",
         "bcc": "",
         "subject": "test",
         "text": "Hello,how are you {{merge.name}}, did you receive my invoice on {{merge.date| date:'yyyy-MM-dd' }}",
         "html": "email.html",
         "attachments": [
-            "{{pdf_file_path}}",
+            "{{merge.pdf_file_path}}",
             "C:/test/hardcoded-file.txt"
         ]
 	},
     "smtp": {
-        "host": "Email Server Host",
-        "port": "25",
-        "userid": "From Email User ID",
-        "userpassword": "From Email Password",
-        "usessl": false,
+        "host": "smtp.gmail.com",
+        "port": 465,
+        "userid": "",
+        "userpassword": "",
+        "usessl": true,
         "usetls": false,
         "debug": false,
-        "fromaddress": "from@emailaddress.com",
-        "name": "From Name"
+        "fromaddress": "",
+        "name": ""
     },
     "form": "form.json"
 }

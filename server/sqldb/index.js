@@ -98,6 +98,7 @@ db.Flow.sync = function() {
             table.string('additional_data1');
             table.string('additional_data2');
             table.string('additional_data3');
+            table.timestamps();
 
             resolve();
           });

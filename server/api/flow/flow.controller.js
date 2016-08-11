@@ -14,6 +14,7 @@ import {Flow} from '../../sqldb';
 import config from '../../config/environment';
 import path from 'path';
 import fs from 'fs';
+var mailMerge = require(path.join(config.root, config.flows.mailMergeFolder, 'scripts', 'mail-merge'));
 
 function respondWithResult(res, statusCode) {
   statusCode = statusCode || 200;
@@ -118,6 +119,18 @@ export function destroy(req, res) {
     .then(handleEntityNotFound(res))
     .then(removeEntity(res))
     .catch(handleError(res));
+}
+
+// Creates a new Flow in the DB
+export function createMailMerge(req, res) {
+  var mailMergeData = req.body;
+  mailMergeData.templatePath = path.join(config.root, config.flows.mailMergeFolder, 'templates', req.body.template);
+  mailMerge.create(mailMergeData).then((mergeJob) => {
+    return res.status(200).json(mergeJob);
+  });
+  // return Flow.create(req.body)
+  //   .then(respondWithResult(res, 201))
+  //   .catch(handleError(res));
 }
 
 // Returns a mail-merge template config file as JSON
