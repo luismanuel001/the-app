@@ -239,84 +239,84 @@ angular.module('angularFullstackApp')
                 key: 'pdf_file_name',
                 type: 'horizontalInput',
                 templateOptions: {
-                  type: 'text'
+                  type: 'hidden'
                 }
               },
               {
                 key: 'output_folder',
                 type: 'horizontalInput',
                 templateOptions: {
-                  type: 'text'
+                  type: 'hidden'
                 }
               },
               {
                 key: 'pdf_file_path',
                 type: 'horizontalInput',
                 templateOptions: {
-                  type: 'text'
+                  type: 'hidden'
                 }
               },
               {
                 key: 'html_permalink',
                 type: 'horizontalInput',
                 templateOptions: {
-                  type: 'text'
+                  type: 'hidden'
                 }
               },
               {
                 key: 'pdf_permalink',
                 type: 'horizontalInput',
                 templateOptions: {
-                  type: 'text'
+                  type: 'hidden'
                 }
               },
               {
                 key: 'zip_permalink',
                 type: 'horizontalInput',
                 templateOptions: {
-                  type: 'text'
+                  type: 'hidden'
                 }
               },
               {
                 key: 'now_custom_date',
                 type: 'horizontalInput',
                 templateOptions: {
-                  type: 'text'
+                  type: 'hidden'
                 }
               },
               {
                 key: 'now_default_date',
                 type: 'horizontalInput',
                 templateOptions: {
-                  type: 'text'
+                  type: 'hidden'
                 }
               },
               {
                 key: 'now_short_date',
                 type: 'horizontalInput',
                 templateOptions: {
-                  type: 'text'
+                  type: 'hidden'
                 }
               },
               {
                 key: 'now_medium_date',
                 type: 'horizontalInput',
                 templateOptions: {
-                  type: 'text'
+                  type: 'hidden'
                 }
               },
               {
                 key: 'now_long_date',
                 type: 'horizontalInput',
                 templateOptions: {
-                  type: 'text'
+                  type: 'hidden'
                 }
               },
               {
                 key: 'now_full_date',
                 type: 'horizontalInput',
                 templateOptions: {
-                  type: 'text'
+                  type: 'hidden'
                 }
               }
             ];
