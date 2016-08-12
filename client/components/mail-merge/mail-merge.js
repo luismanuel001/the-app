@@ -33,6 +33,25 @@ angular.module('angularFullstackApp')
 
       var mapping = function(){
         $scope.merge = $scope.messageInterpolate[$scope.currentIndex];
+        initAdditionalVars();
+      };
+
+      var initAdditionalVars = function(){
+        var additional_vars = {
+          'pdf_file_name': $scope.mailMerge.document.filename,
+          'output_folder': $scope.mailMerge.document.output_folder,
+          'pdf_file_path': $scope.mailMerge.document.output_folder + '/' + $scope.mailMerge.document.filename,
+          'html_permalink': $scope.mailMerge.document.html_permalink,
+          'pdf_permalink': $scope.mailMerge.document.pdf_permalink,
+          'zip_permalink': $scope.mailMerge.document.html_permalink + '.zip',
+          'now_custom_date': $filter('date')(Date.now(), 'yyyy.MM.dd_HH.mm.ss'),
+          'now_default_date': $filter('date')(Date.now(), 'mediumDate'),
+          'now_short_date': $filter('date')(Date.now(), 'shortDate'),
+          'now_medium_date': $filter('date')(Date.now(), 'mediumDate'),
+          'now_long_date': $filter('date')(Date.now(), 'longDate'),
+          'now_full_date': $filter('date')(Date.now(), 'fullDate'),
+        };
+        $scope.merge = _.merge($scope.merge, additional_vars);
       };
 
       var singleMsg = function(){
@@ -166,9 +185,6 @@ angular.module('angularFullstackApp')
 
         if($scope.dataid){
           $scope.csvData = $('#myData').val().trim();
-          if($scope.csvData){
-            $scope.parseCSV();
-          }
         }
 
         $http.get('/api/flows/mail-merge/' + $scope.template + '/config').then(function(res){
@@ -207,7 +223,7 @@ angular.module('angularFullstackApp')
           if($scope.mailMerge.document.generatepdf){
             $http.get('/api/flows/mail-merge/' + $scope.template + '/document').then(function(template){
               $('#'+$scope.docIframe).contents().find('body').html('');
-              $('#'+$scope.docIframe).contents().find('body').append($compile('<div class=" doc-scroll" id="true}}"></div>')($scope));
+              $('#'+$scope.docIframe).contents().find('body').append($compile('<div class=" doc-scroll" id="{{docPreviewId}}"></div>')($scope));
               var doc = template.data;
               $scope.mailMerge.document.html = doc;
               renderDoc();
@@ -221,102 +237,91 @@ angular.module('angularFullstackApp')
             var additional_vars = [
               {
                 key: 'pdf_file_name',
-                type: 'input',
-                defaultValue: $scope.mailMerge.document.filename,
+                type: 'horizontalInput',
                 templateOptions: {
-                  type: 'hidden'
+                  type: 'text'
                 }
               },
               {
                 key: 'output_folder',
-                type: 'input',
-                defaultValue: $scope.mailMerge.document.output_folder,
+                type: 'horizontalInput',
                 templateOptions: {
-                  type: 'hidden'
+                  type: 'text'
                 }
               },
               {
                 key: 'pdf_file_path',
-                type: 'input',
-                defaultValue: $scope.mailMerge.document.output_folder + '/' + $scope.mailMerge.document.filename,
+                type: 'horizontalInput',
                 templateOptions: {
-                  type: 'hidden'
+                  type: 'text'
                 }
               },
               {
                 key: 'html_permalink',
-                type: 'input',
-                defaultValue: $scope.mailMerge.document.html_permalink,
+                type: 'horizontalInput',
                 templateOptions: {
-                  type: 'hidden'
+                  type: 'text'
                 }
               },
               {
                 key: 'pdf_permalink',
-                type: 'input',
-                defaultValue: $scope.mailMerge.document.pdf_permalink,
+                type: 'horizontalInput',
                 templateOptions: {
-                  type: 'hidden'
+                  type: 'text'
                 }
               },
               {
                 key: 'zip_permalink',
-                type: 'input',
-                defaultValue: $scope.mailMerge.document.html_permalink + '.zip',
+                type: 'horizontalInput',
                 templateOptions: {
-                  type: 'hidden'
+                  type: 'text'
                 }
               },
               {
                 key: 'now_custom_date',
-                type: 'input',
-                defaultValue: $filter('date')(Date.now(), 'yyyy.MM.dd_HH.mm.ss'),
+                type: 'horizontalInput',
                 templateOptions: {
-                  type: 'hidden'
+                  type: 'text'
                 }
               },
               {
                 key: 'now_default_date',
-                type: 'input',
-                defaultValue: $filter('date')(Date.now(), 'mediumDate'),
+                type: 'horizontalInput',
                 templateOptions: {
-                  type: 'hidden'
+                  type: 'text'
                 }
               },
               {
                 key: 'now_short_date',
-                type: 'input',
-                defaultValue: $filter('date')(Date.now(), 'shortDate'),
+                type: 'horizontalInput',
                 templateOptions: {
-                  type: 'hidden'
+                  type: 'text'
                 }
               },
               {
                 key: 'now_medium_date',
-                type: 'input',
-                defaultValue: $filter('date')(Date.now(), 'mediumDate'),
+                type: 'horizontalInput',
                 templateOptions: {
-                  type: 'hidden'
+                  type: 'text'
                 }
               },
               {
                 key: 'now_long_date',
-                type: 'input',
-                defaultValue: $filter('date')(Date.now(), 'longDate'),
+                type: 'horizontalInput',
                 templateOptions: {
-                  type: 'hidden'
+                  type: 'text'
                 }
               },
               {
                 key: 'now_full_date',
-                type: 'input',
-                defaultValue: $filter('date')(Date.now(), 'fullDate'),
+                type: 'horizontalInput',
                 templateOptions: {
-                  type: 'hidden'
+                  type: 'text'
                 }
               }
             ];
-            $scope.mergeFields = doc.concat(additional_vars);
+            doc = doc.concat(additional_vars);
+            $scope.mergeFields = doc;
             for(var i =0;i<doc.length;i++){
               if(doc[i].key.indexOf('.')!==-1){
                 var key = doc[i].key.substring(0,doc[i].key.indexOf('.'));
@@ -340,6 +345,9 @@ angular.module('angularFullstackApp')
                 $scope.current = null;
               }
               $scope.fetchHistory();
+            }
+            else {
+              initAdditionalVars();
             }
 
             if($scope.sendEmail){
@@ -375,11 +383,11 @@ angular.module('angularFullstackApp')
 
       $scope.fetchHistory = function(){
         mergeService.getHistory({code:$scope.merge.code}).then(function(result){
-          $scope.history ={
+          $scope.history = {
             mergeHistory :result.data
           };
           for(var i in $scope.history.mergeHistory){
-            $scope.history.mergeHistory[i].email_date = new Date($scope.history.mergeHistory[i].email_date);
+            $scope.history.mergeHistory[i].form_vars.date = new Date($scope.history.mergeHistory[i].form_vars.date);
           }
         });
       };
@@ -433,7 +441,7 @@ angular.module('angularFullstackApp')
           controller:function($scope){
             setTimeout(function(){
               $('#'+$scope.docHistoryIframe).contents().find('body').empty();
-              $('#'+$scope.docHistoryIframe).contents().find('body').html(history.document_html);
+              $('#'+$scope.docHistoryIframe).contents().find('body').html(history.document.html);
             },100)
           }
         });
@@ -446,7 +454,7 @@ angular.module('angularFullstackApp')
           controller:function($scope){
             setTimeout(function(){
               $('#'+$scope.emailHistoryIframe).contents().find('body').empty();
-              $('#'+$scope.emailHistoryIframe).contents().find('body').html(history.email_html);
+              $('#'+$scope.emailHistoryIframe).contents().find('body').html(history.email.html);
             },100)
           }
         });
@@ -510,7 +518,7 @@ angular.module('angularFullstackApp')
 
           var type = $scope.template.charAt(0).toUpperCase() + $scope.template.slice(1, $scope.template.length-1);
           if($scope.history &&  $scope.history.mergeHistory){
-            $scope.history.mergeHistory.unshift({email_date:'Just now',sending:true,template:type});
+            $scope.history.mergeHistory.unshift({ 'form_vars':{ date: Date.now()}, sending: true, template:type});
             $scope.totalItems++;
           }
           var mergeData = {
@@ -521,7 +529,9 @@ angular.module('angularFullstackApp')
           angular.forEach(mergeData['form_vars'], (item, key) => {
             mergeData['form_vars'][key] = _.isString(item)? $interpolate(item)($scope): item;
           });
+          $log.debug(mergeData);
           mergeService.create(mergeData).then(function(data){
+            $log.debug(data);
             $scope.current.sending = false;
             if($scope.dataid || $scope.tableid){
               $scope.fetchHistory();

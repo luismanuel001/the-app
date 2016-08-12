@@ -102,7 +102,7 @@ function updateMergeStatus(status, rowId, error) {
       return flow.save({
         status2: status,
         log1: status === 'failed' ? error : null
-      }, {patch: true});
+      });
     });
 }
 
@@ -116,7 +116,7 @@ function updateDocumentDataIntoDB(documentData, rowId) {
         blob1: documentData.pdfData ? documentData.pdfData : null,
         additional_data2: JSON.stringify(compiledMailMergeData)
       };
-      return flow.save(flowData, {patch: true});
+      return flow.save(flowData);
     });
 }
 
@@ -129,6 +129,6 @@ function updateEmailDataIntoDB(emailData, rowId) {
         status2: 'complete',
         additional_data2: JSON.stringify(compiledMailMergeData)
       };
-      return flow.save(flowData, {patch: true});
+      return flow.save(flowData);
     });
 }

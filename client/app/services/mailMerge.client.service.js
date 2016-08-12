@@ -16,7 +16,7 @@ angular.module('angularFullstackApp').factory('mergeService',['$http',
                 });
             },
             getHistory:function(data){
-              var url = baseUrl + '/merges' +data.code+'/history';
+              var url = baseUrl + '/flows/mail-merge/' + data.code +'/history';
               return $http({
                     method:'get',
                     url:url,

@@ -8,6 +8,7 @@ var router = express.Router();
 
 router.get('/mail-merge', controller.listMailMerge);
 router.post('/mail-merge', controller.createMailMerge);
+router.get('/mail-merge/:code/history', controller.getMailMergeHistoryFromCode);
 router.get('/mail-merge/:template/config', controller.getMailMergeConfig);
 router.get('/mail-merge/:template/form', controller.getMailMergeForm);
 router.get('/mail-merge/:template/email', controller.getMailMergeEmail);

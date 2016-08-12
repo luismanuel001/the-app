@@ -38,14 +38,16 @@ queue.process('send-email', function(job, done){
       compiledEmailInfo = JSON.parse(ngEnvironment.$interpolate(JSON.stringify(template.email))(merge));
       // Get document html template and compile
       var emailHtml = fs.readFileSync(path.join(mailMergeData.templatePath, compiledEmailInfo.html), 'utf8');
-      compiledEmailInfo.html = ngEnvironment.$compile(emailHtml)(merge);
-      sendEmail(compiledEmailInfo, template.smtp)
-        .then(res => {
-          done(null, { compiledData: compiledEmailInfo });
-        })
-        .catch(err => {
-          done(err);
-        });
+      ngEnvironment.onReady(() => {
+        compiledEmailInfo.html = ngEnvironment.$compile(emailHtml)(merge);
+        sendEmail(compiledEmailInfo, template.smtp)
+          .then(res => {
+            done(null, { compiledData: compiledEmailInfo });
+          })
+          .catch(err => {
+            done(err);
+          });
+      });
     });
   });
 });
