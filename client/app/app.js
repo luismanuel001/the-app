@@ -99,8 +99,8 @@ angular.module('angularFullstackApp', ['angularFullstackApp.auth', 'angularFulls
 
         $scope.datepicker.opened = false;
 
-        $scope.datepicker.open = function () {
-          $scope.datepicker.opened = true;
+        $scope.datepicker.open = function ($event) {
+          $scope.datepicker.opened = !$scope.datepicker.opened;
         };
       }]
     });
