@@ -79,9 +79,9 @@ db.Flow.sync = function() {
             table.text('clob1', 'longtext');
             table.text('clob2', 'longtext');
             table.text('clob3', 'longtext');
-            table.text('blob1', 'longtext');
-            table.text('blob2', 'longtext');
-            table.text('blob3', 'longtext');
+            table.binary('blob1');
+            table.binary('blob2');
+            table.binary('blob3');
             table.date('date1');
             table.date('date2');
             table.date('date3');

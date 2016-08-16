@@ -129,6 +129,9 @@ function updateEmailDataIntoDB(emailData, rowId) {
         status2: 'complete',
         additional_data2: JSON.stringify(compiledMailMergeData)
       };
+      if (emailData.attachmentData.isZip && emailData.attachmentData.data) {
+        flowData.blob2 = emailData.attachmentData.data;
+      }
       return flow.save(flowData);
     });
 }

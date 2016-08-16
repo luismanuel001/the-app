@@ -223,7 +223,7 @@ export function getMailMergeHistoryFromCode(req, res) {
     .catch(handleError(res));
 }
 
-export function getMailMergeDocumentHtmlFromPermalink(permalink) {
+export function getPermalinkData(permalink) {
   return new Promise((resolve, reject) => {
     Flow.findAll({ type1: 'mail-merge' })
       .then(entity => {
@@ -231,14 +231,42 @@ export function getMailMergeDocumentHtmlFromPermalink(permalink) {
           entity = _.find(entity.models, (item) => {
             item.set({'additional_data1': JSON.parse(item.get('additional_data1'))});
             item.set({'additional_data2': JSON.parse(item.get('additional_data2'))});
-            if (item.get('additional_data2') && item.get('additional_data2').document && item.get('additional_data2').document.html_permalink) {
-              return item.get('additional_data2').document.html_permalink === permalink;
+            if (item.get('additional_data2') &&
+                item.get('additional_data2').document &&
+                ( item.get('additional_data2').document.html_permalink ||
+                  item.get('additional_data2').document.pdf_permalink ||
+                  item.get('additional_data2').document.zip_permalink )) {
+              return (
+                item.get('additional_data2').document.html_permalink === permalink ||
+                item.get('additional_data2').document.pdf_permalink === permalink ||
+                item.get('additional_data2').document.zip_permalink === permalink
+              );
             }
             else {
               return false;
             }
           });
-          if (entity) resolve(entity.get('additional_data2').document.html);
+          if (entity) {
+            var permalinkData = {
+              authRequired: entity.get('additional_data2').document.authrequired
+            }
+            if (entity.get('additional_data2').document.html_permalink === permalink) {
+              permalinkData.dataType = 'html';
+              permalinkData.data = entity.get('clob1');
+            }
+            else if (entity.get('additional_data2').document.pdf_permalink === permalink) {
+              permalinkData.dataType = 'pdf';
+              permalinkData.filename = entity.get('additional_data2').document.filename;
+              permalinkData.data = entity.get('blob1');
+            }
+            else if (entity.get('additional_data2').document.zip_permalink === permalink) {
+              permalinkData.dataType = 'zip';
+              permalinkData.filename = entity.get('additional_data2').document.zip_permalink.split('/').pop();
+              permalinkData.data = entity.get('blob2');
+            }
+            else reject();
+            resolve(permalinkData);
+          }
           else reject();
         }
         else reject();
@@ -247,5 +275,4 @@ export function getMailMergeDocumentHtmlFromPermalink(permalink) {
         reject(err);
       });
   });
-
 }

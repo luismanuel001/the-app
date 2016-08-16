@@ -8,7 +8,7 @@
         "html": "document.html",
         "html_permalink": "/documents/payslips/{{merge.date| date:'yyyy-MM' }}/{{merge.code}}",
         "pdf_permalink": "/documents/payslips/{{merge.date| date:'yyyy-MM' }}/{{merge.code}}.pdf",
-        "zip_permalink": "/documents/payslips/{{merge.date| date:'yyyy-MM' }}/{{merge.code}}.pdf",
+        "zip_permalink": "/documents/payslips/{{merge.date| date:'yyyy-MM' }}/{{merge.code}}.zip",
         "authrequired": false
 	},
     "email": {

@@ -8,8 +8,8 @@
         "html": "document.html",
         "html_permalink": "/documents/invoices/{{merge.date| date:'yyyy-MM' }}/{{merge.code}}",
         "pdf_permalink": "/documents/invoices/{{merge.date| date:'yyyy-MM' }}/{{merge.code}}.pdf",
-        "zip_permalink": "/documents/invoices/{{merge.date| date:'yyyy-MM' }}/{{merge.code}}.pdf",
-        "authrequired": false
+        "zip_permalink": "/documents/invoices/{{merge.date| date:'yyyy-MM' }}/{{merge.code}}.zip",
+        "authrequired": true
 	},
     "email": {
         "sendemail":true,
@@ -22,7 +22,7 @@
         "html": "email.html",
         "attachments": [
             "{{merge.pdf_file_path}}",
-            "C:/test/hardcoded-file.txt"
+            "flows/005-mail-merge/templates/invoices/testAttachment.txt"
         ]
 	},
     "smtp": {

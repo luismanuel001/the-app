@@ -61,7 +61,6 @@ queue.process('generate-document', function(job, done){
     });
   }
   catch(err) {
-    console.log(err);
     done(err);
   }
 });
@@ -78,7 +77,7 @@ function generatePdf(compiledDocumentInfo) {
           .toFile(path.join(outputPath, compiledDocumentInfo.filename), function(err, res) {
             if (err) reject(err);
             else {
-              resolve(fs.readFileSync(res.filename, 'utf-8'));
+              resolve(fs.readFileSync(res.filename, 'binary'));
             }
         });
       }

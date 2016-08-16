@@ -9,7 +9,8 @@ import path from 'path';
 import kue from 'kue';
 import _ from 'lodash';
 import he from 'he';
-import {getMailMergeDocumentHtmlFromPermalink} from './api/flow/flow.controller';
+import {getPermalinkData} from './api/flow/flow.controller';
+import * as auth from './auth/auth.service';
 
 export default function(app) {
   // Insert routes below
@@ -37,15 +38,40 @@ export default function(app) {
 
   // All other routes
   app.route('/*')
-    .get((req, res) => {
+    .get(auth.addUserIfAuthenticated(), (req, res) => {
       // Check if there is a document with that permalink url
-      getMailMergeDocumentHtmlFromPermalink(req.path)
-        .then(documentHtml => {
-          res.render(path.join(app.get('frontendPath'), 'document'), {}, function(err, html) {
-            res.send(html.replace('[[doc_html]]', '<iframe src="" srcdoc="' +  he.escape(documentHtml) + '" frameborder="0" scrollbar="false" onload="' + he.escape("this.style.height=this.contentDocument.body.scrollHeight + 'px';") + '" class="col-xs-12"></iframe>'));
-          });
+      getPermalinkData(req.path)
+        .then(permalinkData => {
+          if (permalinkData.authRequired && !req.user) {
+            return res.status(401).end();
+          }
+          if (permalinkData.dataType === 'html') {
+            res.render(path.join(app.get('frontendPath'), 'document'), {}, function(err, html) {
+              res.send(html.replace('[[doc_html]]', '<iframe src="" srcdoc="' +  he.escape(permalinkData.data) + '" frameborder="0" scrollbar="false" onload="' + he.escape("this.style.height=this.contentDocument.body.scrollHeight + 'px';") + '" class="col-xs-12"></iframe>'));
+            });
+          }
+          else if (permalinkData.dataType === 'pdf') {
+            res.writeHead(200, {
+              'Content-Type': 'application/pdf',
+              'Access-Control-Allow-Origin': '*',
+              'Content-Disposition': 'attachment; filename=' + encodeURIComponent(permalinkData.filename)
+            });
+            res.end(permalinkData.data, 'binary');
+          }
+          else if (permalinkData.dataType === 'zip') {
+            res.writeHead(200, {
+              'Content-Type': 'application/zip',
+              'Access-Control-Allow-Origin': '*',
+              'Content-Disposition': 'attachment; filename=' + encodeURIComponent(permalinkData.filename)
+            });
+            res.end(permalinkData.data, 'binary');
+          }
+          else {
+            res.render(path.join(app.get('frontendPath'), '404'));
+          }
         })
         .catch(err => {
+          console.log(err);
           res.render(path.join(app.get('frontendPath'), '404'));
         });
     });

@@ -6,6 +6,7 @@ import path from 'path';
 import ngCompile from 'ng-node-compile';
 import fs from 'fs';
 import nodemailer from 'nodemailer';
+import archiver from 'archiver';
 
 var queue = kue.createQueue({
   disableSearch: true,
@@ -40,9 +41,16 @@ queue.process('send-email', function(job, done){
       var emailHtml = fs.readFileSync(path.join(mailMergeData.templatePath, compiledEmailInfo.html), 'utf8');
       ngEnvironment.onReady(() => {
         compiledEmailInfo.html = ngEnvironment.$compile(emailHtml)(merge);
-        sendEmail(compiledEmailInfo, template.smtp)
+        var emailData = {};
+        var zipPath = path.join(mailMergeData.templatePath, '../../../../', mailMergeData.form_vars.output_folder, mailMergeData.form_vars.zip_permalink.split('/').pop());
+        prepareAttachments(compiledEmailInfo.attachments, zipPath)
           .then(res => {
-            done(null, { compiledData: compiledEmailInfo });
+            emailData.attachmentData = res;
+            return sendEmail(compiledEmailInfo, template.smtp, emailData.attachmentData);
+          })
+          .then(res => {
+            emailData.compiledData = compiledEmailInfo
+            done(null, emailData);
           })
           .catch(err => {
             done(err);
@@ -52,7 +60,78 @@ queue.process('send-email', function(job, done){
   });
 });
 
-function sendEmail(compiledEmailInfo, smtpInfo) {
+function prepareAttachments(attachments, zipPath) {
+  return new Promise((resolve, reject) => {
+    try {
+      if (!attachments.length) {
+        resolve(false);
+      }
+      else if (attachments.length === 1) {
+        resolve({
+          isZip: false,
+          path: path.join(__dirname, '../../../', attachments[0]),
+          filename: attachments[0].split('/').pop(),
+          data: fs.readFileSync(path.join(__dirname, '../../../', attachments[0]), 'binary')
+        });
+      }
+      else {
+        var output = fs.createWriteStream(zipPath);
+        var archive = archiver('zip');
+
+        archive.on('error', function(err) {
+          reject(err);
+        });
+
+        output.on('close', function() {
+          fs.readFile(zipPath, 'binary', (err, data) => {
+            if (err) {
+              reject(err);
+            }
+            else {
+              resolve({
+                isZip: true,
+                path: zipPath,
+                filename: zipPath.split('/').pop(),
+                data: data
+              });
+            }
+          });
+        });
+
+        archive.pipe(output);
+        var files = [];
+        attachments.forEach((file) => {
+          file = path.join(__dirname, '../../../', file);
+          var promise = new Promise((resolve, reject) => {
+            fs.access(file, fs.F_OK, (err) => {
+               if (err) reject(err);
+               resolve({
+                 path: file,
+                 content: fs.createReadStream(file)
+               });
+            });
+          });
+          files.push(promise);
+        });
+        Promise.all(files)
+          .then((attachFiles) => {
+            attachFiles.forEach((file) => {
+              archive.append(file.content, { name: file.path.split('/').pop() });
+            });
+            archive.finalize();
+          })
+          .catch(err => {
+            reject(err);
+          });
+      }
+    }
+    catch(err) {
+      reject(err);
+    }
+  });
+}
+
+function sendEmail(compiledEmailInfo, smtpInfo, attachment) {
   var smtpConfig = {
     host: smtpInfo.host,
     port: smtpInfo.port,
@@ -70,13 +149,19 @@ function sendEmail(compiledEmailInfo, smtpInfo) {
     to: compiledEmailInfo.to,
     cc: compiledEmailInfo.cc,
     bcc: compiledEmailInfo.bcc,
-    subject: compiledEmailInfo.subject,
+    subject: compiledEmailInfo.subject
   };
   if (compiledEmailInfo.sendemail) {
     mailOptions.text = compiledEmailInfo.text;
   }
   if (compiledEmailInfo.sendhtmlemail) {
     mailOptions.html = compiledEmailInfo.html;
+  }
+  if (attachment) {
+    mailOptions.attachments = [{
+      filename: attachment.filename,
+      path: attachment.path
+    }];
   }
   return transporter.sendMail(mailOptions);
 }
