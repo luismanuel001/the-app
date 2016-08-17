@@ -1,9 +1,9 @@
 .glyphicon-refresh-animate {
     -animation: spin .7s infinite linear;
-    -webkit-animation: spin2 .7s infinite linear;
+    -webkit-animation: spin .7s infinite linear;
 }
 
-@-webkit-keyframes spin2 {
+@-webkit-keyframes spin {
     from { -webkit-transform: rotate(0deg);}
     to { -webkit-transform: rotate(360deg);}
 }
@@ -20,6 +20,9 @@
     line-height: 1.42857143
 }
 
+.message-history-date {
+  display: inline-block;
+}
 
 .margin-15{
   margin:10px 0 15px 15px;
@@ -61,8 +64,8 @@
 body.modal-open { overflow:inherit; padding-right:inherit !important; }
 
 .modal-content{
-  max-height: 600px; 
-    overflow: auto; 
+  max-height: 600px;
+    overflow: auto;
 }
 
 .myModal.modal-content{

@@ -518,7 +518,7 @@ angular.module('angularFullstackApp')
 
           var type = $scope.template.charAt(0).toUpperCase() + $scope.template.slice(1, $scope.template.length-1);
           if($scope.history &&  $scope.history.mergeHistory){
-            $scope.history.mergeHistory.unshift({ 'form_vars':{ date: Date.now()}, sending: true, template:type});
+            $scope.history.mergeHistory.unshift({ 'form_vars':{ date: Date.now() }, sending: true, template:type});
             $scope.totalItems++;
           }
           var mergeData = {
@@ -526,16 +526,16 @@ angular.module('angularFullstackApp')
 	          template: $scope.template,
             'form_vars': $scope.merge
           };
-          angular.forEach(mergeData['form_vars'], (item, key) => {
-            mergeData['form_vars'][key] = _.isString(item)? $interpolate(item)($scope): item;
+          angular.forEach(mergeData.form_vars, (item, key) => {
+            mergeData.form_vars[key] = _.isString(item)? $interpolate(item)($scope): item;
           });
           $log.debug(mergeData);
           mergeService.create(mergeData).then(function(data){
             $log.debug(data);
             $scope.current.sending = false;
-            if($scope.dataid || $scope.tableid){
-              $scope.fetchHistory();
-            }
+            // if($scope.dataid || $scope.tableid){
+            //   $scope.fetchHistory();
+            // }
           });
         },200);
 
