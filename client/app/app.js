@@ -2,7 +2,7 @@
 
 angular.module('angularFullstackApp', ['angularFullstackApp.auth', 'angularFullstackApp.admin',
     'angularFullstackApp.constants', 'angularFullstackApp.contactDetails', 'ngCookies', 'ngResource', 'ngSanitize', 'btford.socket-io',
-    'ui.router', 'ui.bootstrap', 'validation.match', 'Menus', 'ngAnimate', 'formly', 'formlyBootstrap', 'angularUtils.directives.dirPagination'
+    'ui.router', 'ui.bootstrap', 'validation.match', 'Menus', 'formly', 'formlyBootstrap', 'angularUtils.directives.dirPagination'
   ])
   .config(function($urlRouterProvider, $locationProvider, formlyConfigProvider) {
     $urlRouterProvider.otherwise('/theapp');
