@@ -60,9 +60,9 @@ db.User.sync = function() {
 db.Flow.sync = function() {
   if (!db.Flow.promise) {
     db.Flow.promise = new Promise(function(resolve) {
-      knexInstance.schema.hasTable('flows_data').then(function(exists) {
+      knexInstance.schema.hasTable(config.flows.tableName).then(function(exists) {
         if (!exists) {
-          return knexInstance.schema.createTable('flows_data', function(table) {
+          return knexInstance.schema.createTable(config.flows.tableName, function(table) {
             table.increments('_id').primary().notNullable();
             table.string('type1');
             table.string('type2');

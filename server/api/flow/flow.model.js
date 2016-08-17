@@ -1,10 +1,11 @@
 'use strict';
 
 import Joi from 'joi';
+import config from '../../config/environment';
 
 module.exports = function(bookshelf) {
   var Flow = bookshelf.Model.extend({
-    tableName: 'flows_data',
+    tableName: config.flows.tableName,
 
 	  /**
      * ID Field Attribute

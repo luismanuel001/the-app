@@ -54,6 +54,7 @@ module.exports = {
   },
 
   flows: {
+    tableName: 'flows_data',
     mailMergeFolder: '../../flows/005-mail-merge'
   }
 };
