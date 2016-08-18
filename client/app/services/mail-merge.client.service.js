@@ -24,6 +24,17 @@ angular.module('angularFullstackApp').factory('mergeService',['$http',
                         'Content-type':'application/json'
                     }
                 });
+            },
+            createFromCSV: function (data) {
+              var url = baseUrl + '/flows/mail-merge/csv';
+              return $http({
+                    method:'POST',
+                    url:url,
+                    data: data,
+                    headers:{
+                        'Content-type':'application/json'
+                    }
+                });
             }
 
           };

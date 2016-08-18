@@ -3,7 +3,7 @@
 import kue from 'kue';
 import Promise from 'bluebird';
 import path from 'path';
-import ngCompile from 'ng-node-compile';
+import NgCompile from 'ng-node-compile';
 import fs from 'fs';
 import nodemailer from 'nodemailer';
 import archiver from 'archiver';
@@ -32,8 +32,8 @@ queue.process('send-email', function(job, done){
   var template = require(path.join(mailMergeData.templatePath, 'config.json'));
   var compiledEmailInfo = {};
   var merge = {merge: mailMergeData.form_vars};
-  ngCompile.prototype.onEnvReady(() => {
-    var ngEnvironment = new ngCompile();
+  NgCompile.prototype.onEnvReady(() => {
+    var ngEnvironment = new NgCompile();
     ngEnvironment.onReady(() => {
       // Interpolate merge variables
       compiledEmailInfo = JSON.parse(ngEnvironment.$interpolate(JSON.stringify(template.email))(merge));

@@ -14,6 +14,9 @@ import {Flow} from '../../sqldb';
 import config from '../../config/environment';
 import path from 'path';
 import fs from 'fs';
+import baby from 'babyparse';
+import moment from 'moment';
+import NgCompile from 'ng-node-compile';
 var mailMerge = require(path.join(config.root, config.flows.mailMergeFolder, 'scripts', 'mail-merge'));
 
 function respondWithResult(res, statusCode) {
@@ -152,9 +155,6 @@ export function createMailMerge(req, res) {
   mailMerge.create(mailMergeData).then((mergeJob) => {
     return res.status(200).json(mergeJob);
   });
-  // return Flow.create(req.body)
-  //   .then(respondWithResult(res, 201))
-  //   .catch(handleError(res));
 }
 
 // Returns a mail-merge template config file as JSON
@@ -275,4 +275,56 @@ export function getPermalinkData(permalink) {
         reject(err);
       });
   });
+}
+
+// Process the input csv file mail-merge jobs in bulk
+export function mailMergeCSVFile(req, res) {
+  var csvFile = req.body.csvPath;
+  var template = path.basename(csvFile, '.csv');
+  var templatePath = path.join(config.root, config.flows.mailMergeFolder, 'templates', template);
+  var templateConfig = require(path.join(templatePath, 'config.json'));
+  var csvPath = path.join(templatePath, csvFile);
+
+  fs.access(csvPath, fs.F_OK, (err) => {
+    if (err) return res.status(404).end();
+    NgCompile.prototype.onEnvReady(() => {
+      var ngEnvironment = new NgCompile();
+      ngEnvironment.onReady(() => {
+        baby.parseFiles(csvPath, {
+          header: true,
+          step: (row) => {
+            if (!row.errors.length && row.data[0]) {
+              var merge = row.data[0];
+              var additional_vars = {
+                'pdf_file_name': templateConfig.document.filename,
+                'output_folder': templateConfig.document.output_folder,
+                'pdf_file_path': templateConfig.document.output_folder + '/' + templateConfig.document.filename,
+                'html_permalink': templateConfig.document.html_permalink,
+                'pdf_permalink': templateConfig.document.pdf_permalink,
+                'zip_permalink': templateConfig.document.html_permalink + '.zip',
+                'now_custom_date': moment().format('YYYY.MM.DD_HH.mm.ss'),
+                'now_default_date': moment().format('MMM D, YYYY'),
+                'now_short_date': moment().format('M/D/YY'),
+                'now_medium_date': moment().format('MMM D, YYYY'),
+                'now_long_date': moment().format('MMMM D, YYYY'),
+                'now_full_date': moment().format('dddd, MMM D, YYYY'),
+              };
+              additional_vars = JSON.parse(ngEnvironment.$interpolate(JSON.stringify(additional_vars))({ merge: merge }));
+              merge = _.merge(merge, additional_vars);
+
+              var mailMergeData = {
+                recipientCode: merge.code,
+                template: template,
+                'form_vars': merge
+              };
+              mailMergeData.templatePath = templatePath;
+              mailMerge.create(mailMergeData);
+            }
+          }
+        });
+        return res.status(200).json('CSV jobs scheduled');
+      });
+    });
+  });
+
 }

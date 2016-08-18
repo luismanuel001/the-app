@@ -198,4 +198,11 @@
 
 
   <mail-merge template="'statements'" label-button="'Send statement(Adhoc)'" label-button-popup="'Send Statement'"  ></mail-merge>
+  <form class="form-inline" ng-submit="mailMergeCSV()">
+    <button type="submit" class="btn btn-info btn-lg" name="submit-csv">Mail Merge CSV file</button>
+    <div class="form-group">
+      <input type="text" id="csvPath" ng-model="csvForm.csvPath" class="form-control">
+    </div>
+    <span class="label" ng-class="{'label-success': csvSubmitted && csvSuccess, 'label-error': csvSubmitted && !csvSuccess}">{{csvMessage}}</span>
+  </form>
 </div>

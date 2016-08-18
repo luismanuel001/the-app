@@ -8,6 +8,7 @@ var router = new Router();
 
 router.get('/mail-merge', auth.isAuthenticated(), controller.listMailMerge);
 router.post('/mail-merge', auth.isAuthenticated(), controller.createMailMerge);
+router.post('/mail-merge/csv', auth.isAuthenticated(), controller.mailMergeCSVFile);
 router.get('/mail-merge/:code/history', auth.isAuthenticated(), controller.getMailMergeHistoryFromCode);
 router.get('/mail-merge/:template/config', auth.isAuthenticated(), controller.getMailMergeConfig);
 router.get('/mail-merge/:template/form', auth.isAuthenticated(), controller.getMailMergeForm);
