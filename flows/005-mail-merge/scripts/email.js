@@ -5,12 +5,13 @@ import Promise from 'bluebird';
 import path from 'path';
 import NgCompile from 'ng-node-compile';
 import fs from 'fs';
+import config from '../../../server/config/environment';
 import nodemailer from 'nodemailer';
 import archiver from 'archiver';
 
 var queue = kue.createQueue({
   disableSearch: true,
-  redis: require('../../../config/databases/redis.json').redis
+  redis: require(path.resolve(config.root, config.redis.configPath)).redis
 });
 
 export function create(rowData) {
@@ -53,6 +54,7 @@ queue.process('send-email', function(job, done){
             done(null, emailData);
           })
           .catch(err => {
+            console.log(err);
             done(err);
           });
       });
@@ -69,9 +71,9 @@ function prepareAttachments(attachments, zipPath) {
       else if (attachments.length === 1) {
         resolve({
           isZip: false,
-          path: path.join(__dirname, '../../../', attachments[0]),
+          path: path.resolve(config.root, attachments[0]),
           filename: attachments[0].split('/').pop(),
-          data: fs.readFileSync(path.join(__dirname, '../../../', attachments[0]), 'binary')
+          data: fs.readFileSync(path.resolve(config.root, attachments[0]), 'binary')
         });
       }
       else {
@@ -101,7 +103,7 @@ function prepareAttachments(attachments, zipPath) {
         archive.pipe(output);
         var files = [];
         attachments.forEach((file) => {
-          file = path.join(__dirname, '../../../', file);
+          file = path.resolve(config.root, file);
           var promise = new Promise((resolve, reject) => {
             fs.access(file, fs.F_OK, (err) => {
                if (err) reject(err);
@@ -121,11 +123,13 @@ function prepareAttachments(attachments, zipPath) {
             archive.finalize();
           })
           .catch(err => {
+            console.log(err);
             reject(err);
           });
       }
     }
     catch(err) {
+      console.log(err);
       reject(err);
     }
   });

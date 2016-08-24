@@ -17,7 +17,7 @@ import fs from 'fs';
 import baby from 'babyparse';
 import moment from 'moment';
 import NgCompile from 'ng-node-compile';
-var mailMerge = require(path.join(config.root, config.flows.mailMergeFolder, 'scripts', 'mail-merge'));
+var mailMerge = require(path.resolve(config.root, config.flows.mailMergeFolder, 'scripts', 'mail-merge'));
 
 function respondWithResult(res, statusCode) {
   statusCode = statusCode || 200;
@@ -66,7 +66,7 @@ function handleError(res, statusCode) {
 }
 
 function mailMergeConfig(template) {
-  var templatePath = path.join(config.root, config.flows.mailMergeFolder, 'templates', template);
+  var templatePath = path.resolve(config.root, config.flows.mailMergeFolder, 'templates', template);
   return require(path.join(templatePath, 'config.json'));
 }
 
@@ -151,7 +151,7 @@ export function destroy(req, res) {
 // Creates a new Flow in the DB
 export function createMailMerge(req, res) {
   var mailMergeData = req.body;
-  mailMergeData.templatePath = path.join(config.root, config.flows.mailMergeFolder, 'templates', req.body.template);
+  mailMergeData.templatePath = path.resolve(config.root, config.flows.mailMergeFolder, 'templates', req.body.template);
   mailMerge.create(mailMergeData).then((mergeJob) => {
     return res.status(200).json(mergeJob);
   });
@@ -172,7 +172,7 @@ export function getMailMergeForm(req, res) {
   if (!templateConfig) {
     return res.status(404).end();
   }
-  var templateForm = require(path.join(config.root, config.flows.mailMergeFolder, 'templates', req.params.template, templateConfig.form));
+  var templateForm = require(path.resolve(config.root, config.flows.mailMergeFolder, 'templates', req.params.template, templateConfig.form));
   return res.status(200).json(templateForm);
 }
 
@@ -182,7 +182,7 @@ export function getMailMergeEmail(req, res) {
   if (!templateConfig) {
     return res.status(404).end();
   }
-  var emailPath = path.join(config.root, config.flows.mailMergeFolder, 'templates', req.params.template, templateConfig.email.html);
+  var emailPath = path.resolve(config.root, config.flows.mailMergeFolder, 'templates', req.params.template, templateConfig.email.html);
   fs.readFile(emailPath, 'utf8', function read(err, data) {
     if (err) {
       return res.status(404).end();
@@ -197,7 +197,7 @@ export function getMailMergeDocument(req, res) {
   if (!templateConfig) {
     return res.status(404).end();
   }
-  var documentPath = path.join(config.root, config.flows.mailMergeFolder, 'templates', req.params.template, templateConfig.document.html);
+  var documentPath = path.resolve(config.root, config.flows.mailMergeFolder, 'templates', req.params.template, templateConfig.document.html);
   fs.readFile(documentPath, 'utf8', function read(err, data) {
     if (err) {
       return res.status(404).end();
@@ -281,7 +281,7 @@ export function getPermalinkData(permalink) {
 export function mailMergeCSVFile(req, res) {
   var csvFile = req.body.csvPath;
   var template = path.basename(csvFile, '.csv');
-  var templatePath = path.join(config.root, config.flows.mailMergeFolder, 'templates', template);
+  var templatePath = path.resolve(config.root, config.flows.mailMergeFolder, 'templates', template);
   var templateConfig = require(path.join(templatePath, 'config.json'));
   var csvPath = path.join(templatePath, csvFile);
 

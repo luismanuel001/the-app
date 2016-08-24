@@ -5,14 +5,15 @@ import kue from 'kue';
 import Promise from 'bluebird';
 import path from 'path';
 import _ from 'lodash';
+import config from '../../../server/config/environment';
 import * as generateDocumentJob from './generate-document';
 import * as sendEmailJob from './email';
 
-var Flow = require(path.join(process.cwd(), 'server', 'sqldb')).Flow;
+var Flow = require(path.resolve(config.root, 'server', 'sqldb')).Flow;
 
 var queue = kue.createQueue({
   disableSearch: true,
-  redis: require('../../../config/databases/redis.json').redis
+  redis: require(path.resolve(config.root, config.redis.configPath)).redis
 });
 
 export function create(mergeData) {
@@ -75,6 +76,7 @@ queue.process('mail-merge', function(job, done){
       done(null, data);
     })
     .catch(err => {
+      console.log(err);
       done(err);
     });
 });

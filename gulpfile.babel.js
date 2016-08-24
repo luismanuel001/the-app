@@ -25,6 +25,7 @@ var config;
 
 const clientPath = require('./bower.json').appPath || 'client';
 const serverPath = 'server';
+const flowsPath = 'flows';
 const paths = {
     client: {
         assets: `${clientPath}/assets/**/*`,
@@ -66,6 +67,15 @@ const paths = {
     },
     hexo: {
       root: 'frontend-hexo/frontend'
+    },
+    flows: {
+      scripts: [
+        `${flowsPath}/**/*.js`
+      ],
+      templates: [
+        `${flowsPath}/**/*`,
+        `!${flowsPath}/**/*.js`
+      ]
     }
 };
 
@@ -262,6 +272,12 @@ gulp.task('transpile:server', () => {
     return gulp.src(_.union(paths.server.scripts, paths.server.json))
         .pipe(transpileServer())
         .pipe(gulp.dest(`${paths.dist}/${serverPath}`));
+});
+
+gulp.task('transpile:flows', () => {
+    return gulp.src(paths.flows.scripts, paths.server.json)
+        .pipe(transpileServer())
+        .pipe(gulp.dest(`${paths.dist}/${flowsPath}`));
 });
 
 gulp.task('lint:scripts', cb => runSequence(['lint:scripts:client', 'lint:scripts:server'], cb));
@@ -473,7 +489,8 @@ gulp.task('build', cb => {
         ],
         [
             'transpile:client',
-            'transpile:server'
+            'transpile:server',
+            'transpile:flows'
         ],
         [
             'build:images',
@@ -481,6 +498,7 @@ gulp.task('build', cb => {
             'copy:fonts',
             'copy:assets',
             'copy:server',
+            'copy:flows',
             'hexo:generate:dist',
             'build:client'
         ],
@@ -584,6 +602,11 @@ gulp.task('copy:server', () => {
         '.bowerrc'
     ], {cwdbase: true})
         .pipe(gulp.dest(paths.dist));
+});
+
+gulp.task('copy:flows', () => {
+    return gulp.src(paths.flows.templates)
+        .pipe(gulp.dest(`${paths.dist}/${flowsPath}`));
 });
 
 gulp.task('coverage:pre', () => {

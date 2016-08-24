@@ -14,7 +14,7 @@
     "email": {
         "sendemail":true,
         "sendhtmlemail": true,
-        "to": "",
+        "to": "luisman40@hotmail.com",
         "cc": "",
         "bcc": "",
         "subject": "test",
@@ -28,13 +28,13 @@
     "smtp": {
         "host": "smtp.gmail.com",
         "port": 465,
-        "userid": "",
-        "userpassword": "",
+        "userid": "luisman40@gmail.com",
+        "userpassword": "lm069472551",
         "usessl": true,
         "usetls": false,
         "debug": false,
-        "fromaddress": "",
-        "name": ""
+        "fromaddress": "luisman40@gmail.com",
+        "name": "Luis Manuel"
     },
     "form": "form.json"
 }

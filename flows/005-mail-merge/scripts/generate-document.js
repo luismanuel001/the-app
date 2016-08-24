@@ -6,12 +6,13 @@ import Promise from 'bluebird';
 import path from 'path';
 import ngCompile from 'ng-node-compile';
 import fs from 'fs';
+import config from '../../../server/config/environment';
 import pdf from 'html-pdf';
 import mkdirp from 'mkdirp';
 
 var queue = kue.createQueue({
   disableSearch: true,
-  redis: require('../../../config/databases/redis.json').redis
+  redis: require(path.resolve(config.root, config.redis.configPath)).redis
 });
 
 export function create(rowData) {
@@ -49,6 +50,7 @@ queue.process('generate-document', function(job, done){
                 done(null, { compiledData: compiledDocumentInfo, pdfData: res});
               })
               .catch(err => {
+                console.log(err);
                 done(err);
               });
           }
@@ -61,13 +63,14 @@ queue.process('generate-document', function(job, done){
     });
   }
   catch(err) {
+    console.log(err);
     done(err);
   }
 });
 
 function generatePdf(compiledDocumentInfo) {
   return new Promise((resolve, reject) => {
-    var outputPath = path.resolve(path.join(__dirname, '../../../', compiledDocumentInfo.output_folder));
+    var outputPath = path.resolve(config.root, compiledDocumentInfo.output_folder);
     mkdirp(outputPath, function (err) {
       if (err) {
         reject(err);

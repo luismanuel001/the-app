@@ -25,6 +25,6 @@ module.exports = {
 
   flows: {
     tableName: 'flows_data',
-    mailMergeFolder: './theapp-template/TheApp/flows/005-mail-merge'
+    mailMergeFolder: './flows/005-mail-merge'
   }
 };

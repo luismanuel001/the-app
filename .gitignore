@@ -11,4 +11,4 @@ coverage
 **/*.sqlite
 /frontend
 theapp-template/TheApp/_internal/app/frontend-hexo/frontend/themes/corporate/source/bower_components
-theapp-template/TheApp/output
+/output
