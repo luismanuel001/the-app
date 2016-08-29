@@ -18,8 +18,8 @@ module.exports = {
 
   // Redis config Options
   redis: {
-    configPath: './theapp-template/TheApp/config/databases/redis.json',
-    exePath: './theapp-template/TheApp/_internal/tools/redis2.8.2400-xp32bit'
+    configPath: './config/databases/redis.json',
+    exePath: './win-template/TheApp/_internal/tools/redis2.8.2400-xp32bit'
   },
 
   flows: {

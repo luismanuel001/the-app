@@ -61,7 +61,7 @@ const paths = {
     package: {
       appName: 'TheApp',
       temp: '.temp',
-      template: 'theapp-template',
+      template: 'win-template',
       app: '/_internal/app',
       nodeWindowsPath: '_internal/tools/node-windows'
     },
@@ -599,7 +599,9 @@ gulp.task('copy:server', () => {
     return gulp.src([
         'package.json',
         'bower.json',
-        '.bowerrc'
+        '.bowerrc',
+        'config/**/*',
+        'data/**/*'
     ], {cwdbase: true})
         .pipe(gulp.dest(paths.dist));
 });

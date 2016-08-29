@@ -10,5 +10,5 @@ coverage
 .temp
 **/*.sqlite
 /frontend
-theapp-template/TheApp/_internal/app/frontend-hexo/frontend/themes/corporate/source/bower_components
+win-template/TheApp/_internal/app/frontend-hexo/frontend/themes/corporate/source/bower_components
 /output
