@@ -4,7 +4,7 @@
 // =================================
 
 var path = require('path');
-var dbConfig = require(path.join(__dirname, '../../../config/databases/datasources.json')).mailmerge;
+var dbConfig = require(path.join(__dirname, '../../../../config/databases/datasources.json')).mailmerge;
 // Bookshelf connection options
 var bookshelf = {};
 
@@ -13,7 +13,7 @@ if (dbConfig.storage) {
   bookshelf = {
     client: 'sqlite3',
     connection: {
-      filename: path.join(__dirname, '../../../',  dbConfig.storage)
+      filename: path.join(__dirname, '../../../../',  dbConfig.storage)
     },
     useNullAsDefault: true
   };
@@ -49,7 +49,7 @@ module.exports = {
 
   // Redis config Options
   redis: {
-    configPath: './config/databases/redis.json',
+    configPath: '../../_internal/config/databases/redis.json',
     exePath: '../../_internal/tools/redis2.8.2400-xp32bit'
   },
 

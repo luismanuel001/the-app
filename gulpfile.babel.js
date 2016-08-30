@@ -711,13 +711,21 @@ gulp.task('buildcontrol:openshift', function(done) {
 gulp.task('package:clean', () => del([paths.package.temp], {dot: true}));
 
 gulp.task('package:copy:template', () => {
-    return gulp.src(`${paths.package.template}/${paths.package.appName}/**/*`)
+    return gulp.src(`${paths.package.template}/${paths.package.appName}/**`)
         .pipe(gulp.dest(`${paths.package.temp}/${paths.package.appName}`));
 });
 
 gulp.task('package:copy:dist', () => {
-    return gulp.src([`${paths.dist}/**/*`, `!${paths.dist}/server/config/environment/production.js`])
+    gulp.src([
+          `${paths.dist}/**/*`,
+          `!${paths.dist}/server/config/environment/production.js`,
+          `!${paths.dist}/config`, `!${paths.dist}/config/**`,
+          `!${paths.dist}/data`, `!${paths.dist}/data/**`
+        ])
         .pipe(gulp.dest(`${paths.package.temp}/${paths.package.appName}/${paths.package.app}`));
+
+    gulp.src([`${paths.dist}/config/**/*`, `${paths.dist}/data/**/*`], { base: `${paths.dist}`})
+        .pipe(gulp.dest(`${paths.package.temp}/${paths.package.appName}/_internal`));
 });
 
 gulp.task('package:install', () => {
