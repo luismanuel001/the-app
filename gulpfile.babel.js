@@ -602,7 +602,7 @@ gulp.task('copy:server', () => {
         '.bowerrc',
         'config/**/*',
         'data/**/*'
-    ], {cwdbase: true})
+    ], {cwdbase: true, dot: true })
         .pipe(gulp.dest(paths.dist));
 });
 
@@ -724,7 +724,7 @@ gulp.task('package:copy:dist', () => {
         ])
         .pipe(gulp.dest(`${paths.package.temp}/${paths.package.appName}/${paths.package.app}`));
 
-    gulp.src([`${paths.dist}/config/**/*`, `${paths.dist}/data/**/*`], { base: `${paths.dist}`})
+    gulp.src([`${paths.dist}/config/**/*`, `${paths.dist}/data/**/*`], { base: `${paths.dist}`, dot: true })
         .pipe(gulp.dest(`${paths.package.temp}/${paths.package.appName}/_internal`));
 });
 
