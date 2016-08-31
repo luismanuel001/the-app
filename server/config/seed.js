@@ -6,7 +6,6 @@
 'use strict';
 import sqldb from '../sqldb';
 import kue from 'kue';
-import request from 'request';
 import config from './environment';
 import path from 'path';
 
@@ -139,4 +138,3 @@ queue.process('run report2', function(job, done){
 
 queue.process('email2', function(job, done){
 });
-
