@@ -602,7 +602,7 @@ gulp.task('copy:server', () => {
         '.bowerrc',
         'config/**/*',
         'data/**/*'
-    ], {cwdbase: true})
+    ], {cwdbase: true, dot: true })
         .pipe(gulp.dest(paths.dist));
 });
 
