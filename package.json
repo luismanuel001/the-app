@@ -127,8 +127,8 @@
     "wiredep": "^2.2.2"
   },
   "engines": {
-    "node": "^4.4.0",
-    "npm": "^2.14.20"
+    "node": "4.4.7",
+    "npm": "2.15.8"
   },
   "scripts": {
     "test": "gulp test",
