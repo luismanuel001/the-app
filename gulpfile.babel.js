@@ -19,6 +19,7 @@ import {Instrumenter} from 'isparta';
 import install from 'gulp-install';
 import zip from 'gulp-zip';
 import Hexo from 'hexo';
+import shelljs from 'shelljs';
 
 var plugins = gulpLoadPlugins();
 var config;
@@ -667,21 +668,28 @@ grunt.initConfig({
     buildcontrol: {
         options: {
             dir: paths.dist,
+            remote: 'https://github.com/luismanuel001/the-app.git',
             commit: true,
             push: true,
             connectCommits: false,
             message: 'Built %sourceName% from commit %sourceCommit% on branch %sourceBranch%'
         },
-        heroku: {
+        production: {
             options: {
-                remote: 'heroku',
-                branch: 'master'
+                branch: 'production',
+                remoteBranch: 'production'
             }
         },
-        openshift: {
+        staging: {
             options: {
-                remote: 'openshift',
-                branch: 'master'
+                branch: 'staging',
+                remoteBranch: 'staging'
+            }
+        },
+        test: {
+            options: {
+                branch: 'test',
+                remoteBranch: 'test'
             }
         }
     }
@@ -689,16 +697,23 @@ grunt.initConfig({
 
 grunt.loadNpmTasks('grunt-build-control');
 
-gulp.task('buildcontrol:heroku', function(done) {
+gulp.task('buildcontrol:production', function(done) {
     grunt.tasks(
-        ['buildcontrol:heroku'],    //you can add more grunt tasks in this array
+        ['buildcontrol:production'],    //you can add more grunt tasks in this array
         {gruntfile: false}, //don't look for a Gruntfile - there is none. :-)
         function() {done();}
     );
 });
-gulp.task('buildcontrol:openshift', function(done) {
+gulp.task('buildcontrol:staging', function(done) {
     grunt.tasks(
-        ['buildcontrol:openshift'],    //you can add more grunt tasks in this array
+        ['buildcontrol:staging'],    //you can add more grunt tasks in this array
+        {gruntfile: false}, //don't look for a Gruntfile - there is none. :-)
+        function() {done();}
+    );
+});
+gulp.task('buildcontrol:test', function(done) {
+    grunt.tasks(
+        ['buildcontrol:test'],    //you can add more grunt tasks in this array
         {gruntfile: false}, //don't look for a Gruntfile - there is none. :-)
         function() {done();}
     );
