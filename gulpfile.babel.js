@@ -19,7 +19,6 @@ import {Instrumenter} from 'isparta';
 import install from 'gulp-install';
 import zip from 'gulp-zip';
 import Hexo from 'hexo';
-import shelljs from 'shelljs';
 
 var plugins = gulpLoadPlugins();
 var config;
