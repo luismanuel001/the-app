@@ -7,10 +7,9 @@ This project was generated with the [Angular Full-Stack Generator](https://githu
 ### Prerequisites
 
 - [Git](https://git-scm.com/)
-- [Node.js and npm](nodejs.org) Node ^4.2.3, npm ^2.14.7
+- [Node.js and npm](nodejs.org) Node ^4.4.7, npm ^2.15.8
 - [Bower](bower.io) (`npm install --global bower`)
 - [Gulp](http://gulpjs.com/) (`npm install --global gulp`)
-- [SQLite](https://www.sqlite.org/quickstart.html)
 
 ### Developing
 
