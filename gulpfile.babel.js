@@ -62,7 +62,7 @@ const paths = {
       appName: 'TheApp',
       temp: '.temp',
       template: 'win-template',
-      app: '/_internal/app',
+      app: '_internal/app',
       nodeWindowsPath: '_internal/tools/node-windows'
     },
     hexo: {
