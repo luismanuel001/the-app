@@ -6,7 +6,7 @@ angular.module('angularFullstackApp')
       .state('mail-merge', {
         url: '/theapp/mail-merge',
         templateUrl: 'app/mail-merge/mail-merge.html',
-        controller: ['$scope', 'mergeService', '$log', function ($scope, mergeService, $log) {
+        controller: ['$scope', 'mergeService', function ($scope, mergeService) {
           $scope.csvForm = {
             csvPath: 'invoices.csv'
           };

@@ -63,7 +63,7 @@ const paths = {
       appName: 'TheApp',
       temp: '.temp',
       template: 'win-template',
-      app: '/_internal/app',
+      app: '_internal/app',
       nodeWindowsPath: '_internal/tools/node-windows'
     },
     hexo: {
@@ -736,7 +736,7 @@ gulp.task('package:copy:dist', () => {
           `!${paths.dist}/server/config/environment/production.js`,
           `!${paths.dist}/config`, `!${paths.dist}/config/**`,
           `!${paths.dist}/data`, `!${paths.dist}/data/**`
-        ])
+        ], { dot: true })
         .pipe(gulp.dest(`${paths.package.temp}/${paths.package.appName}/${paths.package.app}`));
 
     gulp.src([`${paths.dist}/config/**/*`, `${paths.dist}/data/**/*`], { base: `${paths.dist}`, dot: true })
