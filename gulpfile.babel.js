@@ -720,14 +720,17 @@ gulp.task('package:copy:dist', () => {
           `${paths.dist}/**/*`,
           `!${paths.dist}/server/config/environment/production.js`,
           `!${paths.dist}/config`, `!${paths.dist}/config/**`,
-          `!${paths.dist}/data`, `!${paths.dist}/data/**`
+          `!${paths.dist}/flows`, `!${paths.dist}/flows/**`
         ])
         .pipe(gulp.dest(`${paths.package.temp}/${paths.package.appName}/${paths.package.app}`));
 });
 
 gulp.task('package:copy:config', () => {
-    return gulp.src([`${paths.dist}/config/**/*`, `${paths.dist}/data/**/*`], { base: `${paths.dist}`, dot: true })
-        .pipe(gulp.dest(`${paths.package.temp}/${paths.package.appName}/_internal`));
+    return gulp.src([
+          `${paths.dist}/config/**/*`,
+          `${paths.dist}/flows/**/*`
+        ], { base: `${paths.dist}`, dot: true })
+        .pipe(gulp.dest(`${paths.package.temp}/${paths.package.appName}`));
 });
 
 gulp.task('package:install', () => {
