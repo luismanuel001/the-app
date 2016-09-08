@@ -26,13 +26,13 @@
 										<div>
 											<button type="button" class="btn btn-primary btn-lg " ng-click="sendMessage()">{{labelButtonPopup}}</button>
 											<span ng-show="sending"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Sending now...</span>
-											<span class ="text-success" ng-show="current.sending==false"> Great! Messages Sent</span>
+											<span class ="text-default" ng-show="current.sending==false"> Great! Message queued</span>
 											<span class="text-danger" ng-show="invalidTo">Please enter recipient email address</span>
 
 										</div>
 										<div ng-show="current && (dataid || tableid) ">
 											<div ng-show="!current.sending">
-												<span ng-show="!sending && history.mergeHistory.length>0" class="message-history-date label label-success" ng-class="{'label-danger':history.mergeHistory[history.mergeHistory.length-1].status == 'fail'}"><time-count date="history.mergeHistory[history.mergeHistory.length-1].form_vars.date "></time-count></span>
+												<span ng-show="!sending && history.mergeHistory.length>0" class="message-history-date label label-default" ng-class="{'label-danger':history.mergeHistory[history.mergeHistory.length-1].status == 'failed', 'label-success':history.mergeHistory[history.mergeHistory.length-1].status == 'complete'}"><time-count date="history.mergeHistory[history.mergeHistory.length-1].form_vars.date "></time-count></span>
 												<span ng-show="!current.sending">{{history.mergeHistory[history.mergeHistory.length-1].template}}</span>
 											</div>
 											<div ng-show="current.sending">
@@ -133,7 +133,7 @@
 									<div>
 										<button type="button" class="btn btn-primary btn-lg " ng-click="sendMessage()">{{labelButtonPopup}}</button>
 										<span ng-show="current.sending"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Sending now...</span>
-										<span class ="text-success" ng-show="current.sending==false"> Great! Messages Sent</span>
+										<span class ="text-default" ng-show="current.sending==false"> Great! Message queued</span>
 										<span class="text-danger" ng-show="invalidTo">Please enter recipient email address</span>
 
 									</div>
@@ -145,14 +145,14 @@
 					<table class="table margin-15" >
 
 						<tr dir-paginate="history in history.mergeHistory| orderBy:'-form_vars.date'| itemsPerPage:page.itemPerPage" pagination-id="page.pageId" current-page="page.currentPageNumber">
-							<td ng-hide="history.sending"><span  class="message-history-date label label-success" ng-class="{'label-danger':history.status == 'fail'}"><time-count date="history.form_vars.date "></time-count></span></td>
-							<td ng-show="history.sending"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span><span class="message-history-date label label-success"><time-count date="history.form_vars.date"></time-count></span></td>
+							<td ng-hide="history.sending"><span  class="message-history-date label label-default" ng-class="{'label-success':history.status == 'complete', 'label-danger':history.status == 'failed'}"><time-count date="history.form_vars.date "></time-count></span></td>
+							<td ng-show="history.sending"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span><span class="message-history-date label label-default" ng-class="{'label-success':history.status == 'complete', 'label-danger':history.status == 'failed'}"><time-count date="history.form_vars.date"></time-count></span></td>
 							<td>{{history.template}}</td>
 							<td ng-show="history.sending"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span></td>
 							<td ng-show="history.sending && mailMerge.document.generatepdf"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span></td>
 							<!-- <td  ng-hide="history.sending"><a href="#"  tooltip-html-unsafe="{{history.email_html}}" tooltip-class="email" data-toggle="tooltip" tooltip-placement="right" ><span class="label label-success">{{history.email_text | stringCut}}</span></a>
 						</td> -->
-						<td  ng-hide="history.sending"><a ng-click="openEmail(history)" href="#"><span class="label label-success">{{history.email.text | stringCut}}</span></a>
+						<td  ng-hide="history.sending"><a ng-click="openEmail(history)" href="#"><span class="label label-default" ng-class="{'label-success':history.status == 'complete', 'label-danger':history.status == 'failed'}">{{history.email.text | stringCut}}</span></a>
 						</td>
 
 						<!-- 	<td ng-show="!history.sending && history.document_generatepdf == 1 "><a href="#"  tooltip-html-unsafe="{{history.document_html}}"  tooltip-trigger="click" tooltip-class="document" data-toggle="tooltip" tooltip-placement="bottom" ><span class="label label-success">Click to View PDF</span></a>
@@ -161,7 +161,7 @@
 					<td ng-show="!history.sending && history.document.generatepdf == 1 "><a href="#"  ng-click="openDocument(history)">View Document</span></a>
 
 					</td>
-					<td  ng-show="!history.sending && history.status == 'fail' "><a href="#" data-toggle="tooltip" data-placement="right" title={{history.email.text}}><span class="label label-danger">Error</span></a></td>
+					<td  ng-show="!history.sending && history.status == 'failed' "><a href="#" data-toggle="tooltip" data-placement="right" title={{history.email.text}}><span class="label label-danger">Error</span></a></td>
 				</tr>
 			</table>
 

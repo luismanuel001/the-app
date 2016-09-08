@@ -731,15 +731,17 @@ gulp.task('package:copy:template', () => {
 });
 
 gulp.task('package:copy:dist', () => {
-    gulp.src([
+    return gulp.src([
           `${paths.dist}/**/*`,
           `!${paths.dist}/server/config/environment/production.js`,
           `!${paths.dist}/config`, `!${paths.dist}/config/**`,
           `!${paths.dist}/data`, `!${paths.dist}/data/**`
-        ], { dot: true })
+        ])
         .pipe(gulp.dest(`${paths.package.temp}/${paths.package.appName}/${paths.package.app}`));
+});
 
-    gulp.src([`${paths.dist}/config/**/*`, `${paths.dist}/data/**/*`], { base: `${paths.dist}`, dot: true })
+gulp.task('package:copy:config', () => {
+    return gulp.src([`${paths.dist}/config/**/*`, `${paths.dist}/data/**/*`], { base: `${paths.dist}`, dot: true })
         .pipe(gulp.dest(`${paths.package.temp}/${paths.package.appName}/_internal`));
 });
 
@@ -763,6 +765,7 @@ gulp.task('package:zip', cb => {
         'package:clean',
         'package:copy:template',
         'package:copy:dist',
+        'package:copy:config',
         'package:install',
         'package:createzip',
         'package:clean',

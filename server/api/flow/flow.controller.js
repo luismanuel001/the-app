@@ -87,7 +87,7 @@ function respondWithMailMergeDataResults(res) {
   return function(entity) {
     if (entity) {
       entity = _.map(entity.models, (item) => {
-        return JSON.parse(item.get('additional_data2'));
+        return _.merge(JSON.parse(item.get('additional_data2')), { status: item.get('status2') });
       });
       res.status(200).json(entity);
     }
