@@ -8,7 +8,7 @@ angular.module('angularFullstackApp')
     templateUrl: 'components/mail-merge/mail-merge.html',
     restrict: 'EA',
     scope:{template:'=',labelButton:'=',labelButtonPopup:'=',dataid:'=?',tableid:'=?'},
-    controller:['$scope','formlyConfig','$http','$compile','$interpolate','mergeService','$uibModal', '$log', '$filter',function($scope,formlyConfig,$http,$compile,$interpolate,mergeService,$uibModal, $log, $filter){
+    controller:['$scope','formlyConfig','$http','$compile','$interpolate','mergeService','$uibModal', '$log', '$filter', '$location',function($scope,formlyConfig,$http,$compile,$interpolate,mergeService,$uibModal, $log, $filter, $location){
       $scope.popup = {
         opened: false
       };
@@ -34,13 +34,14 @@ angular.module('angularFullstackApp')
       }
 
       var initAdditionalVars = function(){
+        var baseUrl = $location.protocol() + "://" + $location.host() + ":" + $location.port();
         var additional_vars = {
           'pdf_file_name': $scope.mailMerge.document.filename,
           'output_folder': $scope.mailMerge.document.output_folder,
           'pdf_file_path': $scope.mailMerge.document.output_folder + '/' + $scope.mailMerge.document.filename,
-          'html_permalink': $scope.mailMerge.document.html_permalink,
-          'pdf_permalink': $scope.mailMerge.document.pdf_permalink,
-          'zip_permalink': $scope.mailMerge.document.html_permalink + '.zip',
+          'html_permalink': baseUrl + $scope.mailMerge.document.html_permalink,
+          'pdf_permalink': baseUrl + $scope.mailMerge.document.pdf_permalink,
+          'zip_permalink': baseUrl + $scope.mailMerge.document.html_permalink + '.zip',
           'now_custom_date': $filter('date')(Date.now(), 'yyyy.MM.dd_HH.mm.ss'),
           'now_default_date': $filter('date')(Date.now(), 'mediumDate'),
           'now_short_date': $filter('date')(Date.now(), 'shortDate'),
@@ -520,7 +521,7 @@ angular.module('angularFullstackApp')
 
           var type = $scope.template.charAt(0).toUpperCase() + $scope.template.slice(1, $scope.template.length-1);
           if($scope.history &&  $scope.history.mergeHistory){
-            $scope.history.mergeHistory.unshift({ 'form_vars':{ date: Date.now() }, sending: true, template:type});
+            $scope.history.mergeHistory.unshift({ 'form_vars':{ date: Date.now() }, sending: true, template:type, status: 'queue'});
             $scope.totalItems++;
           }
           var mergeData = {
