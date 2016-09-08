@@ -1,3 +1,5 @@
+/* global Papa */
+/* jshint camelcase: false */
 'use strict';
 
 angular.module('angularFullstackApp')
@@ -31,11 +33,6 @@ angular.module('angularFullstackApp')
         table.buttons().container().appendTo( $('.col-sm-6:eq(0)', table.table().container() ) );
       }
 
-      var mapping = function(){
-        $scope.merge = $scope.messageInterpolate[$scope.currentIndex];
-        initAdditionalVars();
-      };
-
       var initAdditionalVars = function(){
         var additional_vars = {
           'pdf_file_name': $scope.mailMerge.document.filename,
@@ -52,6 +49,11 @@ angular.module('angularFullstackApp')
           'now_full_date': $filter('date')(Date.now(), 'fullDate'),
         };
         $scope.merge = _.merge($scope.merge, additional_vars);
+      };
+
+      var mapping = function(){
+        $scope.merge = $scope.messageInterpolate[$scope.currentIndex];
+        initAdditionalVars();
       };
 
       var singleMsg = function(){
@@ -131,9 +133,9 @@ angular.module('angularFullstackApp')
           data:transformData
         };
 
-        for(var i in $scope.result.data){
-          if($scope.result.data[i].sending!==undefined){
-            $scope.result.data[i].sending = null;
+        for(var j in $scope.result.data){
+          if($scope.result.data[j].sending!==undefined){
+            $scope.result.data[j].sending = null;
           }
         }
         $scope.dataLength = $scope.result.data.length;
@@ -352,8 +354,8 @@ angular.module('angularFullstackApp')
 
             if($scope.sendEmail){
               $http.get('/api/flows/mail-merge/' + $scope.template + '/email').then(function(template){
-                $('#'+$scope.emailIframe).contents().find("body").html('');
-                $('#'+$scope.emailIframe).contents().find("body").append($compile('<div  id="{{htmlPreviewId}}" class="email-scroll pull-left col-xs-11"></div>')($scope));
+                $('#'+$scope.emailIframe).contents().find('body').html('');
+                $('#'+$scope.emailIframe).contents().find('body').append($compile('<div  id="{{htmlPreviewId}}" class="email-scroll pull-left col-xs-11"></div>')($scope));
                 var html = template.data;
                 $scope.mailMerge.email.html = html;
                 renderEmail();
@@ -442,7 +444,7 @@ angular.module('angularFullstackApp')
             setTimeout(function(){
               $('#'+$scope.docHistoryIframe).contents().find('body').empty();
               $('#'+$scope.docHistoryIframe).contents().find('body').html(history.document.html);
-            },100)
+            },100);
           }
         });
       };
@@ -455,7 +457,7 @@ angular.module('angularFullstackApp')
             setTimeout(function(){
               $('#'+$scope.emailHistoryIframe).contents().find('body').empty();
               $('#'+$scope.emailHistoryIframe).contents().find('body').html(history.email.html);
-            },100)
+            },100);
           }
         });
       };
@@ -560,12 +562,12 @@ angular.module('angularFullstackApp')
     restrict:'E',
     scope: { date: '=' },
     template:'<div>{{timeDiffer}}</div>',
-    link: function (scope, element) {
+    link: function (scope) {
       var time;
-      scope.$watch('date',function(newVal){
+      scope.$watch('date',function(){
         time = new Date(scope.date);
         calc();
-      })
+      });
 
 
       function calc () {
