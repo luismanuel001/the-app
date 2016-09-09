@@ -34,6 +34,7 @@ queue.process('generate-document', function(job, done){
     var template = require(path.join(mailMergeData.templatePath, 'config.json'));
     var compiledDocumentInfo = {};
     var merge = {merge: mailMergeData.form_vars};
+    merge.merge.isPDF = false;
     ngCompile.prototype.onEnvReady(() => {
       var ngEnvironment = new ngCompile([{ name: 'downloadPdfButton', path: path.join(__dirname, 'download-pdf-button.directive') }]);
       ngEnvironment.onReady(() => {
@@ -45,7 +46,11 @@ queue.process('generate-document', function(job, done){
           compiledDocumentInfo.html = ngEnvironment.$compile(documentHtml)(merge);
           // If generatepdf is true then process html into pdf
           if (compiledDocumentInfo.generatepdf) {
-            generatePdf(compiledDocumentInfo)
+            var compiledPDFInfo = JSON.parse(JSON.stringify(compiledDocumentInfo));
+            var pdfMerge = JSON.parse(JSON.stringify(merge));
+            pdfMerge.merge.isPDF = true;
+            compiledPDFInfo.html = ngEnvironment.$compile(documentHtml)(pdfMerge);
+            generatePdf(compiledPDFInfo)
               .then(res => {
                 done(null, { compiledData: compiledDocumentInfo, pdfData: res});
               })
