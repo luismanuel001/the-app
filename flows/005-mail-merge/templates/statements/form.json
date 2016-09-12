@@ -1,5 +1,14 @@
 [
     {
+    "key": "code",
+    "type": "horizontalInput",
+    "templateOptions": {
+      "label": "Code",
+      "type":"text"
+
+    }
+  },
+    {
       "key": "email.to",
       "type": "horizontalInput",
       "templateOptions": {
@@ -7,81 +16,44 @@
         "type":"email"
 
       }
-      
-    },
-    {
-      "key": "email.cc",
-      "type": "horizontalInput",
-      "templateOptions": {
-        "label": "CC",
-        "type":"text"
-      }
-      
-    },
-     {
-      "key": "email.bcc",
-      "type": "horizontalInput",
-      "templateOptions": {
-        "label": "BCC",
-        "type":"text"
-      }
-      
-    },
-    {
-      "key": "email.subject",
-      "type": "horizontalInput",
-      "templateOptions": {
-        "label": "Subject",
-        "type":"text"
 
-      }
-    },
-     {
-      "key": "code",
-      "type": "horizontalInput",
-      "templateOptions": {
-        "label": "Client Code",
-        "type":"text"
-
-      }    
-    },
-    
-    {
-      "key": "name",
-      "type": "horizontalInput",
-      "templateOptions": {
-        "label": "Client name",
-        "type":"text"
-
-      }    
     },
     {
-    "key": "date",
-    "type": "datepicker",
-    "templateOptions": {
-      "label": "Date",
-      "type": "text",
-      "datepickerPopup": "dd-MMMM-yyyy"
+      "key": "clientfulldetails",
+      "type": "textarea",
+      "templateOptions": {
+      "label": "Customer",
+      "placeholder": "Customer full details",
+      "rows": 10
     }
-  },
-    {
-      "key": "number",
+
+    },
+     {
+      "key": "no",
       "type": "horizontalInput",
       "templateOptions": {
-        "label": "Number",
+        "label": "Invoice Number",
         "type":"text"
+      }
 
-      }   
     },
     {
+      "key": "date",
+      "type": "datepicker",
+      "templateOptions": {
+        "label": "Invoice Date",
+        "type": "text",
+        "datepickerPopup": "dd-MMMM-yyyy"
+    }
+    },
+     {
       "key": "product",
       "type": "horizontalInput",
-       "templateOptions": {
+      "templateOptions": {
         "label": "Product",
         "type":"text"
 
       }
-      
     },
     {
       "key": "fees",
@@ -91,29 +63,5 @@
         "type":"text"
 
       }
-      
-    },
-
-    {
-      "key": "fees",
-      "type": "horizontalInput",
-       "templateOptions": {
-        "label": "Fees",
-        "type":"text"
-
-      }
-      
-    },
-    
-    {
-      "key": "fees",
-      "type": "horizontalInput",
-       "templateOptions": {
-        "label": "Fees",
-        "type":"text"
-
-      }
-      
     }
-
   ]

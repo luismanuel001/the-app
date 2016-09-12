@@ -1,3 +1,5 @@
+
+
   <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
   <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
@@ -5,54 +7,54 @@
       <meta name="viewport" content="width=device-width"/>
 
       <style type="text/css">
-        
+
 /**********************************************
 * Ink v1.0.5 - Copyright 2013 ZURB Inc        *
 **********************************************/
 
 /* Client-specific Styles & Reset */
 
-#outlook a { 
-  padding:0; 
-} 
-
-body{ 
-  width:100% !important; 
-  min-width: 100%;
-  -webkit-text-size-adjust:100%; 
-  -ms-text-size-adjust:100%; 
-  margin:0; 
+#outlook a {
   padding:0;
 }
 
-.ExternalClass { 
-  width:100%;
-} 
-
-.ExternalClass, 
-.ExternalClass p, 
-.ExternalClass span, 
-.ExternalClass font, 
-.ExternalClass td, 
-.ExternalClass div { 
-  line-height: 100%; 
-} 
-
-#backgroundTable { 
-  margin:0; 
-  padding:0; 
-  width:100% !important; 
-  line-height: 100% !important; 
+body{
+  width:100% !important;
+  min-width: 100%;
+  -webkit-text-size-adjust:100%;
+  -ms-text-size-adjust:100%;
+  margin:0;
+  padding:0;
 }
 
-img { 
-  outline:none; 
-  text-decoration:none; 
+.ExternalClass {
+  width:100%;
+}
+
+.ExternalClass,
+.ExternalClass p,
+.ExternalClass span,
+.ExternalClass font,
+.ExternalClass td,
+.ExternalClass div {
+  line-height: 100%;
+}
+
+#backgroundTable {
+  margin:0;
+  padding:0;
+  width:100% !important;
+  line-height: 100% !important;
+}
+
+img {
+  outline:none;
+  text-decoration:none;
   -ms-interpolation-mode: bicubic;
   width: auto;
-  max-width: 100%; 
-  float: left; 
-  clear: both; 
+  max-width: 100%;
+  float: left;
+  clear: both;
   display: block;
 }
 
@@ -61,7 +63,7 @@ center {
   min-width: 580px;
 }
 
-a img { 
+a img {
   border: none;
 }
 
@@ -74,12 +76,12 @@ table {
   border-collapse: collapse;
 }
 
-td { 
+td {
   word-break: break-word;
   -webkit-hyphens: auto;
   -moz-hyphens: auto;
   hyphens: auto;
-  border-collapse: collapse !important; 
+  border-collapse: collapse !important;
 }
 
 table, tr, td {
@@ -89,9 +91,9 @@ table, tr, td {
 }
 
 hr {
-  color: #d9d9d9; 
-  background-color: #d9d9d9; 
-  height: 1px; 
+  color: #d9d9d9;
+  background-color: #d9d9d9;
+  height: 1px;
   border: none;
 }
 
@@ -108,8 +110,8 @@ table.container {
   text-align: inherit;
 }
 
-table.row { 
-  padding: 0px; 
+table.row {
+  padding: 0px;
   width: 100%;
   position: relative;
 }
@@ -130,7 +132,7 @@ table.column {
 
 table.columns td,
 table.column td {
-  padding: 0px 0px 10px; 
+  padding: 0px 0px 10px;
 }
 
 table.columns td.sub-columns,
@@ -324,12 +326,13 @@ img.center {
 
 /* Typography */
 
-body, table.body, h1, h2, h3, h4, h5, h6, p, td { 
+body, table.body, h1, h2, h3, h4, h5, h6, p, td {
   color: #222222;
-  font-family: "Helvetica", "Arial", sans-serif; 
-  font-weight: normal; 
-  padding:0; 
-  text-align: left; 
+  font-family: "Helvetica", "Arial", sans-serif;
+  font-weight: normal;
+  padding:0;
+  margin: 0;
+  text-align: left;
   line-height: 1.3;
 }
 
@@ -350,7 +353,7 @@ p.lead, p.lede, p.leed {
   line-height:21px;
 }
 
-p { 
+p {
   margin-bottom: 10px;
 }
 
@@ -358,34 +361,49 @@ small {
   font-size: 10px;
 }
 
+a {
+  color: #2ba6cb;
+  text-decoration: none;
+}
 
+a:hover {
+  color: #2795b6 !important;
+}
 
-h1 a, 
-h2 a, 
-h3 a, 
-h4 a, 
-h5 a, 
+a:active {
+  color: #2795b6 !important;
+}
+
+a:visited {
+  color: #2ba6cb !important;
+}
+
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
 h6 a {
   color: #2ba6cb;
 }
 
-h1 a:active, 
-h2 a:active,  
-h3 a:active, 
-h4 a:active, 
-h5 a:active, 
-h6 a:active { 
-  color: #2ba6cb !important; 
-} 
+h1 a:active,
+h2 a:active,
+h3 a:active,
+h4 a:active,
+h5 a:active,
+h6 a:active {
+  color: #2ba6cb !important;
+}
 
-h1 a:visited, 
-h2 a:visited,  
-h3 a:visited, 
-h4 a:visited, 
-h5 a:visited, 
-h6 a:visited { 
-  color: #2ba6cb !important; 
-} 
+h1 a:visited,
+h2 a:visited,
+h3 a:visited,
+h4 a:visited,
+h5 a:visited,
+h6 a:visited {
+  color: #2ba6cb !important;
+}
 
 /* Panels */
 
@@ -508,7 +526,7 @@ table.medium-button td a:visited,
 table.large-button:hover td a,
 table.large-button:active td a,
 table.large-button td a:visited {
-  color: #ffffff !important; 
+  color: #ffffff !important;
 }
 
 table.secondary td {
@@ -678,7 +696,7 @@ body.outlook p {
     display: inherit !important;
   }
 }
-        
+
       </style>
       <style type="text/css">
 
@@ -703,6 +721,11 @@ table.button:active td {
 
 a {
   color:#0074d9;
+}
+
+a:hover, a:focus, a:active, a:visited {
+  color:#0074d9 !important;
+  text-decoration: underline;
 }
 
 code {
@@ -792,7 +815,7 @@ img {
           <td class="center" align="center" valign="top">
             <center>
 
-  
+
   <table class="body" style="margin:20px auto;">
     <tbody><tr>
       <td class="center" align="center" valign="top">
@@ -802,67 +825,69 @@ img {
           <tbody>
           <tr>
           <td>
-  <p></p><center><p></p>
-
-<h1><u>Nike World</u></h1>
-
-<p></p></center><p></p>
-
-</td></tr><tr><td><table class="row"><tbody><tr><td class="wrapper"><table class="four columns"><tbody><tr><td>
-
-<p><strong></strong></p>
-
-<p>One Bowerman Drive</p>
-
-<p>Beaverton, OR 97005</p>
-
-<p>Phone: 1-503-671-6453</p>
-
-<p>7:30 a.m. - 5:30 p.m. PT, Monday - Friday (except holidays).</p>
-
-<p></p></td><td class="expander"></td></tr></tbody></table></td><td class="wrapper"><table class="four columns"><tbody><tr><td>
-</td><td class="expander"></td></tr></tbody></table></td><td class="wrapper last"><table class="four columns"><tbody><tr><td>
-<strong><u>Client Details</u></strong><p></p>
-
-<p>{{merge.name}}</p>
-
-</td><td class="expander"></td></tr></tbody></table></td></tr></tbody></table></td></tr><tr><td>
+  <p><style>
+.border1
+{
+    border: 1px solid black;
+}
+</style></p>
 
 <p></p><center><p></p>
 
-<h1>INVOICE</h1>
+<h1><u>COMPANY NAME GOES HERE</u></h1>
 
 <p></p></center><p></p>
 
-<p><strong>No: </strong> {{merge.number}}</p>
+<p></p></td></tr><tr><td><table class="row"><tbody><tr><td class="wrapper"><table class="four columns"><tbody><tr><td>
+Line 1<p></p>
 
-<p><strong>Date: </strong> {{merge.date | date:'yyyy-MM-dd'}}
-<br>
-<br></p>
+<p>Line 2
+Line 3</p>
 
-<table>
-  <thead>
-    <tr>
-      <th width="200">Product/Services</th>
-      <th>Fees ($)</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>{{merge.product}}</td>
-      <td>{{merge.fees}}</td>
-    </tr>
-  </tbody>
-</table>
+<p>Line 4</p>
 
-<p><br>
-<br></p>
+<p>E-mail: email@theapp.com</p>
 
-<p><strong>Account No: </strong> 12345678789<br>
-<strong>IBAN: </strong> BR 1234 5678 7890<br>
-<strong>SWIFT (BIC Code): </strong> BRYPC2N</p>
+<p>VAT Registration No: 123456789I</p>
+
+<p></p></td><td class="expander"></td></tr></tbody></table></td><td class="wrapper"><table class="four columns"><tbody><tr><td>
+</td><td class="expander"></td></tr></tbody></table></td><td class="wrapper last"><table class="four columns"><tbody><tr><td><p></p>
+
+<h4><u>Client Details</u></h4>
+
+<p>{{merge.clientfulldetails}}
+</p></td><td class="expander"></td></tr></tbody></table></td></tr></tbody></table></td></tr><tr><td><p></p>
 
 <hr>
+
+<p></p><center><p></p>
+
+<h2><u>INVOICE</u></h2>
+
+<p></p></center><p></p>
+
+<p><strong>No:</strong> {{merge.no}}</p>
+
+<p><strong>Date:</strong> {{merge.now_medium_date}}</p>
+
+<p><br></p>
+
+<table width="100%" class="border1">
+<tbody><tr class="border1">
+<td class="border1"><strong>Product/Services</strong></td>
+<td><strong>Fees ($)</strong></td>
+</tr>
+<tr>
+<td class="border1">{{merge.product}}</td>
+<td>{{merge.fees}}</td>
+</tr>
+</tbody></table>
+
+<hr>
+
+<p><strong>Account No</strong>: <em>123456789I</em><br>
+<strong>IBAN</strong>: <em>99 88 77 66 55</em><br>
+<strong>SWIFT (BIC Code)</strong>: <em>N23456</em></p>
           </td>
           </tr>
           </tbody>
@@ -872,7 +897,7 @@ img {
       </td>
     </tr>
   </tbody></table>
-  
+
 
             </center>
           </td>

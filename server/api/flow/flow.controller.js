@@ -295,13 +295,14 @@ export function mailMergeCSVFile(req, res) {
           step: (row) => {
             if (!row.errors.length && row.data[0]) {
               var merge = row.data[0];
+              var baseUrl = req.protocol + '://' + req.get('host');
               var additional_vars = {
                 'pdf_file_name': templateConfig.document.filename,
                 'output_folder': templateConfig.document.output_folder,
                 'pdf_file_path': templateConfig.document.output_folder + '/' + templateConfig.document.filename,
-                'html_permalink': templateConfig.document.html_permalink,
-                'pdf_permalink': templateConfig.document.pdf_permalink,
-                'zip_permalink': templateConfig.document.html_permalink + '.zip',
+                'html_permalink': baseUrl + templateConfig.document.html_permalink,
+                'pdf_permalink': baseUrl + templateConfig.document.pdf_permalink,
+                'zip_permalink': baseUrl + templateConfig.document.html_permalink + '.zip',
                 'now_custom_date': moment().format('YYYY.MM.DD_HH.mm.ss'),
                 'now_default_date': moment().format('MMM D, YYYY'),
                 'now_short_date': moment().format('M/D/YY'),
