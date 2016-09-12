@@ -46,12 +46,11 @@
 								<div class="form-scroll">
 									<div class="email" ng-show="sendEmail">
 										<div>
-											<div class="margin-15" id="{{formId}}"></div>
-										</div>
-										<div ng-show="!sendhtml">
-											<span>Email Body</span>
-											<textarea ng-change="update()" ng-model="mailMerge.email.text"  rows="5" cols="50">
-											</textarea>
+											<div class="margin-15" id="{{formId}}">
+												<form>
+													<formly-form model="merge" fields="mergeFields" options="options" form="form"></formly-form>
+												</form>
+											</div>
 										</div>
 									</div>
 
@@ -102,7 +101,7 @@
 							</div>
 
 							<div ng-show="!sendhtml">
-								<div id="{{textPreviewId}}"></div>
+								<div id="{{textPreviewId}}" ></div>
 							</div>
 						</div>
 

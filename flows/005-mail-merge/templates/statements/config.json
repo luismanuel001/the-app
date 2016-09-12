@@ -13,12 +13,12 @@
 	},
     "email": {
         "sendemail":true,
-        "sendhtmlemail": true,
-        "to": "customer@othercompany.com",
+        "sendhtmlemail": false,
+        "to": "distributev@gmail.com",
         "cc": "",
         "bcc": "",
-        "subject": "test",
-        "text": "Hello,how are you {{merge.name}}, did you receive my invoice on {{merge.date| date:'yyyy-MM-dd' }}",
+        "subject": "Statement for {{merge.date | date:'MMM, yyyy'}}",
+        "text": "Hi {{merge.name}}, Please download your PDF from {{merge.pdf_permalink}}.\nPlease find attached the correct statement.",
         "html": "email.html",
         "attachments": [
             "{{merge.pdf_file_path}}",
@@ -26,15 +26,15 @@
         ]
 	},
     "smtp": {
-        "host": "Email Server Host",
-        "port": "25",
-        "userid": "From Email User ID",
-        "userpassword": "From Email Password",
+        "host": "",
+        "port": "",
+        "userid": "",
+        "userpassword": "",
         "usessl": false,
         "usetls": false,
         "debug": false,
-        "fromaddress": "from@emailaddress.com",
-        "name": "From Name"
+        "fromaddress": "",
+        "name": ""
     },
     "form": "form.json"
 }
